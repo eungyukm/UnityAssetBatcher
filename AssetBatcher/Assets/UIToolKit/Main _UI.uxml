@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="height: 100%; width: 30%;">
+        <ui:Label text="라이브러리" display-tooltip-when-elided="true" style="height: 50px; width: 100%; font-size: 30px; -unity-text-align: upper-center;" />
+        <ui:VisualElement style="width: 100%; height: 100%;">
+            <ui:VisualElement style="flex-direction: row; width: 100%; height: 50%;">
+                <ui:VisualElement style="width: 50%; height: 100%;">
+                    <ui:Button text="바닥" display-tooltip-when-elided="true" name="FloorBtn" style="width: 100%; height: 25%; background-image: none; align-items: auto; justify-content: flex-start; left: 0; top: 0; right: 0; bottom: 0;" />
+                    <ui:Button text="구조물" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
+                    <ui:Button text="Button" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
+                </ui:VisualElement>
+                <ui:VisualElement style="width: 50%; height: 100%;">
+                    <ui:Button text="벽" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
+                    <ui:Button text="배너" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
+                    <ui:Button text="Button" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

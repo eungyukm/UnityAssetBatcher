@@ -58,3 +58,11 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# AssetBatcher Ignore
+AssetBatcher/[Ll]ibrary/
+AssetBatcher/[Tt]emp/
+AssetBatcher/[Oo]bj/
+AssetBatcher/[Bb]uild/
+AssetBatcher/[Bb]uilds/
+AssetBatcher/[Ll]ogs/
+AssetBatcher/[Mm]emoryCaptures/
