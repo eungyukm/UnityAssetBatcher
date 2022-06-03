@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8fd000d44995bf41bbce90d78c9fffa, type: 3}
+  m_Name: Hammer
+  m_EditorClassIdentifier: 
+  cardImage: {fileID: 21300000, guid: 860b08bad6ea51c43bc69ef1e9e6b99a, type: 3}
+  placeablesData:
+  - {fileID: 11400000, guid: c0b126ae4b3d21f4bb016534d62370d2, type: 2}
+  relativeOffsets:
+  - {x: 0, y: 0, z: 0}

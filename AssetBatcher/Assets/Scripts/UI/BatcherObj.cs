@@ -19,18 +19,6 @@ public class BatcherObj : MonoBehaviour, IDragHandler, IPointerUpHandler, IPoint
         canvasGroup = GetComponent<CanvasGroup>();
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public void OnDrag(PointerEventData eventData)
     {
         Debug.Log("OnDrag!!");
