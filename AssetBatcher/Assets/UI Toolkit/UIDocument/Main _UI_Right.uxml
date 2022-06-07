@@ -1,0 +1,42 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/USS/Main_UI.uss?fileID=7433441132597879392&amp;guid=62ec1809b6472cc43aadf21bbd458f95&amp;type=3#Main_UI" />
+    <ui:VisualElement style="flex-direction: row; width: 100%; height: 100%;">
+        <ui:VisualElement style="height: 100%; width: 30%; opacity: 0;">
+            <ui:Label text="라이브러리" display-tooltip-when-elided="true" style="height: 50px; width: 100%; font-size: 30px; -unity-text-align: upper-center;" />
+            <ui:VisualElement style="width: 100%; height: 100%;">
+                <ui:VisualElement style="flex-direction: row; width: 100%; height: 50%;">
+                    <ui:VisualElement name="object" style="width: 50%; height: 100%;">
+                        <ui:Button text="바닥" display-tooltip-when-elided="true" name="FloorBtn" class="Library_btn Library_Text_Size Button_Size" style="width: 100%; height: 25%; background-image: none; align-items: auto; justify-content: flex-start; left: 0; top: 0; right: 0; bottom: 0; font-size: 30px; -unity-font-style: bold;" />
+                        <ui:Button text="구조물" display-tooltip-when-elided="true" class="Button_Size" style="width: 100%; height: 25%;" />
+                        <ui:Button text="Button" display-tooltip-when-elided="true" class="Button_Size" style="width: 100%; height: 25%;" />
+                    </ui:VisualElement>
+                    <ui:VisualElement style="width: 50%; height: 100%;">
+                        <ui:Button text="벽" display-tooltip-when-elided="true" class="Button_Size" style="width: 100%; height: 25%;" />
+                        <ui:Button text="배너" display-tooltip-when-elided="true" class="Button_Size" style="width: 100%; height: 25%;" />
+                        <ui:Button text="Button" display-tooltip-when-elided="true" class="Button_Size" style="width: 100%; height: 25%;" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="height: 100%; width: 50%; opacity: 0;">
+            <ui:VisualElement style="width: 100%; height: 10%; flex-direction: row;">
+                <ui:Button text="선택" display-tooltip-when-elided="true" name="SelectBtn" class="Top_Button" style="width: 10%; height: 100%;" />
+                <ui:Button text="이동" display-tooltip-when-elided="true" name="MoveBtn" class="Top_Button" style="width: 10%; height: 100%;" />
+                <ui:Button text="회전" display-tooltip-when-elided="true" name="RotateBtn" class="Top_Button" style="width: 10%; height: 100%;" />
+                <ui:Button text="정렬" display-tooltip-when-elided="true" name="AlignmentBtn" class="Top_Button" style="width: 10%; height: 100%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement style="width: 20%; height: 100%; flex-direction: row;">
+            <ui:VisualElement style="width: 20%; height: 100%;">
+                <ui:Label text="속성" display-tooltip-when-elided="true" class="RightPanel_Menu_Label" style="width: 100%; height: 100px;" />
+                <ui:Label text="이름" display-tooltip-when-elided="true" class="RightPanel_Menu_Label" style="width: 100%; height: 100px;" />
+                <ui:Label text="변환" display-tooltip-when-elided="true" class="RightPanel_Menu_Label" style="width: 100%; height: 100px;" />
+            </ui:VisualElement>
+            <ui:VisualElement style="width: 80%; height: 100%;">
+                <ui:Label text="속성값" display-tooltip-when-elided="true" class="RightPanel_Menu_Label" style="width: 100%; height: 100px;" />
+                <ui:Label text="이름명" display-tooltip-when-elided="true" class="RightPanel_Menu_Label" style="width: 100%; height: 100px;" />
+                <ui:Label text="위치&#10;화전&#10;크기" display-tooltip-when-elided="true" class="RightPanel_Menu_Label" style="width: 100%; height: 100px;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

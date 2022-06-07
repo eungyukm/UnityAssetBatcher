@@ -1,0 +1,12 @@
+.Button_Size {
+    font-size: 30px;
+}
+
+.Top_Button {
+    font-size: 30px;
+}
+
+.RightPanel_Menu_Label {
+    font-size: 30px;
+    -unity-text-align: middle-center;
+}

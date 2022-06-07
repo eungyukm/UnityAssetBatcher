@@ -1,8 +1,13 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using Unity.VisualScripting;
 
+/// <summary>
+/// 카드의 Drag 움직임 관리
+/// </summary>
 public class CardManager : MonoBehaviour
 {
     public Camera mainCamera;
@@ -21,30 +26,55 @@ public class CardManager : MonoBehaviour
     private bool cardIsActive = false; //사실일 때, 카드는 운동장 위로 끌려가고 있다.
     private GameObject previewHolder;
     private Vector3 inputCreationOffset = new Vector3(0f, 0f, 1f); //플레이어의 손가락 아래에 있지 않도록 유닛 생성을 상쇄합니다.
-
+    
     public Card card;
 
-    public bool TestMode = false;
+    public DeployMode DeployMode;
 
     private void Awake()
     {
         previewHolder = new GameObject("PreviewHolder");
         cards = new Card[3];
-        
-        // TODO : 테스트 코드 처리
-        if (TestMode)
-        {
-            StartCoroutine(CardDraged());
-        }
-    }
-    // TODO : 테스트 코드 처리
-    IEnumerator CardDraged()
-    {
-        yield return null;
-        Debug.Log("Init Drage!!");
-        card.OnDragAction += CardDragged;
+
+        DeployMode = DeployMode.DeSelectedObject;
     }
 
+    private void Update()
+    {
+        if (DeployMode == DeployMode.SelectedObject)
+        {
+            MovementCard();            
+        }
+    }
+
+    private void Start()
+    {
+        LoadCard();
+        InitEnvironment();
+    }
+
+    // 1. 카드에 대한 정보를 로드하고 이벤트를 연결합니다.
+    public void LoadCard()
+    {
+        StartCoroutine(AddCardToCardPanel(.1f));
+        StartCoroutine(RegisterAction(.2f));
+    }
+    
+    // 2. 환경 상태를 설정합니다.
+    private void InitEnvironment()
+    {
+        forbiddenAreaRenderer.enabled = false;
+    }
+
+    IEnumerator RegisterAction(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        card.OnLeftMouseClickAction += CardReleased;
+    }
+    
+    /// <summary>
+    /// TODO : 제거하기
+    /// </summary>
     public void LoadDeck()
     {
         Debug.Log("Load Deck!!");
@@ -105,6 +135,23 @@ public class CardManager : MonoBehaviour
         Card cardScript = backupCardTransform.GetComponent<Card>();
         cardScript.InitialiseWithData(playersDeck.GetNextCardFromDeck());
     }
+    
+    // 카드를 CardPanel에 생성합니다.
+    private IEnumerator AddCardToCardPanel(float delay = 0f)
+    {
+        yield return new WaitForSeconds(delay);
+        backupCardTransform = Instantiate<GameObject>(cardPrefab, cardsPanel).GetComponent<RectTransform>();
+        backupCardTransform.localScale = Vector3.one * 0.7f;
+
+        // 카드를 저장
+        card = backupCardTransform.GetComponent<Card>();
+        
+        //카드 스크립트에 카드 데이터 입력
+        card.InitialiseWithData(playersDeck.GetNextCardFromDeck());
+
+        // 카드 SetActive false
+        DeActivateCard();
+    }
 
     private void CardTapped(int cardId)
     {
@@ -115,77 +162,58 @@ public class CardManager : MonoBehaviour
     // 카드 드레그 시 호출 카드의 위치를 드래그에 따라 조정
     private void CardDragged(int cardId, Vector2 dragAmount)
     {
-        Debug.Log("[CM] Dragged!!");
-        if (TestMode)
+        Debug.Log("[CM] cardId : " + cardId + "dragAmount : " + dragAmount);
+        cards[cardId].transform.Translate(dragAmount);
+
+        //raycasting to check if the card is on the play field
+        RaycastHit hit;
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        bool planeHit = Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask);
+
+        if (planeHit)
         {
-            Debug.Log("[Card Manager]Card Dragged!!");
-            card.transform.Translate(dragAmount);
-
-            RaycastHit hit;
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            bool planeHit = Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask);
-
-            if (planeHit)
+            if (!cardIsActive)
             {
-                if (!cardIsActive)
+                cardIsActive = true;
+                previewHolder.transform.position = hit.point;
+                cards[cardId].ChangeActiveState(true); //hide card
+
+                //retrieve arrays from the CardData
+                PlaceableData[] dataToSpawn = cards[cardId].cardData.placeablesData;
+                Vector3[] offsets = cards[cardId].cardData.relativeOffsets;
+
+                //spawn all the preview Placeables and parent them to the cardPreview
+                for (int i = 0; i < dataToSpawn.Length; i++)
                 {
-                    cardIsActive = true;
-                    previewHolder.transform.position = hit.point;
-                    Debug.Log("Hit Pos : " + previewHolder);
-                }
-            }
-        }
-        else
-        {
-            cards[cardId].transform.Translate(dragAmount);
-
-            //raycasting to check if the card is on the play field
-            RaycastHit hit;
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
-            bool planeHit = Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask);
-
-            if (planeHit)
-            {
-                if (!cardIsActive)
-                {
-                    cardIsActive = true;
-                    previewHolder.transform.position = hit.point;
-                    cards[cardId].ChangeActiveState(true); //hide card
-
-                    //retrieve arrays from the CardData
-                    PlaceableData[] dataToSpawn = cards[cardId].cardData.placeablesData;
-                    Vector3[] offsets = cards[cardId].cardData.relativeOffsets;
-
-                    //spawn all the preview Placeables and parent them to the cardPreview
-                    for (int i = 0; i < dataToSpawn.Length; i++)
-                    {
-                        GameObject newPlaceable = GameObject.Instantiate<GameObject>(dataToSpawn[i].associatedPrefab,
-                            hit.point + offsets[i] + inputCreationOffset,
-                            Quaternion.identity,
-                            previewHolder.transform);
-                    }
-                }
-                else
-                {
-                    //temporary copy has been created, we move it along with the cursor
-                    previewHolder.transform.position = hit.point;
+                    GameObject newPlaceable = GameObject.Instantiate<GameObject>(dataToSpawn[i].associatedPrefab,
+                        hit.point + offsets[i] + inputCreationOffset,
+                        Quaternion.identity,
+                        previewHolder.transform);
                 }
             }
             else
             {
-                if (cardIsActive)
-                {
-                    cardIsActive = false;
-                    cards[cardId].ChangeActiveState(false); //show card
+                //temporary copy has been created, we move it along with the cursor
+                previewHolder.transform.position = hit.point;
+            }
+        }
+        else
+        {
+            if (cardIsActive)
+            {
+                cardIsActive = false;
+                cards[cardId].ChangeActiveState(false); //show card
 
-                    ClearPreviewObjects();
-                }
+                ClearPreviewObjects();
             }
         }
     }
-
+    
+    /// <summary>
+    /// TODO : 제거하기
+    /// </summary>
+    /// <param name="cardId"></param>
     private void CardReleased(int cardId)
     {
         Debug.Log("HIt");
@@ -213,14 +241,125 @@ public class CardManager : MonoBehaviour
 
         forbiddenAreaRenderer.enabled = false;
     }
+    
+    /// <summary>
+    /// 6. 카드를 바닥을 선택 후 실행되는 메서드
+    /// </summary>
+    private void CardReleased()
+    {
+        Debug.Log("[CM] CardReleased!!");
+        
+        RaycastHit hit;
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
 
-    //happens when the card is put down on the playing field, and while dragging (when moving out of the play field)
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask))
+        {
+            Debug.Log("[CM] pos : " + hit.point);
+            if (OnCardUsed != null)
+                OnCardUsed(card.cardData, hit.point + inputCreationOffset,
+                    Placeable.Faction.Player);
+
+            ClearPreviewObjects();
+            DeActivateCard();
+        }
+        else
+        {
+            Debug.Log("[CM] CardReleased not hit!!");
+        }
+    }
+
+    //7. 카드를 플레이 필드에 놓고 끌 때 발생합니다(플레이 필드 밖으로 이동할 때).
     private void ClearPreviewObjects()
     {
-        //destroy all the preview Placeables
+        // Debug.Log("[CM] ClearPreviewObjects");
         for (int i = 0; i < previewHolder.transform.childCount; i++)
         {
             Destroy(previewHolder.transform.GetChild(i).gameObject);
         }
     }
+    
+    /// <summary>
+    /// 3. Card UI를 활성화하는 메서드
+    /// </summary>
+    public void ActivateCard()
+    {
+        DeployMode = DeployMode.SelectedObject;
+        card.gameObject.SetActive(true);
+        forbiddenAreaRenderer.enabled = true;
+        
+        card.InputToggle(true);
+    }
+    
+    /// <summary>
+    /// 4. Card UI를 비활성화 하는 메서드
+    /// </summary>
+    public void DeActivateCard()
+    {
+        DeployMode = DeployMode.DeSelectedObject;
+        card.gameObject.SetActive(false);
+        forbiddenAreaRenderer.enabled = false;
+        
+        card.InputToggle(false);
+    }
+    
+    /// <summary>
+    /// 5. 카드를 움직이는 메서드
+    /// </summary>
+    public void MovementCard()
+    {
+        if (backupCardTransform == null)
+        {
+            return;
+        }
+
+        backupCardTransform.anchoredPosition = card.MousePos;
+
+        RaycastHit hit;
+        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+        bool planeHit = Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask);
+
+        if (planeHit)
+        {
+            if (!cardIsActive)
+            {
+                cardIsActive = true;
+                previewHolder.transform.position = hit.point;
+                card.ChangeActiveState(true);
+                
+                //retrieve arrays from the CardData
+                PlaceableData[] dataToSpawn = card.cardData.placeablesData;
+                Vector3[] offsets = card.cardData.relativeOffsets;
+
+                //spawn all the preview Placeables and parent them to the cardPreview
+                for (int i = 0; i < dataToSpawn.Length; i++)
+                {
+                    GameObject newPlaceable = GameObject.Instantiate<GameObject>(dataToSpawn[i].associatedPrefab,
+                        hit.point + offsets[i] + inputCreationOffset,
+                        Quaternion.identity,
+                        previewHolder.transform);
+                }
+            }
+            else
+            {
+                //temporary copy has been created, we move it along with the cursor
+                previewHolder.transform.position = hit.point;
+            }
+        }
+        else
+        {
+            if (cardIsActive)
+            {
+                cardIsActive = false;
+                card.ChangeActiveState(false);
+                ClearPreviewObjects();
+            }
+        }
+    }
+}
+
+public enum DeployMode
+{
+    DeSelectedObject,
+    SelectedObject,
 }

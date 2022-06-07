@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement style="height: 5%; flex-direction: row; width: 30%;">
+        <ui:Button text="메뉴" display-tooltip-when-elided="true" style="width: 10%; height: 100%;" />
+        <ui:Button text="&lt;" display-tooltip-when-elided="true" style="width: 10%; height: 100%;" />
+        <ui:Button text="&gt;" display-tooltip-when-elided="true" style="width: 10%; height: 100%;" />
+    </ui:VisualElement>
+</ui:UXML>

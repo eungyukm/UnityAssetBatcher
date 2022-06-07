@@ -21,8 +21,9 @@ public class Obstacle : Placeable
         timeToRemoval = pData.lifeTime;
         dieAudioClip = pData.dieClip;
         //TODO: add more as necessary
-
-        StartCoroutine(Die());
+        
+        // TODO : Die Logic 제거
+        // StartCoroutine(Die());
     }
 
     private IEnumerator Die()

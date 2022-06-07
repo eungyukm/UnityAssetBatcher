@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/USS/Main_UI.uss?fileID=7433441132597879392&amp;guid=62ec1809b6472cc43aadf21bbd458f95&amp;type=3#Main_UI" />
+    <ui:VisualElement style="flex-direction: row; width: 100%; height: 100%;">
+        <ui:VisualElement style="height: 0; width: 30%; opacity: 0;" />
+        <ui:VisualElement style="height: 100%; width: 70%;">
+            <ui:VisualElement style="width: 100%; height: 10%; flex-direction: row;">
+                <ui:Button text="선택" display-tooltip-when-elided="true" name="SelectBtn" class="Top_Button" style="width: 10%; height: 100%;" />
+                <ui:Button text="이동" display-tooltip-when-elided="true" name="MoveBtn" class="Top_Button" style="width: 10%; height: 100%;" />
+                <ui:Button text="회전" display-tooltip-when-elided="true" name="RotateBtn" class="Top_Button" style="width: 10%; height: 100%;" />
+                <ui:Button text="정렬" display-tooltip-when-elided="true" name="AlignmentBtn" class="Top_Button" style="width: 10%; height: 100%;" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

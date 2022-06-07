@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement style="width: 30%; height: 5%;" />
+    <ui:VisualElement style="height: 100%; width: 30%;">
+        <ui:Label text="바닥" display-tooltip-when-elided="true" style="height: 5%; width: 100%; font-size: 30px; -unity-text-align: upper-center;" />
+        <ui:VisualElement style="width: 100%; height: 80%;">
+            <ui:VisualElement style="flex-direction: row; width: 100%; height: 50%;">
+                <ui:VisualElement style="width: 50%; height: 100%;">
+                    <ui:Button text="Floor01" display-tooltip-when-elided="true" name="Floor01" style="width: 100%; height: 25%; background-image: none; align-items: auto; justify-content: flex-start; left: 0; top: 0; right: 0; bottom: 0;" />
+                    <ui:Button text="Floor03" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
+                    <ui:Button text="Floor05" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
+                </ui:VisualElement>
+                <ui:VisualElement style="width: 50%; height: 100%;">
+                    <ui:Button text="Floor02" display-tooltip-when-elided="true" name="Floor02" style="width: 100%; height: 25%;" />
+                    <ui:Button text="Floor04" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
+                    <ui:Button text="Floor06" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
