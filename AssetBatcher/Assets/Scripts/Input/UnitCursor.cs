@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Unit이 선택되었음을 표시하는 Cursor
+/// </summary>
 public class UnitCursor : MonoBehaviour
 {
     [SerializeField] private LayerMask _layerUnit;
@@ -39,7 +42,7 @@ public class UnitCursor : MonoBehaviour
         }
         else
         {
-            Debug.Log("not hit!!");
+            // Debug.Log("not hit!!");
         }
     }
 

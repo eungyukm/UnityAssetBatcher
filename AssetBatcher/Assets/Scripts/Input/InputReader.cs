@@ -14,7 +14,7 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
     private GameInput _gameInput;
 
     public UnityAction OnDeploymentMode = delegate {  };
-    public UnityAction OnMouseLeftClickedAction = delegate {  };
+    public UnityAction<Vector2> OnMouseLeftClickedAction = delegate {  };
     public UnityAction<Vector2> OnMouseCursorClickAction = delegate {  };
 
     public Vector2 MousePos = new Vector2(0, 0);
@@ -85,7 +85,8 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            OnMouseLeftClickedAction?.Invoke();
+            Debug.Log("[MLC] mouse x : " + MousePos.x + " mouse y : " + MousePos.y);
+            OnMouseLeftClickedAction?.Invoke(MousePos);
         }
     }
 
@@ -98,7 +99,6 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            Debug.Log("x : " + MousePos.x);
             OnMouseCursorClickAction?.Invoke(MousePos);
         }
     }

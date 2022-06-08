@@ -92,6 +92,15 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseLeftClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""0e8b08b0-2eb2-4c0d-963d-39131559406b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -116,6 +125,17 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""action"": ""MousPoint"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""15f1cbe7-9136-41cb-bd42-77a213d592b6"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -130,6 +150,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         m_UnitCursorMode = asset.FindActionMap("UnitCursorMode", throwIfNotFound: true);
         m_UnitCursorMode_MouseCursorLeftClick = m_UnitCursorMode.FindAction("MouseCursorLeftClick", throwIfNotFound: true);
         m_UnitCursorMode_MousPoint = m_UnitCursorMode.FindAction("MousPoint", throwIfNotFound: true);
+        m_UnitCursorMode_MouseLeftClick = m_UnitCursorMode.FindAction("MouseLeftClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -232,12 +253,14 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
     private IUnitCursorModeActions m_UnitCursorModeActionsCallbackInterface;
     private readonly InputAction m_UnitCursorMode_MouseCursorLeftClick;
     private readonly InputAction m_UnitCursorMode_MousPoint;
+    private readonly InputAction m_UnitCursorMode_MouseLeftClick;
     public struct UnitCursorModeActions
     {
         private @GameInput m_Wrapper;
         public UnitCursorModeActions(@GameInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @MouseCursorLeftClick => m_Wrapper.m_UnitCursorMode_MouseCursorLeftClick;
         public InputAction @MousPoint => m_Wrapper.m_UnitCursorMode_MousPoint;
+        public InputAction @MouseLeftClick => m_Wrapper.m_UnitCursorMode_MouseLeftClick;
         public InputActionMap Get() { return m_Wrapper.m_UnitCursorMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -253,6 +276,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @MousPoint.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMousPoint;
                 @MousPoint.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMousPoint;
                 @MousPoint.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMousPoint;
+                @MouseLeftClick.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseLeftClick;
+                @MouseLeftClick.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseLeftClick;
+                @MouseLeftClick.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseLeftClick;
             }
             m_Wrapper.m_UnitCursorModeActionsCallbackInterface = instance;
             if (instance != null)
@@ -263,6 +289,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @MousPoint.started += instance.OnMousPoint;
                 @MousPoint.performed += instance.OnMousPoint;
                 @MousPoint.canceled += instance.OnMousPoint;
+                @MouseLeftClick.started += instance.OnMouseLeftClick;
+                @MouseLeftClick.performed += instance.OnMouseLeftClick;
+                @MouseLeftClick.canceled += instance.OnMouseLeftClick;
             }
         }
     }
@@ -276,5 +305,6 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
     {
         void OnMouseCursorLeftClick(InputAction.CallbackContext context);
         void OnMousPoint(InputAction.CallbackContext context);
+        void OnMouseLeftClick(InputAction.CallbackContext context);
     }
 }

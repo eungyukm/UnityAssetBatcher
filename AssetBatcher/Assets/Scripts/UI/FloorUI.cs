@@ -23,21 +23,21 @@ public class FloorUI : MonoBehaviour
         }
         else
         {
-            Debug.Log("FloorType Button Call!!");
-            Debug.Log("floor Type name : " + floorTypeButton.name);
+            // Debug.Log("FloorType Button Call!!");
+            // Debug.Log("floor Type name : " + floorTypeButton.name);
             floorTypeButton.clicked += FloorTypeButtonPressed;
         }
 
         floorTypeButton02 = floorUIRoot.Q<Button>("Floor02");
         floorTypeButton02.clicked += () =>
         {
-            Debug.Log("!!!!!");
+            // Debug.Log("!!!!!");
         };
     }
 
     private void FloorTypeButtonPressed()
     {
-        Debug.Log("FloorTypeButtonPressed!!");
+        // Debug.Log("FloorTypeButtonPressed!!");
         CardManager.ActivateCard();
     }
 }

@@ -17,16 +17,16 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: dd369fef137c6044f9276976bf6f7d0e
   m_SerializeEntries:
-  - m_GUID: 9d54f3566b1f1e642bc22e19cc081905
-    m_Address: Assets/GameData/02_Cards
+  - m_GUID: ece2ff35be829114a8e80f4f237996b5
+    m_Address: Assets/ScriptableObjects/GameData/03_Placeables/Plane
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Base
-  - m_GUID: aa40cf07968aeb94f8a32dd7ad827d4a
-    m_Address: Assets/GameData/03_Placeables
+    - Plane
+  - m_GUID: 9fe52e8daaae0ca4b9c78f6db33b9008
+    m_Address: Assets/ScriptableObjects/GameData/02_Cards/Plane
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Base
+    - Plane
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ee89eeeda0e7d8341a44692920723863, type: 2}
   m_SchemaSet:
