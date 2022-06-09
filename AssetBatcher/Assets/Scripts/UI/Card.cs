@@ -8,7 +8,7 @@ using UnityEngine.UI;
 /// 카드의 Drag And Drop의 이벤트를 가지고 있음
 /// 카드의 마우스 위치를 반환하는 InputReader를 가지고 있음
 /// </summary>
-public class Card : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDownHandler
+public class Card : MonoBehaviour
 {
     public UnityAction<int, Vector2> OnDragAction;
     public UnityAction<int> OnTapDownAction, OnTapReleaseAction;
@@ -50,25 +50,6 @@ public class Card : MonoBehaviour, IDragHandler, IPointerUpHandler, IPointerDown
     {
         cardData = cData;
         portraitImage.sprite = cardData.cardImage;
-    }
-
-    public void OnPointerDown(PointerEventData pointerEvent)
-    {
-        if(OnTapDownAction != null)
-            OnTapDownAction(cardId);
-    }
-
-    public void OnDrag(PointerEventData pointerEvent)
-    {
-        Debug.Log("[Card] Draged!!");
-        if(OnDragAction != null)
-            OnDragAction(cardId, pointerEvent.delta);
-    }
-
-    public void OnPointerUp(PointerEventData pointerEvent)
-    {
-        if(OnTapReleaseAction != null)
-            OnTapReleaseAction(cardId);
     }
 
     public void OnLeftMouseClicked(Vector2 mousePos)

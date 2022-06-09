@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100000, guid: aeaee610429f51f44981e141eb2a3545, type: 3}
       propertyPath: m_Name
-      value: small_plane Variant 1
+      value: Concrete_Plates
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: aeaee610429f51f44981e141eb2a3545, type: 3}
       propertyPath: m_Layer
@@ -18,6 +18,14 @@ PrefabInstance:
     - target: {fileID: 400000, guid: aeaee610429f51f44981e141eb2a3545, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aeaee610429f51f44981e141eb2a3545, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: aeaee610429f51f44981e141eb2a3545, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: aeaee610429f51f44981e141eb2a3545, type: 3}
       propertyPath: m_LocalPosition.x

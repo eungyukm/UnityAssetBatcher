@@ -1,19 +1,28 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement style="width: 30%; height: 5%;" />
-    <ui:VisualElement style="height: 100%; width: 30%;">
-        <ui:Label text="바닥" display-tooltip-when-elided="true" style="height: 5%; width: 50%; font-size: 30px; -unity-text-align: upper-center;" />
-        <ui:VisualElement style="width: 100%; height: 80%;">
-            <ui:VisualElement style="flex-direction: row; width: 100%; height: 50%;">
-                <ui:VisualElement style="width: 50%; height: 100%;">
-                    <ui:Button text="Floor01" display-tooltip-when-elided="true" name="Floor01" style="width: 100%; height: 25%; background-image: none; align-items: auto; justify-content: flex-start; left: 0; top: 0; right: 0; bottom: 0;" />
-                    <ui:Button text="Floor02" display-tooltip-when-elided="true" name="Floor02" style="width: 100%; height: 25%;" />
-                    <ui:Button text="Floor03" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
-                    <ui:Button text="Floor05" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
-                    <ui:Button text="Floor04" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
-                    <ui:Button text="Floor06" display-tooltip-when-elided="true" style="width: 100%; height: 25%;" />
-                </ui:VisualElement>
-                <ui:VisualElement style="width: 50%; height: 100%;" />
-            </ui:VisualElement>
+    <Style src="project://database/Assets/UI%20Toolkit/USS/Button_Style.uss?fileID=7433441132597879392&amp;guid=6604eec5fa83a8f45b5a5eaac2e11df3&amp;type=3#Button_Style" />
+    <ui:VisualElement style="width: 100%; height: 10%;" />
+    <ui:VisualElement style="height: 90%; width: 10%;">
+        <ui:VisualElement style="width: 100%; height: 50px; flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px;">
+            <ui:Button display-tooltip-when-elided="true" name="PreviousBtn" style="width: 30%; height: 100%; background-image: url(&apos;project://database/Assets/Textures/Icon/left_arrow_icon.png?fileID=2800000&amp;guid=c5e05c31cd331a244a469efcd8773e56&amp;type=3#left_arrow_icon&apos;); -unity-background-scale-mode: scale-to-fit;" />
+            <ui:Label text="Tile" display-tooltip-when-elided="true" style="height: 100%; width: 70%; font-size: 30px; -unity-text-align: upper-center; align-items: center; justify-content: flex-end;" />
         </ui:VisualElement>
+        <ui:Button text="Tile01" display-tooltip-when-elided="true" name="Floor01" class="Button_Style" style="width: 100%; height: 15%; background-image: none; align-items: auto; justify-content: flex-start; left: 0; top: 0; right: 0; bottom: 0;">
+            <ui:VisualElement class="Image_Style" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/Textures/Plane/TexturesCom_Concrete_Plates3_512_albedo.tif?fileID=2800000&amp;guid=2e682f3c2a7565e41911df924b4d76f0&amp;type=3#TexturesCom_Concrete_Plates3_512_albedo&apos;); -unity-background-scale-mode: scale-to-fit;" />
+        </ui:Button>
+        <ui:Button text="Tile02" display-tooltip-when-elided="true" name="Floor02" class="Button_Style" style="width: 100%; height: 15%;">
+            <ui:VisualElement class="Image_Style" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/Textures/Plane/TexturesCom_Fabric_Rough2_512_albedo.tif?fileID=2800000&amp;guid=54d5d78937b95ec468bc4e0890118245&amp;type=3#TexturesCom_Fabric_Rough2_512_albedo&apos;); -unity-background-scale-mode: scale-to-fit;" />
+        </ui:Button>
+        <ui:Button text="Tile03" display-tooltip-when-elided="true" class="Button_Style" style="width: 100%; height: 15%;">
+            <ui:VisualElement class="Image_Style" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/Textures/Plane/TexturesCom_Fabric_Tweed3_512_albedo.tif?fileID=2800000&amp;guid=76590ea937fb02646bc419638f2bce8d&amp;type=3#TexturesCom_Fabric_Tweed3_512_albedo&apos;); -unity-background-scale-mode: scale-to-fit;" />
+        </ui:Button>
+        <ui:Button text="Tile05" display-tooltip-when-elided="true" class="Button_Style" style="width: 100%; height: 15%;">
+            <ui:VisualElement class="Image_Style" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/Textures/Plane/TexturesCom_Marble_TilesRectangle4_512_albedo.tif?fileID=2800000&amp;guid=9dbef284e5fe8e541a28ae30a4ebbbd3&amp;type=3#TexturesCom_Marble_TilesRectangle4_512_albedo&apos;); -unity-background-scale-mode: scale-to-fit;" />
+        </ui:Button>
+        <ui:Button text="Tile04" display-tooltip-when-elided="true" class="Button_Style" style="width: 100%; height: 15%;">
+            <ui:VisualElement class="Image_Style" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/Textures/Plane/TexturesCom_Tiles_Plain2_512_albedo.tif?fileID=2800000&amp;guid=f3cee3560faf5544c99e5cc30a9dbbed&amp;type=3#TexturesCom_Tiles_Plain2_512_albedo&apos;); -unity-background-scale-mode: scale-to-fit;" />
+        </ui:Button>
+        <ui:Button text="Tile06" display-tooltip-when-elided="true" class="Button_Style" style="width: 100%; height: 15%;">
+            <ui:VisualElement class="Image_Style" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/Textures/Plane/TexturesCom_Tiles_Plain_512_albedo.tif?fileID=2800000&amp;guid=366bbce32ab2fe84abafda059375cfd0&amp;type=3#TexturesCom_Tiles_Plain_512_albedo&apos;); -unity-background-scale-mode: scale-to-fit;" />
+        </ui:Button>
     </ui:VisualElement>
 </ui:UXML>

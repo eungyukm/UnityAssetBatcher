@@ -3,52 +3,49 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.UIElements;
+
 
 public class PanelManager : MonoBehaviour
 {
     public GameObject mainUIGO;
     public GameObject floorUIGO;
     
-    public UIDocument mainUIDocument;
-
-    public Button floorButton;
+    public TileUI TileUI;
+    public MainUI MainUI;
 
     public UIState UIState = UIState.None;
 
+    private void OnEnable()
+    {
+        MainUI.OnUISateChanged += PanelSwitch;
+        TileUI.OnClosePanel += TileButtonClosed;
+    }
 
-    // Start is called before the first frame update
+    private void OnDisable()
+    {
+        TileUI.OnClosePanel -= TileButtonClosed;
+    }
+    
     void Start()
     {
-        var mainUIRoot = mainUIDocument.GetComponent<UIDocument>().rootVisualElement;
+        InitUI();
+    }
 
-
-        floorButton = mainUIRoot.Q<Button>("FloorBtn");
-
-
-        floorButton.clicked += FloorButtonPressed;
-
-
+    private void InitUI()
+    {
         mainUIGO.SetActive(true);
         floorUIGO.SetActive(false);
         UIState = UIState.MainUI;
-        
-        // floorButton
-        
-        // TODO : DragAndDrop UIElement로 변경
-        // DragAndDropManipulator manipulator =
-        //     new DragAndDropManipulator(floorUIDocument.rootVisualElement.Q<VisualElement>("object"));
     }
 
-    void FloorButtonPressed()
+    private void TileButtonClosed()
     {
-        Debug.Log("floorButton Pressed!!");
-        UIState = UIState.FloorUI;
-        PanelSwitch();
+        PanelSwitch(UIState.MainUI);
     }
 
-    void PanelSwitch()
+    private void PanelSwitch(UIState uiState)
     {
+        UIState = uiState;
         switch (UIState)
         {
             case UIState.None:
@@ -57,10 +54,9 @@ public class PanelManager : MonoBehaviour
                 AllUISetActiveFalse();
                 mainUIGO.SetActive(true);
                 break;
-            case UIState.FloorUI:
+            case UIState.TileUI:
                 Debug.Log("Floor UI Called!!");
                 AllUISetActiveFalse();
-                mainUIDocument.enabled = false;
                 floorUIGO.SetActive(true);
                 break;
         }
@@ -77,5 +73,5 @@ public enum UIState
 {
     None,
     MainUI,
-    FloorUI
+    TileUI
 }

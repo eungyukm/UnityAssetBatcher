@@ -28,6 +28,11 @@ public class UnitCursor : MonoBehaviour
         _InputReader.OnMouseCursorClickAction += OnMouseCursorClicked;
     }
 
+    private void OnDisable()
+    {
+        _InputReader.OnMouseCursorClickAction -= OnMouseCursorClicked;
+    }
+
     private void OnMouseCursorClicked(Vector2 value)
     {
         RaycastHit hit;

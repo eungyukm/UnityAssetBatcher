@@ -20,21 +20,22 @@ public class CardManager : MonoBehaviour
     [Header("UI Elements")] public RectTransform backupCardTransform; //덱에 있는 작은 카드
     public RectTransform cardsDashboard; //실제 재생 가능한 카드를 포함하는 UI 패널
     public RectTransform cardsPanel; //모든 카드, 데크 및 대시보드를 포함하는 UI 패널(중앙 정렬)
-
-    private Card[] cards;
+    
     private bool cardIsActive = false; //사실일 때, 카드는 운동장 위로 끌려가고 있다.
     private GameObject previewHolder;
-    private Vector3 inputCreationOffset = new Vector3(0f, 0f, 1f); //플레이어의 손가락 아래에 있지 않도록 유닛 생성을 상쇄합니다.
-    
+
     public Card card;
 
     public DeployMode DeployMode;
 
+    public GridSystem GridSystem;
+    
+    // TODO : plane y height 변경
+    public float planeHeight = 0.3f;
+
     private void Awake()
     {
         previewHolder = new GameObject("PreviewHolder");
-        cards = new Card[3];
-
         DeployMode = DeployMode.DeSelectedObject;
     }
 
@@ -101,16 +102,10 @@ public class CardManager : MonoBehaviour
         card = backupCardTransform.GetComponent<Card>();
         
         //카드 스크립트에 카드 데이터 입력
-        card.InitialiseWithData(playersDeck.GetNextCardFromDeck());
+        card.InitialiseWithData(playersDeck.GetCardFromDeck());
 
         // 카드 SetActive false
         DeActivateCard();
-    }
-
-    private void CardTapped(int cardId)
-    {
-        cards[cardId].GetComponent<RectTransform>().SetAsLastSibling();
-        forbiddenAreaRenderer.enabled = true;
     }
 
     /// <summary>
@@ -126,10 +121,25 @@ public class CardManager : MonoBehaviour
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask))
         {
             Debug.Log("[CM] pos : " + hit.point);
-            if (OnCardUsed != null)
-                OnCardUsed(card.cardData, hit.point + inputCreationOffset,
-                    Placeable.Faction.Player);
 
+            Vector3 hitPos;
+            // Grid System을 사용했을 경우,
+            if (GridSystem.GridActive)
+            {
+                Vector3 gridPos = GridSystem.SnapCoordinateToGrid(hit.point);
+                hitPos = gridPos;
+            }
+            else
+            {
+                hitPos = hit.point;
+            }
+            
+            if (OnCardUsed != null)
+            {
+                hitPos.y += planeHeight;
+                OnCardUsed(card.cardData, hitPos, Placeable.Faction.Player);
+            }
+            
             ClearPreviewObjects();
             DeActivateCard();
         }
@@ -184,10 +194,16 @@ public class CardManager : MonoBehaviour
         }
 
         backupCardTransform.anchoredPosition = card.MousePos;
-
+        MovmentPlacable();
+    }
+    
+    /// <summary>
+    /// 배치 가능한 오브젝트를 움직이는 로직
+    /// </summary>
+    private void MovmentPlacable()
+    {
         RaycastHit hit;
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-
+        Ray ray = mainCamera.ScreenPointToRay(card.MousePos);
         bool planeHit = Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask);
 
         if (planeHit)
@@ -195,10 +211,20 @@ public class CardManager : MonoBehaviour
             if (!cardIsActive)
             {
                 cardIsActive = true;
-                previewHolder.transform.position = hit.point;
                 card.ChangeActiveState(true);
                 
-                //retrieve arrays from the CardData
+                // Grid System을 사용했을 경우,
+                if (GridSystem.GridActive)
+                {
+                    Vector3 gridPos = GridSystem.SnapCoordinateToGrid(hit.point);
+                    Debug.Log("gridPos : " + gridPos.x);
+                    previewHolder.transform.position = gridPos;
+                }
+                else
+                {
+                    previewHolder.transform.position = hit.point;
+                }
+                
                 PlaceableData[] dataToSpawn = card.cardData.placeablesData;
                 Vector3[] offsets = card.cardData.relativeOffsets;
 
@@ -206,15 +232,25 @@ public class CardManager : MonoBehaviour
                 for (int i = 0; i < dataToSpawn.Length; i++)
                 {
                     GameObject newPlaceable = GameObject.Instantiate<GameObject>(dataToSpawn[i].associatedPrefab,
-                        hit.point + offsets[i] + inputCreationOffset,
+                        offsets[i],
                         Quaternion.identity,
                         previewHolder.transform);
+                    newPlaceable.transform.localPosition = new Vector3(0, planeHeight, 0);
                 }
             }
             else
             {
-                //temporary copy has been created, we move it along with the cursor
-                previewHolder.transform.position = hit.point;
+                // Grid System을 사용했을 경우,
+                if (GridSystem.GridActive)
+                {
+                    Vector3 gridPos = GridSystem.SnapCoordinateToGrid(hit.point);
+                    Debug.Log("gridPos : " + gridPos.x);
+                    previewHolder.transform.position = gridPos;
+                }
+                else
+                {
+                    previewHolder.transform.position = hit.point;
+                }
             }
         }
         else

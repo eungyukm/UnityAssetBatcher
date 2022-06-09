@@ -14,6 +14,12 @@ public class GridSystem : MonoBehaviour
 
     public GameObject GridGO;
 
+    public int widthGrid = 5;
+    public int heightGrid = 5;
+    public float cellSize = 1f;
+
+    public bool GridActive = false;
+
     private void Awake()
     {
         SnapSwitch(false);
@@ -30,19 +36,18 @@ public class GridSystem : MonoBehaviour
         Vector3 worldPositon = _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.transform.position.y));
         Debug.Log("World Pos X : " + worldPositon.x + "World Pos Y : " + worldPositon.y + "World Pos Z : " + worldPositon.z);
         _unitGrid.SetValue(worldPositon, 1);
-        
-        // Test Code
-        // Vector3 snapPos = SnapCoordinateToGrid(worldPositon);
-        // GameObject go = new GameObject();
-        // Instantiate(go, snapPos, Quaternion.identity);
     }
 
     void Start()
     {
         _camera = Camera.main;
         
-        // TODO : Grid Size 조절
-        _unitGrid = new UnitGrid(5, 5, 2f);
+        CreateGrid(widthGrid, heightGrid);
+    }
+
+    public void CreateGrid(int width, int height)
+    {
+        _unitGrid = new UnitGrid(width, height, cellSize);
     }
 
     public Vector3 SnapCoordinateToGrid(Vector3 WorldPosition)
@@ -59,6 +64,7 @@ public class GridSystem : MonoBehaviour
     public void SnapSwitch(bool onGrid)
     {
         GridGO.SetActive(onGrid);
+        GridActive = onGrid;
         if (onGrid)
         {
             

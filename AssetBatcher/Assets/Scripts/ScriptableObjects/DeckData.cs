@@ -36,4 +36,9 @@ public class DeckData : ScriptableObject
 
         return cards[currentCard];
     }
+
+    public CardData GetCardFromDeck()
+    {
+        return cards[0];
+    }
 }
