@@ -116,7 +116,7 @@ public class CardManager : MonoBehaviour
         Debug.Log("[CM] CardReleased!!");
         
         RaycastHit hit;
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = mainCamera.ScreenPointToRay(card.MousePos);
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask))
         {

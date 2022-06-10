@@ -6,26 +6,56 @@ using UnityEngine.UIElements;
 public class TopPanelUI : MonoBehaviour
 {
     public UIDocument TopPanelDocument;
+    
+    private Button SelectButtom;
+    private Button MoveButton;
+    private Button RotationButton;
+    private Button ScaleButton;
+    private Button AlignmentButton;
 
-    public Button AlignmentButton;
     public GridSystem GridSystem;
+    public UnitCursor UnitCursor;
 
     private bool _onSnap = false;
 
     private void OnEnable()
     {
-        var floorUIRoot = TopPanelDocument.GetComponent<UIDocument>().rootVisualElement;
-        AlignmentButton = floorUIRoot.Q<Button>("AlignmentBtn");
-        if (AlignmentButton == null)
-        {
-            Debug.LogError("AlignmentButton is null!!");
-        }
-        else
-        {
-            // Debug.Log("FloorType Button Call!!");
-            // Debug.Log("floor Type name : " + floorTypeButton.name);
-            AlignmentButton.clicked += AlignmentButtonPressed;
-        }
+        var topPanelUIRoot = TopPanelDocument.GetComponent<UIDocument>().rootVisualElement;
+
+        SelectButtom = topPanelUIRoot.Q<Button>("SelectBtn");
+        SelectButtom.clicked += SelectButtonPressed;
+
+        MoveButton = topPanelUIRoot.Q<Button>("MoveBtn");
+        MoveButton.clicked += MoveButtonPressed;
+
+        RotationButton = topPanelUIRoot.Q<Button>("RotationBtn");
+        RotationButton.clicked += RotationButtonPressed;
+        
+        ScaleButton = topPanelUIRoot.Q<Button>("ScaleBtn");
+        ScaleButton.clicked += ScaleButtonPressed;
+        
+        AlignmentButton = topPanelUIRoot.Q<Button>("AlignmentBtn");
+        AlignmentButton.clicked += AlignmentButtonPressed;
+    }
+    
+    private void SelectButtonPressed()
+    {
+        UnitCursor.SwitchMode(GameTransformMode.SelectMode);
+    }
+
+    private void MoveButtonPressed()
+    {
+        UnitCursor.SwitchMode(GameTransformMode.MoveMode);
+    }
+
+    private void RotationButtonPressed()
+    {
+        UnitCursor.SwitchMode(GameTransformMode.RotationMode);
+    }
+
+    private void ScaleButtonPressed()
+    {
+        UnitCursor.SwitchMode(GameTransformMode.ScaleMode);
     }
 
     private void AlignmentButtonPressed()

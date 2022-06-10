@@ -85,7 +85,7 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            Debug.Log("[MLC] mouse x : " + MousePos.x + " mouse y : " + MousePos.y);
+            // Debug.Log("[MLC] mouse x : " + MousePos.x + " mouse y : " + MousePos.y);
             OnMouseLeftClickedAction?.Invoke(MousePos);
         }
     }

@@ -32,9 +32,9 @@ public class GridSystem : MonoBehaviour
 
     private void LeftMouseClick(Vector2 mousePos)
     {
-        Debug.Log("mouse Pos Y : " + mousePos.x + "mouse Pox Y" + mousePos.y);
+        // Debug.Log("mouse Pos Y : " + mousePos.x + "mouse Pox Y" + mousePos.y);
         Vector3 worldPositon = _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.transform.position.y));
-        Debug.Log("World Pos X : " + worldPositon.x + "World Pos Y : " + worldPositon.y + "World Pos Z : " + worldPositon.z);
+        // Debug.Log("World Pos X : " + worldPositon.x + "World Pos Y : " + worldPositon.y + "World Pos Z : " + worldPositon.z);
         _unitGrid.SetValue(worldPositon, 1);
     }
 
