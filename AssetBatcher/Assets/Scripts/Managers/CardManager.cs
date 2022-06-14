@@ -1,8 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
-using DG.Tweening;
-
 
 /// <summary>
 /// 카드의 Drag 움직임 관리

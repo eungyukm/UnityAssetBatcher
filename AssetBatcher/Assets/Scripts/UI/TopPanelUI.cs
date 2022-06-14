@@ -46,6 +46,8 @@ public class TopPanelUI : MonoBehaviour
     private void MoveButtonPressed()
     {
         UnitCursor.SwitchMode(GameTransformMode.MoveMode);
+
+        UnitCursor.OnMoveButtonPressed?.Invoke();
     }
 
     private void RotationButtonPressed()

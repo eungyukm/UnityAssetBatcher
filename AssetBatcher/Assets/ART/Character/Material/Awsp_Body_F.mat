@@ -184,6 +184,7 @@ Material:
     m_Ints: []
     m_Floats:
     - Vector1_153f0b09c5354a5d8f8e6e010d235b3e: 1
+    - Vector1_2034db3f5d6b4a9ca4004895b83bf800: 0.5
     - Vector1_5a8f93a991164b3297da450530f44ca9: 0.7
     - Vector1_82e26befefbb44f5be8f22a779c67c89: 0
     - Vector1_8f12e7ee11e64b619f8f280b018c84aa: 1
@@ -205,6 +206,7 @@ Material:
     - _Metallic: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
+    - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5

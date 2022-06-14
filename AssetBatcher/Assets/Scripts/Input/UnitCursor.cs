@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 /// <summary>
@@ -25,6 +26,11 @@ public class UnitCursor : MonoBehaviour
 
     private GameObject hitObj;
 
+    public UnityAction<GameObject> OnSelectedObject;
+    public UnityAction OnMoveButtonPressed;
+
+    public GameObject Arrow;
+
     private void Awake()
     {
         _mainCamera = Camera.main;
@@ -33,6 +39,13 @@ public class UnitCursor : MonoBehaviour
     private void OnEnable()
     {
         _InputReader.OnMouseCursorClickAction += OnMouseCursorClicked;
+
+        OnMoveButtonPressed += OnMoveButtonPress;
+    }
+
+    private void OnMoveButtonPress()
+    {
+        SwitchMode(GameTransformMode.MoveMode);
     }
 
     private void OnDisable()
@@ -94,16 +107,31 @@ public class UnitCursor : MonoBehaviour
         hitObj = hit.transform.gameObject;
         string hitObjectName = hitObj.name;
         Debug.Log("hit object name : " + hitObjectName);
+
+
+        switch (transformMode)
+        {
+            case GameTransformMode.SelectMode:
+                SelectModeAction();
+                break;
+            case GameTransformMode.MoveMode:
+                MoveModeAction();
+                break;
+            case GameTransformMode.RotationMode:
+                break;
+            case GameTransformMode.ScaleMode:
+                break;
+        }
         
-        // 오브젝트에 선택 OutLine 표현
-        hitObj.layer = LayerMask.NameToLayer("OutLine");
-        
-        // 선택 했을 경우, 정보 표현
+
     }
 
     private void DeSelectGameObject()
     {
-        hitObj.layer = LayerMask.NameToLayer("Unit");
+        if (hitObj != null)
+        {
+            hitObj.layer = LayerMask.NameToLayer("Unit");
+        }
     }
 
     private void Update()
@@ -116,6 +144,22 @@ public class UnitCursor : MonoBehaviour
         {
             Destroy(gameObject.GetComponent<SelectOutline>());
         }
+    }
+
+    private void SelectModeAction()
+    {
+        // 오브젝트에 선택 OutLine 표현
+        hitObj.layer = LayerMask.NameToLayer("OutLine");
+                
+        // 선택 했을 경우, 정보 표현
+        // 선택한 오브젝트를 UI로 전달
+        OnSelectedObject?.Invoke(hitObj);
+    }
+
+    private void MoveModeAction()
+    {
+        Arrow.SetActive(true);
+        Arrow.transform.position = hitObj.transform.position;
     }
 }
 

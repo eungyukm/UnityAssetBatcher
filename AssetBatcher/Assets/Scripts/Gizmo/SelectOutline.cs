@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Net.NetworkInformation;
 using UnityEngine;
 
+/// <summary>
+/// 사용하지 않음
+/// </summary>
 [DisallowMultipleComponent]
 public class SelectOutline : MonoBehaviour
 {
