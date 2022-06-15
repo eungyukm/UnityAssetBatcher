@@ -27,11 +27,6 @@ namespace RuntimeGizmos
 				transformGizmo = GameObject.FindObjectOfType<TransformGizmo>();
 			}
 
-			transformGizmo.manuallyHandleGizmo = true;
-
-			//Since we are using a mesh, rotating can get weird due to how the rotation method works,
-			//so we use a different rotation method that will let us rotate by acting like our custom rotation gizmo is a wheel.
-			//Can still give weird results depending on camera angle, but I think its more understanding for the user as to why its messing up.
 			transformGizmo.circularRotationMethod = true;
 
 			mask = LayerMask.GetMask(LayerMask.LayerToName(gizmoLayer));
@@ -41,16 +36,16 @@ namespace RuntimeGizmos
 			customScaleGizmos.Init(gizmoLayer);
 		}
 
-		void OnEnable()
-		{
-			transformGizmo.onCheckForSelectedAxis += CheckForSelectedAxis;
-			transformGizmo.onDrawCustomGizmo += OnDrawCustomGizmos;
-		}
-		void OnDisable()
-		{
-			transformGizmo.onCheckForSelectedAxis -= CheckForSelectedAxis;
-			transformGizmo.onDrawCustomGizmo -= OnDrawCustomGizmos;
-		}
+		// void OnEnable()
+		// {
+		// 	transformGizmo.onCheckForSelectedAxis += CheckForSelectedAxis;
+		// 	transformGizmo.onDrawCustomGizmo += OnDrawCustomGizmos;
+		// }
+		// void OnDisable()
+		// {
+		// 	transformGizmo.onCheckForSelectedAxis -= CheckForSelectedAxis;
+		// 	transformGizmo.onDrawCustomGizmo -= OnDrawCustomGizmos;
+		// }
 
 		void CheckForSelectedAxis()
 		{

@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
 using CommandUndoRedo;
+using UnityEngine.Rendering;
 
 namespace RuntimeGizmos
 {
@@ -33,20 +34,21 @@ namespace RuntimeGizmos
 		public KeyCode AddSelection = KeyCode.LeftShift;
 		public KeyCode RemoveSelection = KeyCode.LeftControl;
 		public KeyCode ActionKey = KeyCode.LeftShift; //Its set to shift instead of control so that while in the editor we dont accidentally undo editor changes =/
-		public KeyCode UndoAction = KeyCode.Z;
-		public KeyCode RedoAction = KeyCode.Y;
 
+		/// <summary>
+		/// 사용 안함
+		/// </summary>
 		public Color xColor = new Color(1, 0, 0, 0.8f);
 		public Color yColor = new Color(0, 1, 0, 0.8f);
 		public Color zColor = new Color(0, 0, 1, 0.8f);
 		public Color allColor = new Color(.7f, .7f, .7f, 0.8f);
 		public Color selectedColor = new Color(1, 1, 0, 0.8f);
 		public Color hoverColor = new Color(1, .75f, 0, 0.8f);
-		public float planesOpacity = .5f;
-		//public Color rectPivotColor = new Color(0, 0, 1, 0.8f);
-		//public Color rectCornerColor = new Color(0, 0, 1, 0.8f);
-		//public Color rectAnchorColor = new Color(.7f, .7f, .7f, 0.8f);
-		//public Color rectLineColor = new Color(.7f, .7f, .7f, 0.8f);
+
+		public Material xMaterial;
+		public Material yMaterial;
+		public Material zMaterial;
+		public Material allMaterial;
 
 		public float movementSnap = .25f;
 		public float rotationSnap = 15f;
@@ -68,23 +70,12 @@ namespace RuntimeGizmos
 		public float allRotateSpeedMultiplier = 20f;
 
 		public bool useFirstSelectedAsMain = true;
-
-		//If circularRotationMethod is true, when rotating you will need to move your mouse around the object as if turning a wheel.
-		//If circularRotationMethod is false, when rotating you can just click and drag in a line to rotate.
+		
 		public bool circularRotationMethod;
 
-		//Mainly for if you want the pivot point to update correctly if selected objects are moving outside the transformgizmo.
-		//Might be poor on performance if lots of objects are selected...
 		public bool forceUpdatePivotPointOnChange = true;
 
-		public int maxUndoStored = 100;
-
-		public bool manuallyHandleGizmo;
-
 		public LayerMask selectionMask = Physics.DefaultRaycastLayers;
-
-		public Action onCheckForSelectedAxis;
-		public Action onDrawCustomGizmo;
 
 		public Camera myCamera {get; private set;}
 
@@ -98,7 +89,8 @@ namespace RuntimeGizmos
 
 		public Vector3 pivotPoint {get; private set;}
 		Vector3 totalCenterPivotPoint;
-
+		
+		// 선택한 오브젝트
 		public Transform mainTargetRoot {get {return (targetRootsOrdered.Count > 0) ? (useFirstSelectedAsMain) ? targetRootsOrdered[0] : targetRootsOrdered[targetRootsOrdered.Count - 1] : null;}}
 
 		AxisInfo axisInfo;
@@ -112,7 +104,6 @@ namespace RuntimeGizmos
 		AxisVectors handleSquares = new AxisVectors();
 		AxisVectors circlesLines = new AxisVectors();
 
-		//We use a HashSet and a List for targetRoots so that we get fast lookup with the hashset while also keeping track of the order with the list.
 		List<Transform> targetRootsOrdered = new List<Transform>();
 		Dictionary<Transform, TargetInfo> targetRoots = new Dictionary<Transform, TargetInfo>();
 		HashSet<Renderer> highlightedRenderers = new HashSet<Renderer>();
@@ -128,6 +119,8 @@ namespace RuntimeGizmos
 		static Material lineMaterial;
 		static Material outlineMaterial;
 
+		public GameObject Arrow;
+
 		void Awake()
 		{
 			myCamera = GetComponent<Camera>();
@@ -137,6 +130,37 @@ namespace RuntimeGizmos
 		void OnEnable()
 		{
 			forceUpdatePivotCoroutine = StartCoroutine(ForceUpdatePivotPointAtEndOfFrame());
+
+			RenderPipelineManager.beginContextRendering += OnBeginContextRendering;
+		}
+
+		private void OnBeginContextRendering(ScriptableRenderContext arg1, List<Camera> arg2)
+		{
+			if (mainTargetRoot == null)
+			{
+				return;
+			}
+			DrawQuads(handleLines.z, zMaterial);
+			DrawQuads(handleLines.x, xMaterial);
+			DrawQuads(handleLines.y, yMaterial);
+
+			DrawTriangles(handleTriangles.x, xMaterial);
+			DrawTriangles(handleTriangles.y, yMaterial);
+			DrawTriangles(handleTriangles.z, zMaterial);
+
+			DrawQuads(handlePlanes.z, zMaterial);
+			DrawQuads(handlePlanes.x, xMaterial);
+			DrawQuads(handlePlanes.y, yMaterial);
+
+			DrawQuads(handleSquares.x, xMaterial);
+			DrawQuads(handleSquares.y, yMaterial);
+			DrawQuads(handleSquares.z, zMaterial);
+			DrawQuads(handleSquares.all, allMaterial);
+			
+			DrawQuads(circlesLines.all, allMaterial);
+			DrawQuads(circlesLines.x, xMaterial);
+			DrawQuads(circlesLines.y, yMaterial);
+			DrawQuads(circlesLines.z, zMaterial);
 		}
 
 		void OnDisable()
@@ -153,120 +177,33 @@ namespace RuntimeGizmos
 
 		void Update()
 		{
-			HandleUndoRedo();
-
 			SetSpaceAndType();
 
-			if(manuallyHandleGizmo)
-			{
-				if(onCheckForSelectedAxis != null) onCheckForSelectedAxis();
-			}else{
-				SetNearAxis();
-			}
-			
+
+			SetNearAxis();
+
 			GetTarget();
 
-			if(mainTargetRoot == null) return;
-			
+			if (mainTargetRoot == null)
+			{
+				return;
+			}
 			TransformSelected();
 		}
 
 		void LateUpdate()
 		{
-			if(mainTargetRoot == null) return;
-
-			//We run this in lateupdate since coroutines run after update and we want our gizmos to have the updated target transform position after TransformSelected()
+			if (mainTargetRoot == null)
+			{
+				return;
+			}
+			
 			SetAxisInfo();
 			
-			if(manuallyHandleGizmo)
-			{
-				if(onDrawCustomGizmo != null) onDrawCustomGizmo();
-			}else{
-				SetLines();
-			}
+			SetLines();
 		}
 
-		void OnPostRender()
-		{
-			if(mainTargetRoot == null || manuallyHandleGizmo) return;
-
-			lineMaterial.SetPass(0);
-
-			Color xColor = (nearAxis == Axis.X) ? (isTransforming) ? selectedColor : hoverColor : this.xColor;
-			Color yColor = (nearAxis == Axis.Y) ? (isTransforming) ? selectedColor : hoverColor : this.yColor;
-			Color zColor = (nearAxis == Axis.Z) ? (isTransforming) ? selectedColor : hoverColor : this.zColor;
-			Color allColor = (nearAxis == Axis.Any) ? (isTransforming) ? selectedColor : hoverColor : this.allColor;
-
-			//Note: The order of drawing the axis decides what gets drawn over what.
-
-			TransformType moveOrScaleType = (transformType == TransformType.Scale || (isTransforming && translatingType == TransformType.Scale)) ? TransformType.Scale : TransformType.Move;
-			DrawQuads(handleLines.z, GetColor(moveOrScaleType, this.zColor, zColor, hasTranslatingAxisPlane));
-			DrawQuads(handleLines.x, GetColor(moveOrScaleType, this.xColor, xColor, hasTranslatingAxisPlane));
-			DrawQuads(handleLines.y, GetColor(moveOrScaleType, this.yColor, yColor, hasTranslatingAxisPlane));
-
-			DrawTriangles(handleTriangles.x, GetColor(TransformType.Move, this.xColor, xColor, hasTranslatingAxisPlane));
-			DrawTriangles(handleTriangles.y, GetColor(TransformType.Move, this.yColor, yColor, hasTranslatingAxisPlane));
-			DrawTriangles(handleTriangles.z, GetColor(TransformType.Move, this.zColor, zColor, hasTranslatingAxisPlane));
-
-			DrawQuads(handlePlanes.z, GetColor(TransformType.Move, this.zColor, zColor, planesOpacity, !hasTranslatingAxisPlane));
-			DrawQuads(handlePlanes.x, GetColor(TransformType.Move, this.xColor, xColor, planesOpacity, !hasTranslatingAxisPlane));
-			DrawQuads(handlePlanes.y, GetColor(TransformType.Move, this.yColor, yColor, planesOpacity, !hasTranslatingAxisPlane));
-
-			DrawQuads(handleSquares.x, GetColor(TransformType.Scale, this.xColor, xColor));
-			DrawQuads(handleSquares.y, GetColor(TransformType.Scale, this.yColor, yColor));
-			DrawQuads(handleSquares.z, GetColor(TransformType.Scale, this.zColor, zColor));
-			DrawQuads(handleSquares.all, GetColor(TransformType.Scale, this.allColor, allColor));
-
-			DrawQuads(circlesLines.all, GetColor(TransformType.Rotate, this.allColor, allColor));
-			DrawQuads(circlesLines.x, GetColor(TransformType.Rotate, this.xColor, xColor));
-			DrawQuads(circlesLines.y, GetColor(TransformType.Rotate, this.yColor, yColor));
-			DrawQuads(circlesLines.z, GetColor(TransformType.Rotate, this.zColor, zColor));
-		}
-
-		Color GetColor(TransformType type, Color normalColor, Color nearColor, bool forceUseNormal = false)
-		{
-			return GetColor(type, normalColor, nearColor, false, 1, forceUseNormal);
-		}
-		Color GetColor(TransformType type, Color normalColor, Color nearColor, float alpha, bool forceUseNormal = false)
-		{
-			return GetColor(type, normalColor, nearColor, true, alpha, forceUseNormal);
-		}
-		Color GetColor(TransformType type, Color normalColor, Color nearColor, bool setAlpha, float alpha, bool forceUseNormal = false)
-		{
-			Color color;
-			if(!forceUseNormal && TranslatingTypeContains(type, false))
-			{
-				color = nearColor;
-			}else{
-				color = normalColor;
-			}
-
-			if(setAlpha)
-			{
-				color.a = alpha;
-			}
-
-			return color;
-		}
-
-		void HandleUndoRedo()
-		{
-			if(maxUndoStored != UndoRedoManager.maxUndoStored) { UndoRedoManager.maxUndoStored = maxUndoStored; }
-
-			if(Input.GetKey(ActionKey))
-			{
-				if(Input.GetKeyDown(UndoAction))
-				{
-					UndoRedoManager.Undo();
-				}
-				else if(Input.GetKeyDown(RedoAction))
-				{
-					UndoRedoManager.Redo();
-				}
-			}
-		}
-
-		//We only support scaling in local space.
+		#region TransformSpace
 		public TransformSpace GetProperTransformSpace()
 		{
 			return transformType == TransformType.Scale ? TransformSpace.Local : space;
@@ -285,6 +222,8 @@ namespace RuntimeGizmos
 		{
 			return ExtTransformType.TransformTypeContains(mainType, type, GetProperTransformSpace());
 		}
+		#endregion
+
 		
 		public float GetHandleLength(TransformType type, Axis axis = Axis.None, bool multiplyDistanceMultiplier = true)
 		{
@@ -310,7 +249,6 @@ namespace RuntimeGizmos
 			if(Input.GetKeyDown(SetMoveType)) transformType = TransformType.Move;
 			else if(Input.GetKeyDown(SetRotateType)) transformType = TransformType.Rotate;
 			else if(Input.GetKeyDown(SetScaleType)) transformType = TransformType.Scale;
-			//else if(Input.GetKeyDown(SetRectToolType)) type = TransformType.RectTool;
 			else if(Input.GetKeyDown(SetAllTransformType)) transformType = TransformType.All;
 
 			if(!isTransforming) translatingType = transformType;
@@ -345,10 +283,11 @@ namespace RuntimeGizmos
 
 			if(transformType == TransformType.Scale)
 			{
-				if(pivot == TransformPivot.Pivot) scaleType = ScaleType.FromPoint; //FromPointOffset can be inaccurate and should only really be used in Center mode if desired.
+				if(pivot == TransformPivot.Pivot) scaleType = ScaleType.FromPoint;
 			}
 		}
 
+		#region TransformSelected
 		void TransformSelected()
 		{
 			if(mainTargetRoot != null)
@@ -378,15 +317,10 @@ namespace RuntimeGizmos
 			float currentSnapRotationAmount = 0;
 			float currentSnapScaleAmount = 0;
 
-			List<ICommand> transformCommands = new List<ICommand>();
-			for(int i = 0; i < targetRootsOrdered.Count; i++)
-			{
-				transformCommands.Add(new TransformCommand(this, targetRootsOrdered[i]));
-			}
-
 			while(!Input.GetMouseButtonUp(0))
 			{
 				Ray mouseRay = myCamera.ScreenPointToRay(Input.mousePosition);
+				Debug.Log("planeNormal : " + planeNormal);
 				Vector3 mousePosition = Geometry.LinePlaneIntersect(mouseRay.origin, mouseRay.direction, originalPivot, planeNormal);
 				bool isSnapping = Input.GetKey(translationSnapping);
 
@@ -394,169 +328,15 @@ namespace RuntimeGizmos
 				{
 					if(transType == TransformType.Move)
 					{
-						Vector3 movement = Vector3.zero;
-
-						if(hasTranslatingAxisPlane)
-						{
-							movement = mousePosition - previousMousePosition;
-						}else{
-							float moveAmount = ExtVector3.MagnitudeInDirection(mousePosition - previousMousePosition, projectedAxis) * moveSpeedMultiplier;
-							movement = axis * moveAmount;
-						}
-
-						if(isSnapping && movementSnap > 0)
-						{
-							currentSnapMovementAmount += movement;
-							movement = Vector3.zero;
-
-							if(hasTranslatingAxisPlane)
-							{
-								float amountInAxis1 = ExtVector3.MagnitudeInDirection(currentSnapMovementAmount, otherAxis1);
-								float amountInAxis2 = ExtVector3.MagnitudeInDirection(currentSnapMovementAmount, otherAxis2);
-
-								float remainder1;
-								float snapAmount1 = CalculateSnapAmount(movementSnap, amountInAxis1, out remainder1);
-								float remainder2;
-								float snapAmount2 = CalculateSnapAmount(movementSnap, amountInAxis2, out remainder2);
-
-								if(snapAmount1 != 0)
-								{
-									Vector3 snapMove = (otherAxis1 * snapAmount1);
-									movement += snapMove;
-									currentSnapMovementAmount -= snapMove;
-								}
-								if(snapAmount2 != 0)
-								{
-									Vector3 snapMove = (otherAxis2 * snapAmount2);
-									movement += snapMove;
-									currentSnapMovementAmount -= snapMove;
-								}
-							}
-							else
-							{
-								float remainder;
-								float snapAmount = CalculateSnapAmount(movementSnap, currentSnapMovementAmount.magnitude, out remainder);
-
-								if(snapAmount != 0)
-								{
-									movement = currentSnapMovementAmount.normalized * snapAmount;
-									currentSnapMovementAmount = currentSnapMovementAmount.normalized * remainder;
-								}
-							}
-						}
-
-						for(int i = 0; i < targetRootsOrdered.Count; i++)
-						{
-							Transform target = targetRootsOrdered[i];
-
-							target.Translate(movement, Space.World);
-						}
-
-						SetPivotPointOffset(movement);
+						currentSnapMovementAmount = CurrentSnapMovementAmount(mousePosition, previousMousePosition, projectedAxis, axis, isSnapping, currentSnapMovementAmount, otherAxis1, otherAxis2);
 					}
 					else if(transType == TransformType.Scale)
 					{
-						Vector3 projected = (nearAxis == Axis.Any) ? transform.right : projectedAxis;
-						float scaleAmount = ExtVector3.MagnitudeInDirection(mousePosition - previousMousePosition, projected) * scaleSpeedMultiplier;
-						
-						if(isSnapping && scaleSnap > 0)
-						{
-							currentSnapScaleAmount += scaleAmount;
-							scaleAmount = 0;
-
-							float remainder;
-							float snapAmount = CalculateSnapAmount(scaleSnap, currentSnapScaleAmount, out remainder);
-
-							if(snapAmount != 0)
-							{
-								scaleAmount = snapAmount;
-								currentSnapScaleAmount = remainder;
-							}
-						}
-
-						//WARNING - There is a bug in unity 5.4 and 5.5 that causes InverseTransformDirection to be affected by scale which will break negative scaling. Not tested, but updating to 5.4.2 should fix it - https://issuetracker.unity3d.com/issues/transformdirection-and-inversetransformdirection-operations-are-affected-by-scale
-						Vector3 localAxis = (GetProperTransformSpace() == TransformSpace.Local && nearAxis != Axis.Any) ? mainTargetRoot.InverseTransformDirection(axis) : axis;
-						
-						Vector3 targetScaleAmount = Vector3.one;
-						if(nearAxis == Axis.Any) targetScaleAmount = (ExtVector3.Abs(mainTargetRoot.localScale.normalized) * scaleAmount);
-						else targetScaleAmount = localAxis * scaleAmount;
-
-						for(int i = 0; i < targetRootsOrdered.Count; i++)
-						{
-							Transform target = targetRootsOrdered[i];
-
-							Vector3 targetScale = target.localScale + targetScaleAmount;
-
-							if(pivot == TransformPivot.Pivot)
-							{
-								target.localScale = targetScale;
-							}
-							else if(pivot == TransformPivot.Center)
-							{
-								if(scaleType == ScaleType.FromPoint)
-								{
-									target.SetScaleFrom(originalPivot, targetScale);
-								}
-								else if(scaleType == ScaleType.FromPointOffset)
-								{
-									target.SetScaleFromOffset(originalPivot, targetScale);
-								}
-							}
-						}
-
-						totalScaleAmount += scaleAmount;
+						currentSnapScaleAmount = CurrentSnapScaleAmount(projectedAxis, mousePosition, previousMousePosition, isSnapping, currentSnapScaleAmount, axis, originalPivot);
 					}
 					else if(transType == TransformType.Rotate)
 					{
-						float rotateAmount = 0;
-						Vector3 rotationAxis = axis;
-
-						if(nearAxis == Axis.Any)
-						{
-							Vector3 rotation = transform.TransformDirection(new Vector3(Input.GetAxis("Mouse Y"), -Input.GetAxis("Mouse X"), 0));
-							Quaternion.Euler(rotation).ToAngleAxis(out rotateAmount, out rotationAxis);
-							rotateAmount *= allRotateSpeedMultiplier;
-						}else{
-							if(circularRotationMethod)
-							{
-								float angle = Vector3.SignedAngle(previousMousePosition - originalPivot, mousePosition - originalPivot, axis);
-								rotateAmount = angle * rotateSpeedMultiplier;
-							}else{
-								Vector3 projected = (nearAxis == Axis.Any || ExtVector3.IsParallel(axis, planeNormal)) ? planeNormal : Vector3.Cross(axis, planeNormal);
-								rotateAmount = (ExtVector3.MagnitudeInDirection(mousePosition - previousMousePosition, projected) * (rotateSpeedMultiplier * 100f)) / GetDistanceMultiplier();
-							}
-						}
-
-						if(isSnapping && rotationSnap > 0)
-						{
-							currentSnapRotationAmount += rotateAmount;
-							rotateAmount = 0;
-
-							float remainder;
-							float snapAmount = CalculateSnapAmount(rotationSnap, currentSnapRotationAmount, out remainder);
-
-							if(snapAmount != 0)
-							{
-								rotateAmount = snapAmount;
-								currentSnapRotationAmount = remainder;
-							}
-						}
-
-						for(int i = 0; i < targetRootsOrdered.Count; i++)
-						{
-							Transform target = targetRootsOrdered[i];
-
-							if(pivot == TransformPivot.Pivot)
-							{
-								target.Rotate(rotationAxis, rotateAmount, Space.World);
-							}
-							else if(pivot == TransformPivot.Center)
-							{
-								target.RotateAround(originalPivot, rotationAxis, rotateAmount);
-							}
-						}
-
-						totalRotationAmount *= Quaternion.Euler(rotationAxis * rotateAmount);
+						currentSnapRotationAmount = CurrentSnapRotationAmount(axis, previousMousePosition, originalPivot, mousePosition, planeNormal, isSnapping, currentSnapRotationAmount);
 					}
 				}
 
@@ -565,14 +345,6 @@ namespace RuntimeGizmos
 				yield return null;
 			}
 
-			for(int i = 0; i < transformCommands.Count; i++)
-			{
-				((TransformCommand)transformCommands[i]).StoreNewTransformValues();
-			}
-			CommandGroup commandGroup = new CommandGroup();
-			commandGroup.Set(transformCommands);
-			UndoRedoManager.Insert(commandGroup);
-
 			totalRotationAmount = Quaternion.identity;
 			totalScaleAmount = 0;
 			isTransforming = false;
@@ -580,6 +352,213 @@ namespace RuntimeGizmos
 
 			SetPivotPoint();
 		}
+
+		private float CurrentSnapRotationAmount(Vector3 axis, Vector3 previousMousePosition, Vector3 originalPivot,
+			Vector3 mousePosition, Vector3 planeNormal, bool isSnapping, float currentSnapRotationAmount)
+		{
+			float rotateAmount = 0;
+			Vector3 rotationAxis = axis;
+
+			if (nearAxis == Axis.Any)
+			{
+				Vector3 rotation =
+					transform.TransformDirection(new Vector3(Input.GetAxis("Mouse Y"), -Input.GetAxis("Mouse X"), 0));
+				Quaternion.Euler(rotation).ToAngleAxis(out rotateAmount, out rotationAxis);
+				rotateAmount *= allRotateSpeedMultiplier;
+			}
+			else
+			{
+				if (circularRotationMethod)
+				{
+					float angle = Vector3.SignedAngle(previousMousePosition - originalPivot, mousePosition - originalPivot,
+						axis);
+					rotateAmount = angle * rotateSpeedMultiplier;
+				}
+				else
+				{
+					Vector3 projected = (nearAxis == Axis.Any || ExtVector3.IsParallel(axis, planeNormal))
+						? planeNormal
+						: Vector3.Cross(axis, planeNormal);
+					rotateAmount =
+						(ExtVector3.MagnitudeInDirection(mousePosition - previousMousePosition, projected) *
+						 (rotateSpeedMultiplier * 100f)) / GetDistanceMultiplier();
+				}
+			}
+
+			if (isSnapping && rotationSnap > 0)
+			{
+				currentSnapRotationAmount += rotateAmount;
+				rotateAmount = 0;
+
+				float remainder;
+				float snapAmount = CalculateSnapAmount(rotationSnap, currentSnapRotationAmount, out remainder);
+
+				if (snapAmount != 0)
+				{
+					rotateAmount = snapAmount;
+					currentSnapRotationAmount = remainder;
+				}
+			}
+
+			for (int i = 0; i < targetRootsOrdered.Count; i++)
+			{
+				Transform target = targetRootsOrdered[i];
+
+				if (pivot == TransformPivot.Pivot)
+				{
+					target.Rotate(rotationAxis, rotateAmount, Space.World);
+				}
+				else if (pivot == TransformPivot.Center)
+				{
+					target.RotateAround(originalPivot, rotationAxis, rotateAmount);
+				}
+			}
+
+			totalRotationAmount *= Quaternion.Euler(rotationAxis * rotateAmount);
+			return currentSnapRotationAmount;
+		}
+
+		private float CurrentSnapScaleAmount(Vector3 projectedAxis, Vector3 mousePosition, Vector3 previousMousePosition,
+			bool isSnapping, float currentSnapScaleAmount, Vector3 axis, Vector3 originalPivot)
+		{
+			Vector3 projected = (nearAxis == Axis.Any) ? transform.right : projectedAxis;
+			float scaleAmount = ExtVector3.MagnitudeInDirection(mousePosition - previousMousePosition, projected) *
+			                    scaleSpeedMultiplier;
+
+			if (isSnapping && scaleSnap > 0)
+			{
+				currentSnapScaleAmount += scaleAmount;
+				scaleAmount = 0;
+
+				float remainder;
+				float snapAmount = CalculateSnapAmount(scaleSnap, currentSnapScaleAmount, out remainder);
+
+				if (snapAmount != 0)
+				{
+					scaleAmount = snapAmount;
+					currentSnapScaleAmount = remainder;
+				}
+			}
+
+			//WARNING - There is a bug in unity 5.4 and 5.5 that causes InverseTransformDirection to be affected by scale which will break negative scaling. Not tested, but updating to 5.4.2 should fix it - https://issuetracker.unity3d.com/issues/transformdirection-and-inversetransformdirection-operations-are-affected-by-scale
+			Vector3 localAxis = (GetProperTransformSpace() == TransformSpace.Local && nearAxis != Axis.Any)
+				? mainTargetRoot.InverseTransformDirection(axis)
+				: axis;
+
+			Vector3 targetScaleAmount = Vector3.one;
+			if (nearAxis == Axis.Any) targetScaleAmount = (ExtVector3.Abs(mainTargetRoot.localScale.normalized) * scaleAmount);
+			else targetScaleAmount = localAxis * scaleAmount;
+
+			for (int i = 0; i < targetRootsOrdered.Count; i++)
+			{
+				Transform target = targetRootsOrdered[i];
+
+				Vector3 targetScale = target.localScale + targetScaleAmount;
+
+				if (pivot == TransformPivot.Pivot)
+				{
+					target.localScale = targetScale;
+				}
+				else if (pivot == TransformPivot.Center)
+				{
+					if (scaleType == ScaleType.FromPoint)
+					{
+						target.SetScaleFrom(originalPivot, targetScale);
+					}
+					else if (scaleType == ScaleType.FromPointOffset)
+					{
+						target.SetScaleFromOffset(originalPivot, targetScale);
+					}
+				}
+			}
+
+			totalScaleAmount += scaleAmount;
+			return currentSnapScaleAmount;
+		}
+		
+		/// <summary>
+		/// Snap Move
+		/// </summary>
+		/// <param name="mousePosition"></param>
+		/// <param name="previousMousePosition"></param>
+		/// <param name="projectedAxis"></param>
+		/// <param name="axis"></param>
+		/// <param name="isSnapping"></param>
+		/// <param name="currentSnapMovementAmount"></param>
+		/// <param name="otherAxis1"></param>
+		/// <param name="otherAxis2"></param>
+		/// <returns></returns>
+		private Vector3 CurrentSnapMovementAmount(Vector3 mousePosition, Vector3 previousMousePosition, Vector3 projectedAxis,
+			Vector3 axis, bool isSnapping, Vector3 currentSnapMovementAmount, Vector3 otherAxis1, Vector3 otherAxis2)
+		{
+			Vector3 movement = Vector3.zero;
+
+			if (hasTranslatingAxisPlane)
+			{
+				movement = mousePosition - previousMousePosition;
+			}
+			else
+			{
+				float moveAmount = ExtVector3.MagnitudeInDirection(mousePosition - previousMousePosition, projectedAxis) *
+				                   moveSpeedMultiplier;
+				movement = axis * moveAmount;
+			}
+
+			if (isSnapping && movementSnap > 0)
+			{
+				currentSnapMovementAmount += movement;
+				movement = Vector3.zero;
+
+				if (hasTranslatingAxisPlane)
+				{
+					float amountInAxis1 = ExtVector3.MagnitudeInDirection(currentSnapMovementAmount, otherAxis1);
+					float amountInAxis2 = ExtVector3.MagnitudeInDirection(currentSnapMovementAmount, otherAxis2);
+
+					float remainder1;
+					float snapAmount1 = CalculateSnapAmount(movementSnap, amountInAxis1, out remainder1);
+					float remainder2;
+					float snapAmount2 = CalculateSnapAmount(movementSnap, amountInAxis2, out remainder2);
+
+					if (snapAmount1 != 0)
+					{
+						Vector3 snapMove = (otherAxis1 * snapAmount1);
+						movement += snapMove;
+						currentSnapMovementAmount -= snapMove;
+					}
+
+					if (snapAmount2 != 0)
+					{
+						Vector3 snapMove = (otherAxis2 * snapAmount2);
+						movement += snapMove;
+						currentSnapMovementAmount -= snapMove;
+					}
+				}
+				else
+				{
+					float remainder;
+					float snapAmount = CalculateSnapAmount(movementSnap, currentSnapMovementAmount.magnitude, out remainder);
+
+					if (snapAmount != 0)
+					{
+						movement = currentSnapMovementAmount.normalized * snapAmount;
+						currentSnapMovementAmount = currentSnapMovementAmount.normalized * remainder;
+					}
+				}
+			}
+
+			for (int i = 0; i < targetRootsOrdered.Count; i++)
+			{
+				Transform target = targetRootsOrdered[i];
+
+				target.Translate(movement, Space.World);
+			}
+
+			SetPivotPointOffset(movement);
+			return currentSnapMovementAmount;
+		}
+
+
+		#endregion
 
 		float CalculateSnapAmount(float snapValue, float currentAmount, out float remainder)
 		{
@@ -628,7 +607,11 @@ namespace RuntimeGizmos
 
 			return Vector3.zero;
 		}
-	
+
+		#region SetTarget
+		/// <summary>
+		/// 선택한 Target을 추가 삭제 함
+		/// </summary>
 		void GetTarget()
 		{
 			if(nearAxis == Axis.None && Input.GetMouseButtonDown(0))
@@ -653,7 +636,9 @@ namespace RuntimeGizmos
 					{
 						ClearAndAddTarget(target);
 					}
-				}else{
+				}
+				else
+				{
 					if(!isAdding && !isRemoving)
 					{
 						ClearTargets();
@@ -666,6 +651,7 @@ namespace RuntimeGizmos
 		{
 			if(target != null)
 			{
+				Debug.Log("Add Target");
 				if(targetRoots.ContainsKey(target)) return;
 				if(children.Contains(target)) return;
 
@@ -808,6 +794,8 @@ namespace RuntimeGizmos
 				RemoveAllChildren(targetRoot);
 			}
 		}
+		#endregion
+
 
 		void AddAllChildren(Transform target)
 		{
@@ -838,6 +826,10 @@ namespace RuntimeGizmos
 			childrenBuffer.Clear();
 		}
 
+		#region SetPivot
+		/// <summary>
+		/// Pivot을 설정합니다. 
+		/// </summary>
 		public void SetPivotPoint()
 		{
 			if(mainTargetRoot != null)
@@ -871,6 +863,8 @@ namespace RuntimeGizmos
 						pivotPoint = totalCenterPivotPoint;
 					}
 				}
+
+				Arrow.transform.position = pivotPoint;
 			}
 		}
 		void SetPivotPointOffset(Vector3 offset)
@@ -878,8 +872,11 @@ namespace RuntimeGizmos
 			pivotPoint += offset;
 			totalCenterPivotPoint += offset;
 		}
+		
 
+		#endregion
 
+		
 		IEnumerator ForceUpdatePivotPointAtEndOfFrame()
 		{
 			while(this.enabled)
@@ -895,6 +892,7 @@ namespace RuntimeGizmos
 			{
 				if(mainTargetRoot != null && !isTransforming)
 				{
+					Debug.Log("PivotPointChange");
 					bool hasSet = false;
 					Dictionary<Transform, TargetInfo>.Enumerator targets = targetRoots.GetEnumerator();
 					while(targets.MoveNext())
@@ -948,7 +946,6 @@ namespace RuntimeGizmos
 
 			if(nearAxis == Axis.None && (TransformTypeContains(TransformType.Move) || TransformTypeContains(TransformType.Scale)))
 			{
-				//Important to check scale lines before move lines since in TransformType.All the move planes would block the scales center scale all gizmo.
 				if(nearAxis == Axis.None && TransformTypeContains(TransformType.Scale))
 				{
 					float tipMinSelectedDistanceCheck = (this.minSelectedDistanceCheck + boxSize) * distanceMultiplier;
@@ -957,7 +954,6 @@ namespace RuntimeGizmos
 
 				if(nearAxis == Axis.None && TransformTypeContains(TransformType.Move))
 				{
-					//Important to check the planes first before the handle tip since it makes selecting the planes easier.
 					float planeMinSelectedDistanceCheck = (this.minSelectedDistanceCheck + planeSize) * distanceMultiplier;
 					HandleNearestPlanes(TransformType.Move, handlePlanes, planeMinSelectedDistanceCheck);
 						
@@ -974,7 +970,6 @@ namespace RuntimeGizmos
 
 				if(nearAxis == Axis.None)
 				{
-					//Since Move and Scale share the same handle line, we give Move the priority.
 					TransformType transType = transformType == TransformType.All ? TransformType.Move : transformType;
 					HandleNearestLines(transType, handleLines, handleMinSelectedDistanceCheck);
 				}
@@ -1067,26 +1062,6 @@ namespace RuntimeGizmos
 			return closestDistance;
 		}
 
-		//float DistanceFromMouseToPlane(List<Vector3> planeLines)
-		//{
-		//	if(planeLines.Count >= 4)
-		//	{
-		//		Ray mouseRay = myCamera.ScreenPointToRay(Input.mousePosition);
-		//		Plane plane = new Plane(planeLines[0], planeLines[1], planeLines[2]);
-
-		//		float distanceToPlane;
-		//		if(plane.Raycast(mouseRay, out distanceToPlane))
-		//		{
-		//			Vector3 pointOnPlane = mouseRay.origin + (mouseRay.direction * distanceToPlane);
-		//			Vector3 planeCenter = (planeLines[0] + planeLines[1] + planeLines[2] + planeLines[3]) / 4f;
-
-		//			return Vector3.Distance(planeCenter, pointOnPlane);
-		//		}
-		//	}
-
-		//	return float.MaxValue;
-		//}
-
 		void SetAxisInfo()
 		{
 			if(mainTargetRoot != null)
@@ -1094,8 +1069,7 @@ namespace RuntimeGizmos
 				axisInfo.Set(mainTargetRoot, pivotPoint, GetProperTransformSpace());
 			}
 		}
-
-		//This helps keep the size consistent no matter how far we are from it.
+		
 		public float GetDistanceMultiplier()
 		{
 			if(mainTargetRoot == null) return 0f;
@@ -1103,7 +1077,10 @@ namespace RuntimeGizmos
 			if(myCamera.orthographic) return Mathf.Max(.01f, myCamera.orthographicSize * 2f);
 			return Mathf.Max(.01f, Mathf.Abs(ExtVector3.MagnitudeInDirection(pivotPoint - transform.position, myCamera.transform.forward)));
 		}
-
+		
+		/// <summary>
+		/// 라인을 그리는 함수
+		/// </summary>
 		void SetLines()
 		{
 			SetHandleLines();
@@ -1139,10 +1116,6 @@ namespace RuntimeGizmos
 				AddQuads(pivotPoint, axisInfo.yDirection, axisInfo.xDirection, axisInfo.zDirection, yLineLength, lineWidth, handleLines.y);
 				AddQuads(pivotPoint, axisInfo.zDirection, axisInfo.xDirection, axisInfo.yDirection, zLineLength, lineWidth, handleLines.z);
 			}
-		}
-		int AxisDirectionMultiplier(Vector3 direction, Vector3 otherDirection)
-		{
-			return ExtVector3.IsInDirection(direction, otherDirection) ? 1 : -1;
 		}
 
 		void SetHandlePlanes()
@@ -1269,7 +1242,6 @@ namespace RuntimeGizmos
 			Square square;
 			Vector3 offsetUp = ((axisOtherDirection1 * size) + (axisOtherDirection2 * size));
 			Vector3 offsetDown = ((axisOtherDirection1 * size) - (axisOtherDirection2 * size));
-			//These might not really be the proper directions, as in the bottomLeft might not really be at the bottom left...
 			square.bottomLeft = axisEnd + offsetDown;
 			square.topLeft = axisEnd + offsetUp;
 			square.bottomRight = axisEnd - offsetUp;
@@ -1337,80 +1309,70 @@ namespace RuntimeGizmos
 				lastPoint = nextPoint;
 			}
 		}
-
-		void DrawLines(List<Vector3> lines, Color color)
+		
+		void DrawTriangles(List<Vector3> lines, Material material)
 		{
 			if(lines.Count == 0) return;
-
-			GL.Begin(GL.LINES);
-			GL.Color(color);
-
-			for(int i = 0; i < lines.Count; i += 2)
-			{
-				GL.Vertex(lines[i]);
-				GL.Vertex(lines[i + 1]);
-			}
-
-			GL.End();
-		}
-
-		void DrawTriangles(List<Vector3> lines, Color color)
-		{
-			if(lines.Count == 0) return;
-
-			GL.Begin(GL.TRIANGLES);
-			GL.Color(color);
 
 			for(int i = 0; i < lines.Count; i += 3)
 			{
-				GL.Vertex(lines[i]);
-				GL.Vertex(lines[i + 1]);
-				GL.Vertex(lines[i + 2]);
+				Mesh m = new Mesh();
+				Vector3[] VerteicesArray = new Vector3[3];
+				int[] trianglesArray = new int[3];
+
+				VerteicesArray[0] = lines[i];
+				VerteicesArray[1] = lines[i + 1];
+				VerteicesArray[2] = lines[i + 2];
+
+				trianglesArray[0] = 0;
+				trianglesArray[1] = 1;
+				trianglesArray[2] = 2;
+				
+				m.vertices = VerteicesArray;
+				m.triangles = trianglesArray;
+
+				Graphics.DrawMesh(m, Vector3.zero, Quaternion.identity, material, 0);
 			}
-
-			GL.End();
 		}
-
-		void DrawQuads(List<Vector3> lines, Color color)
+		void DrawQuads(List<Vector3> lines, Material material)
 		{
 			if(lines.Count == 0) return;
-
-			GL.Begin(GL.QUADS);
-			GL.Color(color);
 
 			for(int i = 0; i < lines.Count; i += 4)
 			{
-				GL.Vertex(lines[i]);
-				GL.Vertex(lines[i + 1]);
-				GL.Vertex(lines[i + 2]);
-				GL.Vertex(lines[i + 3]);
+				Mesh m1 = new Mesh();
+				Mesh m2 = new Mesh();
+				Vector3[] VerteicesArray1 = new Vector3[3];
+				int[] trianglesArray1 = new int[3];
+				
+				Vector3[] VerteicesArray2 = new Vector3[3];
+				int[] trianglesArray2 = new int[3];
+
+				VerteicesArray1[0] = lines[i];
+				VerteicesArray1[1] = lines[i + 1];
+				VerteicesArray1[2] = lines[i + 2];
+				
+				VerteicesArray2[0] = lines[i + 1];
+				VerteicesArray2[1] = lines[i + 2];
+				VerteicesArray2[2] = lines[i + 3];
+
+				trianglesArray1[0] = 0;
+				trianglesArray1[1] = 1;
+				trianglesArray1[2] = 2;
+				
+				trianglesArray2[0] = 0;
+				trianglesArray2[1] = 1;
+				trianglesArray2[2] = 2;
+
+				m1.vertices = VerteicesArray1;
+				m1.triangles = trianglesArray1;
+				
+				m2.vertices = VerteicesArray2;
+				m2.triangles = trianglesArray2;
+
+				Graphics.DrawMesh(m1, Vector3.zero, Quaternion.identity, material, 0);
+				Graphics.DrawMesh(m2, Vector3.zero, Quaternion.identity, material, 0);
 			}
-
-			GL.End();
-		}
-
-		void DrawFilledCircle(List<Vector3> lines, Color color)
-		{
-			if(lines.Count == 0) return;
-
-			Vector3 center = Vector3.zero;
-			for(int i = 0; i < lines.Count; i++)
-			{
-				center += lines[i];
-			}
-			center /= lines.Count;
-
-			GL.Begin(GL.TRIANGLES);
-			GL.Color(color);
-
-			for(int i = 0; i + 1 < lines.Count; i++)
-			{
-				GL.Vertex(lines[i]);
-				GL.Vertex(lines[i + 1]);
-				GL.Vertex(center);
-			}
-
-			GL.End();
 		}
 
 		void SetMaterial()
