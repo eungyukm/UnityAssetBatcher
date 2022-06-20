@@ -38,8 +38,6 @@ namespace RuntimeGizmos
 
 		public override void UnExecute()
 		{
-			transformGizmo.RemoveTarget(target, false);
-
 			for(int i = 0; i < targetRoots.Count; i++)
 			{
 				transformGizmo.AddTarget(targetRoots[i], false);
@@ -53,7 +51,6 @@ namespace RuntimeGizmos
 
 		public override void Execute()
 		{
-			transformGizmo.RemoveTarget(target, false);
 		}
 
 		public override void UnExecute()
@@ -102,7 +99,6 @@ namespace RuntimeGizmos
 
 		public override void UnExecute()
 		{
-			transformGizmo.RemoveTarget(target, false);
 
 			for(int i = 0; i < targetRoots.Count; i++)
 			{

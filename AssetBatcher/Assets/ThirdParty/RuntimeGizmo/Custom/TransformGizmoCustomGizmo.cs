@@ -27,96 +27,11 @@ namespace RuntimeGizmos
 				transformGizmo = GameObject.FindObjectOfType<TransformGizmo>();
 			}
 
-			transformGizmo.circularRotationMethod = true;
-
 			mask = LayerMask.GetMask(LayerMask.LayerToName(gizmoLayer));
 
 			customTranslationGizmos.Init(gizmoLayer);
 			customRotationGizmos.Init(gizmoLayer);
 			customScaleGizmos.Init(gizmoLayer);
-		}
-
-		// void OnEnable()
-		// {
-		// 	transformGizmo.onCheckForSelectedAxis += CheckForSelectedAxis;
-		// 	transformGizmo.onDrawCustomGizmo += OnDrawCustomGizmos;
-		// }
-		// void OnDisable()
-		// {
-		// 	transformGizmo.onCheckForSelectedAxis -= CheckForSelectedAxis;
-		// 	transformGizmo.onDrawCustomGizmo -= OnDrawCustomGizmos;
-		// }
-
-		void CheckForSelectedAxis()
-		{
-			ShowProperGizmoType();
-
-			if(Input.GetMouseButtonDown(0))
-			{
-				RaycastHit hitInfo;
-				if(Physics.Raycast(transformGizmo.myCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, mask))
-				{
-					Axis selectedAxis = Axis.None;
-					TransformType type = transformGizmo.transformType;
-
-					if(selectedAxis == Axis.None && transformGizmo.TransformTypeContains(TransformType.Move))
-					{
-						selectedAxis = customTranslationGizmos.GetSelectedAxis(hitInfo.collider);
-						type = TransformType.Move;
-					}
-					if(selectedAxis == Axis.None && transformGizmo.TransformTypeContains(TransformType.Rotate))
-					{
-						selectedAxis = customRotationGizmos.GetSelectedAxis(hitInfo.collider);
-						type = TransformType.Rotate;
-					}
-					if(selectedAxis == Axis.None && transformGizmo.TransformTypeContains(TransformType.Scale))
-					{
-						selectedAxis = customScaleGizmos.GetSelectedAxis(hitInfo.collider);
-						type = TransformType.Scale;
-					}
-
-					transformGizmo.SetTranslatingAxis(type, selectedAxis);
-				}
-			}
-		}
-
-		void OnDrawCustomGizmos()
-		{
-			if(transformGizmo.TranslatingTypeContains(TransformType.Move)) DrawCustomGizmo(customTranslationGizmos);
-			if(transformGizmo.TranslatingTypeContains(TransformType.Rotate)) DrawCustomGizmo(customRotationGizmos);
-			if(transformGizmo.TranslatingTypeContains(TransformType.Scale)) DrawCustomGizmo(customScaleGizmos);
-		}
-
-		void DrawCustomGizmo(CustomTransformGizmos customGizmo)
-		{
-			AxisInfo axisInfo = transformGizmo.GetAxisInfo();
-			customGizmo.SetAxis(axisInfo);
-			customGizmo.SetPosition(transformGizmo.pivotPoint);
-
-			Vector4 totalScaleMultiplier = Vector4.one;
-			if(scaleBasedOnDistance)
-			{
-				totalScaleMultiplier.w *= (scaleMultiplier * transformGizmo.GetDistanceMultiplier());
-			}
-
-			if(transformGizmo.transformingType == TransformType.Scale)
-			{
-				float totalScaleAmount = 1f + transformGizmo.totalScaleAmount;
-				if(transformGizmo.translatingAxis == Axis.Any) totalScaleMultiplier += (Vector4.one * totalScaleAmount);
-				else if(transformGizmo.translatingAxis == Axis.X) totalScaleMultiplier.x *= totalScaleAmount;
-				else if(transformGizmo.translatingAxis == Axis.Y) totalScaleMultiplier.y *= totalScaleAmount;
-				else if(transformGizmo.translatingAxis == Axis.Z) totalScaleMultiplier.z *= totalScaleAmount;
-			}
-
-			customGizmo.ScaleMultiply(totalScaleMultiplier);
-		}
-
-		void ShowProperGizmoType()
-		{
-			bool hasSelection = transformGizmo.mainTargetRoot != null;
-			customTranslationGizmos.SetEnable(hasSelection && transformGizmo.TranslatingTypeContains(TransformType.Move));
-			customRotationGizmos.SetEnable(hasSelection && transformGizmo.TranslatingTypeContains(TransformType.Rotate));
-			customScaleGizmos.SetEnable(hasSelection && transformGizmo.TranslatingTypeContains(TransformType.Scale));
 		}
 	}
 
