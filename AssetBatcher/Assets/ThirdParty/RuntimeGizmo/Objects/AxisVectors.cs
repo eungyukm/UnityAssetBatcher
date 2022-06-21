@@ -11,14 +11,6 @@ namespace RuntimeGizmos
 		public List<Vector3> z = new List<Vector3>();
 		public List<Vector3> all = new List<Vector3>();
 
-		public void Add(AxisVectors axisVectors)
-		{
-			x.AddRange(axisVectors.x);
-			y.AddRange(axisVectors.y);
-			z.AddRange(axisVectors.z);
-			all.AddRange(axisVectors.all);
-		}
-
 		public void Clear()
 		{
 			x.Clear();

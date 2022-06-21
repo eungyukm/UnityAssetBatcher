@@ -33,14 +33,14 @@ namespace RuntimeGizmos
 
 		public override void Execute()
 		{
-			transformGizmo.AddTarget(target, false);
+			transformGizmo.AddTarget(target);
 		}
 
 		public override void UnExecute()
 		{
 			for(int i = 0; i < targetRoots.Count; i++)
 			{
-				transformGizmo.AddTarget(targetRoots[i], false);
+				transformGizmo.AddTarget(targetRoots[i]);
 			}
 		}
 	}
@@ -55,7 +55,7 @@ namespace RuntimeGizmos
 
 		public override void UnExecute()
 		{
-			transformGizmo.AddTarget(target, false);
+			transformGizmo.AddTarget(target);
 		}
 	}
 
@@ -70,14 +70,14 @@ namespace RuntimeGizmos
 
 		public override void Execute()
 		{
-			transformGizmo.ClearTargets(false);
+			
 		}
 
 		public override void UnExecute()
 		{
 			for(int i = 0; i < targetRoots.Count; i++)
 			{
-				transformGizmo.AddTarget(targetRoots[i], false);
+				transformGizmo.AddTarget(targetRoots[i]);
 			}
 		}
 	}
@@ -93,8 +93,7 @@ namespace RuntimeGizmos
 
 		public override void Execute()
 		{
-			transformGizmo.ClearTargets(false);
-			transformGizmo.AddTarget(target, false);
+			transformGizmo.AddTarget(target);
 		}
 
 		public override void UnExecute()
@@ -102,7 +101,7 @@ namespace RuntimeGizmos
 
 			for(int i = 0; i < targetRoots.Count; i++)
 			{
-				transformGizmo.AddTarget(targetRoots[i], false);
+				transformGizmo.AddTarget(targetRoots[i]);
 			}
 		}
 	}
