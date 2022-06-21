@@ -1,9 +1,6 @@
-using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
-using CommandUndoRedo;
-using UnityEngine.Rendering;
 
 namespace RuntimeGizmos
 {
