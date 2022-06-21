@@ -45,7 +45,11 @@ public class GizmoTransform : MonoBehaviour
     
     public GameObject Arrow;
     public GridSystem GridSystem;
+    public InputReader InputReader;
     
+    private bool isMoseLeftClicked = false;
+    private bool isKeyboardCtrlPressed = false;
+
     void Awake()
     {
         myCamera = GetComponent<Camera>();
@@ -54,24 +58,27 @@ public class GizmoTransform : MonoBehaviour
     void OnEnable()
     {
         forceUpdatePivotCoroutine = StartCoroutine(ForceUpdatePivotPointAtEndOfFrame());
+
+        InputReader.OnMouseLeftClickDownAction += MouseLeftDown;
+        InputReader.OnMouseLeftClickUPAction += MouseLeftUP;
+        InputReader.OnMouseCursorClickAction += GetTarget;
+
+        InputReader.OnCtrlDownAction += KeyboardCtrlDown;
+        InputReader.OnCtrlUPAction += KeyboardCtrlUP;
     }
 
     void OnDisable()
     {
 	    StopCoroutine(forceUpdatePivotCoroutine);
+	    
+	    InputReader.OnMouseLeftClickDownAction -= MouseLeftDown;
+	    InputReader.OnMouseLeftClickUPAction -= MouseLeftUP;
+	    InputReader.OnMouseCursorClickAction -= GetTarget;
     }
     
     void Update()
     {
         SetNearAxis();
-
-        GetTarget();
-
-        if (mainTargetRoot == null)
-        {
-            return;
-        }
-        TransformSelected();
     }
 
     void LateUpdate()
@@ -100,18 +107,39 @@ public class GizmoTransform : MonoBehaviour
     }
 
     #region TransformSelected
+    
+    private void MouseLeftDown()
+    {
+	    isMoseLeftClicked = true;
+	    TransformSelected();
+    }
 
-    void TransformSelected()
+    private void MouseLeftUP()
+    {
+	    isMoseLeftClicked = false;
+    }
+
+    private void KeyboardCtrlDown()
+    {
+	    isKeyboardCtrlPressed = true;
+    }
+
+    private void KeyboardCtrlUP()
+    {
+	    isKeyboardCtrlPressed = false;
+    }
+
+    private void TransformSelected()
     {
 	    if (mainTargetRoot != null)
 	    {
-		    if (nearAxis != Axis.None && Input.GetMouseButtonDown(0))
+		    if (nearAxis != Axis.None)
 		    {
 			    StartCoroutine(TransformSelected(translatingType));
 		    }
 	    }
     }
-
+    
     IEnumerator TransformSelected(TransformType transType)
     {
 	    isTransforming = true;
@@ -128,13 +156,13 @@ public class GizmoTransform : MonoBehaviour
 	    float currentSnapRotationAmount = 0;
 	    float currentSnapScaleAmount = 0;
 
-	    while (!Input.GetMouseButtonUp(0))
+	    while (isMoseLeftClicked)
 	    {
-		    Ray mouseRay = myCamera.ScreenPointToRay(Input.mousePosition);
-		    Debug.Log("planeNormal : " + planeNormal);
+		    Ray mouseRay = myCamera.ScreenPointToRay(InputReader.MousePos);
 		    Vector3 mousePosition =
 			    Geometry.LinePlaneIntersect(mouseRay.origin, mouseRay.direction, originalPivot, planeNormal);
-		    bool isSnapping = Input.GetKey(translationSnapping);
+		    bool isSnapping = isKeyboardCtrlPressed;
+		    Debug.Log("isSnap : " + isSnapping);
 
 		    if (previousMousePosition != Vector3.zero && mousePosition != Vector3.zero)
 		    {
@@ -281,12 +309,12 @@ public class GizmoTransform : MonoBehaviour
     /// <summary>
     /// 선택한 Target을 추가 삭제 함
     /// </summary>
-    void GetTarget()
+    void GetTarget(Vector2 pos)
     {
-	    if (nearAxis == Axis.None && Input.GetMouseButtonDown(0))
+	    if (nearAxis == Axis.None)
 	    {
 		    RaycastHit hitInfo;
-		    if (Physics.Raycast(myCamera.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity,
+		    if (Physics.Raycast(myCamera.ScreenPointToRay(InputReader.MousePos), out hitInfo, Mathf.Infinity,
 			        selectionMask))
 		    {
 			    Transform target = hitInfo.transform;
@@ -361,7 +389,8 @@ public class GizmoTransform : MonoBehaviour
 		    HandleNearestLines(transformType, handleLines, handleMinSelectedDistanceCheck);
 	    }
     }
-
+    
+    # region Line Check
     void HandleNearestLines(TransformType type, AxisVectors axisVectors, float minSelectedDistanceCheck)
     {
 	    float xClosestDistance = ClosestDistanceFromMouseToLines(axisVectors.x);
@@ -409,7 +438,9 @@ public class GizmoTransform : MonoBehaviour
 
 	    return closestDistance;
     }
-
+    #endregion
+    
+    # region Set Info
     void SetAxisInfo()
     {
 	    if (mainTargetRoot != null)
@@ -422,7 +453,7 @@ public class GizmoTransform : MonoBehaviour
     {
 	    movementSnap = GridSystem.cellSize;
     }
-
+    #endregion
     public float GetDistanceMultiplier()
     {
 	    if (mainTargetRoot == null)
@@ -439,6 +470,7 @@ public class GizmoTransform : MonoBehaviour
 		    Mathf.Abs(ExtVector3.MagnitudeInDirection(pivotPoint - transform.position, myCamera.transform.forward)));
     }
 
+    #region SetHandle
     void SetHandleLines()
     {
 	    handleLines.Clear();
@@ -507,6 +539,7 @@ public class GizmoTransform : MonoBehaviour
 	    square.topRight = axisEnd - offsetDown;
 	    return square;
     }
+    #endregion
 
     public enum TransformType
     {

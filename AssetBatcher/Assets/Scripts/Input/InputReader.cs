@@ -1,12 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using Ping = UnityEngine.Ping;
 
 [CreateAssetMenu(menuName = "SO/InputReader", fileName = "InputReader")]
 public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameInput.IUnitCursorModeActions
@@ -15,9 +9,15 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
 
     public UnityAction OnDeploymentMode = delegate {  };
     public UnityAction<Vector2> OnMouseLeftClickedAction = delegate {  };
+    public UnityAction OnMouseLeftClickDownAction = delegate {  };
+    public UnityAction OnMouseLeftClickUPAction = delegate {  };
     public UnityAction<Vector2> OnMouseCursorClickAction = delegate {  };
-
+    
+    public UnityAction OnCtrlDownAction = delegate {  };
+    public UnityAction OnCtrlUPAction = delegate {  };
+    
     public Vector2 MousePos = new Vector2(0, 0);
+
 
     private InputMode _inputMode = InputMode.Deploy;
 
@@ -72,21 +72,42 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
 
     public void OnMouse(InputAction.CallbackContext context)
     {
-        // Debug.Log("Call!!");
         if (context.phase == InputActionPhase.Performed)
         {
             Vector2 mousePoint = context.ReadValue<Vector2>();
             MousePos = mousePoint;
-            // Debug.Log("movement x : " + MousePos.x);
         }
     }
 
     public void OnMouseLeftClick(InputAction.CallbackContext context)
     {
-        if (context.phase == InputActionPhase.Performed)
+        if (context.phase == InputActionPhase.Started)
         {
-            // Debug.Log("[MLC] mouse x : " + MousePos.x + " mouse y : " + MousePos.y);
+            OnMouseLeftClickDownAction?.Invoke();
+        }
+        else if (context.phase == InputActionPhase.Performed)
+        {
             OnMouseLeftClickedAction?.Invoke(MousePos);
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            OnMouseLeftClickUPAction?.Invoke();
+        }
+    }
+
+    public void OnKeyboardCtrl(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Started)
+        {
+            OnCtrlDownAction?.Invoke();
+        }
+        else if (context.phase == InputActionPhase.Performed)
+        {
+            
+        }
+        else if (context.phase == InputActionPhase.Canceled)
+        {
+            OnCtrlUPAction?.Invoke();
         }
     }
 

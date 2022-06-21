@@ -22,6 +22,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "KeyboardCtrl",
+                    "type": "Button",
+                    "id": "94177b17-1983-419c-bbfe-fc0d4c020379",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -46,6 +55,17 @@
                     "action": "MouseLeftClick",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7c0ce705-9c01-4812-a2db-372fda262952",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KeyboardCtrl",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -53,6 +73,15 @@
             "name": "UnitCursorMode",
             "id": "d149482c-af0a-47ab-8151-5b0d4e681f91",
             "actions": [
+                {
+                    "name": "MouseLeftClick",
+                    "type": "Button",
+                    "id": "0e8b08b0-2eb2-4c0d-963d-39131559406b",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
                 {
                     "name": "MouseCursorLeftClick",
                     "type": "Button",
@@ -72,9 +101,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "MouseLeftClick",
+                    "name": "KeyboardCtrl",
                     "type": "Button",
-                    "id": "0e8b08b0-2eb2-4c0d-963d-39131559406b",
+                    "id": "13cad525-184b-41e6-9fb6-870fcd26bec6",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -112,6 +141,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "MouseLeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "601243ae-8af9-439f-9ce1-4ee260860d99",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "KeyboardCtrl",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

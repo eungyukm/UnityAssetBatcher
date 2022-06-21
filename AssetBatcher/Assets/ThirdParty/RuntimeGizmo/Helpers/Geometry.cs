@@ -24,8 +24,6 @@ namespace RuntimeGizmos
 		public static Vector3 LinePlaneIntersect(Vector3 linePoint, Vector3 lineVec, Vector3 planePoint, Vector3 planeNormal)
 		{
 			float distance = LinePlaneDistance(linePoint, lineVec, planePoint, planeNormal);
-			Debug.Log("distance : " + distance);
-			
 			//line and plane are not parallel
 			if(distance != 0f)
 			{
