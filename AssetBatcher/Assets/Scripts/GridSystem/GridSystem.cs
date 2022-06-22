@@ -3,14 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using CodeMonkey.Utils;
+using UnityEngine.Serialization;
 
 public class GridSystem : MonoBehaviour
 {
     private UnitGrid _unitGrid;
 
     public Camera _camera;
-
-    public InputReader _InputReader;
 
     public GameObject GridGO;
 
@@ -20,24 +19,13 @@ public class GridSystem : MonoBehaviour
 
     public bool GridActive = false;
 
+    public GridSystemType _gridSystemType = GridSystemType.None;
+
     private void Awake()
     {
         SnapSwitch(false);
     }
-
-    private void OnEnable()
-    {
-        _InputReader.OnMouseLeftClickedAction += LeftMouseClick;
-    }
-
-    private void LeftMouseClick(Vector2 mousePos)
-    {
-        // Debug.Log("mouse Pos Y : " + mousePos.x + "mouse Pox Y" + mousePos.y);
-        Vector3 worldPositon = _camera.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, _camera.transform.position.y));
-        // Debug.Log("World Pos X : " + worldPositon.x + "World Pos Y : " + worldPositon.y + "World Pos Z : " + worldPositon.z);
-        _unitGrid.SetValue(worldPositon, 1);
-    }
-
+    
     void Start()
     {
         _camera = Camera.main;
@@ -52,9 +40,31 @@ public class GridSystem : MonoBehaviour
 
     public Vector3 SnapCoordinateToGrid(Vector3 WorldPosition)
     {
-        Vector3Int cellPost = _unitGrid.WorldToCell(WorldPosition);
-        Vector3 snapPos = _unitGrid.GetCellCenterWorld(cellPost);
+        Vector3 snapPos = Vector3.zero;
+        switch (_gridSystemType)
+        {
+            case GridSystemType.Tile:
+                snapPos = CalculateTileSnap(WorldPosition);
+                break;
+            case GridSystemType.Wall:
+                snapPos = CalculateWallSnap(WorldPosition);
+                _unitGrid.EdgeStateSwitch(EdgeState.Horizontal);
+                break;
+        }
+        
         return snapPos;
+    }
+
+    private Vector3 CalculateWallSnap(Vector3 worldPositon)
+    {
+        Vector3Int cellPost = _unitGrid.WorldToEdgeCell(worldPositon);
+        return _unitGrid.GetCellEdgeCenterWorld(cellPost);
+    }
+    
+    private Vector3 CalculateTileSnap(Vector3 worldPositon)
+    {
+        Vector3Int cellPost = _unitGrid.WorldToCenterCell(worldPositon);
+        return _unitGrid.GetCellCenterWorld(cellPost);
     }
     
     /// <summary>
@@ -74,4 +84,28 @@ public class GridSystem : MonoBehaviour
             
         }
     }
+
+    public void SwitchGridType(GridSystemType gridType)
+    {
+        _gridSystemType = gridType;
+        switch (gridType)
+        {
+            case GridSystemType.None:
+                
+                break;
+            case GridSystemType.Tile:
+                
+                break;
+            case GridSystemType.Wall:
+                
+                break;
+        }
+    }
+}
+
+public enum GridSystemType
+{
+    None,
+    Tile,
+    Wall
 }

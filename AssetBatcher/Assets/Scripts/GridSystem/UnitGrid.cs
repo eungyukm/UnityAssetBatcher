@@ -14,6 +14,8 @@ public class UnitGrid
     private float cellSize;
     private int[,] gridArray;
     
+    private EdgeState _edgeState = EdgeState.Horizontal;
+    
     public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged;
     public class OnGridValueChangedEventArgs : EventArgs {
         public int x;
@@ -55,33 +57,35 @@ public class UnitGrid
         return new Vector3(x,0, z) * cellSize;
     }
 
-    public void SetValue(int x, int z, int value)
+    // Center Positon을 구할 때 사용
+    private void GetXZ(Vector3 worldPositon, out int x, out int z)
     {
-        if (x >= 0 && z >= 0 && x < width && z < height)
+        x = Mathf.FloorToInt(worldPositon.x / cellSize);
+        z = Mathf.FloorToInt(worldPositon.z / cellSize);
+    }
+    
+    // Edge Positon을 구할 때 사용
+    private void GetEdgeXZ(Vector3 worldPositon, out int x, out int z)
+    {
+        x = Mathf.RoundToInt(worldPositon.x / cellSize);
+        z = Mathf.RoundToInt(worldPositon.z / cellSize);
+
+
+        if (_edgeState == EdgeState.Vertical)
         {
-            // Debug.Log("Value : " + value);
-            gridArray[x, z] += value;
-            if (OnGridValueChanged != null)
+            if (z >= height * cellSize)
             {
-                OnGridValueChanged(this, new OnGridValueChangedEventArgs { x = x, z = z });             
+                z -= (int)cellSize;
             }
         }
-    }
-
-    private void GetXZ(Vector3 wolrdPositon, out int x, out int z)
-    {
-        Debug.Log("wolrd x vlaue : " + wolrdPositon.x + " z: " + wolrdPositon.z + "y : " + wolrdPositon.y);
-        x = Mathf.FloorToInt(wolrdPositon.x / cellSize);
-        z = Mathf.FloorToInt(wolrdPositon.z / cellSize);
-        // Debug.Log("world Pos X : " + x + "Pos Z" + z);
-    }
-
-    public void SetValue(Vector3 worldPositon, int value)
-    {
-        int x, z;
-        GetXZ(worldPositon, out x, out z);
-        Debug.Log("Get X : " + x + " Get Z : " + z);
-        SetValue(x,z, value);
+        else
+        {
+            if (x >= width * cellSize)
+            {
+                
+                x -= (int)cellSize;
+            }
+        }
     }
 
     /// <summary>
@@ -90,10 +94,20 @@ public class UnitGrid
     /// </summary>
     /// <param name="worldPositon"></param>
     /// <returns></returns>
-    public Vector3Int WorldToCell(Vector3 worldPositon)
+    public Vector3Int WorldToCenterCell(Vector3 worldPositon)
     {
         int x, z;
+        
         GetXZ(worldPositon, out x, out z);
+        Vector3Int cellVector = new Vector3Int(x, 0, z);
+        return cellVector;
+    }
+    
+    public Vector3Int WorldToEdgeCell(Vector3 worldPositon)
+    {
+        int x, z;
+        
+        GetEdgeXZ(worldPositon, out x, out z);
         Vector3Int cellVector = new Vector3Int(x, 0, z);
         return cellVector;
     }
@@ -120,4 +134,47 @@ public class UnitGrid
     {
         return new Vector3( x,0,  z) * cellSize + new Vector3(cellSize, 0, cellSize) * 0.5f;
     }
+    
+    /// <summary>
+    /// cell positon을 입력 받으면, Edge값 반환(실제 로직에 사용)
+    /// </summary>
+    /// <param name="cellPositon"></param>
+    /// <param name="edgeState"></param>
+    /// <returns></returns>
+    public Vector3 GetCellEdgeCenterWorld(Vector3Int cellPositon)
+    {
+        Vector3 cellEdge = GetWorldEdgePositon(cellPositon.x, cellPositon.z);
+        return cellEdge;
+    }
+    
+    /// <summary>
+    ///  Edge 계산하는 로직
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
+    /// <returns></returns>
+    private Vector3 GetWorldEdgePositon(int x, int z)
+    {
+        Vector3 edgePositon;
+        if (_edgeState == EdgeState.Vertical)
+        {
+            edgePositon = new Vector3(x, 0, z) * cellSize + new Vector3(0, 0, cellSize) * 0.5f;
+        }
+        else
+        {
+            edgePositon = new Vector3(x, 0, z) * cellSize + new Vector3(cellSize, 0, 0) * 0.5f;
+        }
+        return edgePositon;
+    }
+
+    public void EdgeStateSwitch(EdgeState edgeState)
+    {
+        _edgeState = edgeState;
+    }
+}
+
+public enum EdgeState
+{
+    Vertical,
+    Horizontal
 }

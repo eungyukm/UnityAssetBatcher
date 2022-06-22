@@ -21,12 +21,22 @@ MonoBehaviour:
     m_Address: Assets/ScriptableObjects/GameData/03_Placeables/Plane
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Plane
+    - Tile
   - m_GUID: 9fe52e8daaae0ca4b9c78f6db33b9008
     m_Address: Assets/ScriptableObjects/GameData/02_Cards/Plane
     m_ReadOnly: 0
     m_SerializedLabels:
-    - Plane
+    - Tile
+  - m_GUID: 206f61562390256418e66ebac8897b72
+    m_Address: Assets/ScriptableObjects/GameData/03_Placeables/Wall
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Wall
+  - m_GUID: 68590ad0e1e298149a986c947938f386
+    m_Address: Assets/ScriptableObjects/GameData/02_Cards/Wall
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Wall
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ee89eeeda0e7d8341a44692920723863, type: 2}
   m_SchemaSet:

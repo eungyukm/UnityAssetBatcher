@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
 
 
@@ -9,21 +10,28 @@ public class PanelManager : MonoBehaviour
 {
     public GameObject mainUIGO;
     public GameObject floorUIGO;
+    public GameObject wallUIGO;
     
     public TileUI TileUI;
     public MainUI MainUI;
+    public WallUI WallUI;
 
     public UIState UIState = UIState.None;
+
+    [SerializeField] private CardManager cardManager;
+    [SerializeField] private GridSystem gridSystem;
 
     private void OnEnable()
     {
         MainUI.OnUISateChanged += PanelSwitch;
-        TileUI.OnClosePanel += TileButtonClosed;
+        TileUI.OnClosePanel += PanelSwitch;
+        WallUI.OnClosePanel += PanelSwitch;
     }
 
     private void OnDisable()
     {
-        TileUI.OnClosePanel -= TileButtonClosed;
+        TileUI.OnClosePanel -= PanelSwitch;
+        WallUI.OnClosePanel -= PanelSwitch;
     }
     
     void Start()
@@ -38,26 +46,30 @@ public class PanelManager : MonoBehaviour
         UIState = UIState.MainUI;
     }
 
-    private void TileButtonClosed()
-    {
-        PanelSwitch(UIState.MainUI);
-    }
-
     private void PanelSwitch(UIState uiState)
     {
         UIState = uiState;
         switch (UIState)
         {
             case UIState.None:
+                gridSystem.SwitchGridType(GridSystemType.None);
                 break;
             case UIState.MainUI:
                 AllUISetActiveFalse();
                 mainUIGO.SetActive(true);
+                gridSystem.SwitchGridType(GridSystemType.None);
                 break;
             case UIState.TileUI:
-                Debug.Log("Floor UI Called!!");
                 AllUISetActiveFalse();
                 floorUIGO.SetActive(true);
+                cardManager.LoadDeck(DeckType.Tile);
+                gridSystem.SwitchGridType(GridSystemType.Tile);
+                break;
+            case UIState.WallUI:
+                AllUISetActiveFalse();
+                wallUIGO.SetActive(true);
+                cardManager.LoadDeck(DeckType.Wall);
+                gridSystem.SwitchGridType(GridSystemType.Wall);
                 break;
         }
     }
@@ -66,6 +78,7 @@ public class PanelManager : MonoBehaviour
     {
         mainUIGO.SetActive(false);
         floorUIGO.SetActive(false);
+        wallUIGO.SetActive(false);
     }
 }
 
@@ -73,5 +86,6 @@ public enum UIState
 {
     None,
     MainUI,
-    TileUI
+    TileUI,
+    WallUI
 }

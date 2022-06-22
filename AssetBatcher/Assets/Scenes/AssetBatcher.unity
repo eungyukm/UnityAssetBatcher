@@ -351,7 +351,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 780536570}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &630380219
 MonoBehaviour:
@@ -443,7 +443,7 @@ GameObject:
   - component: {fileID: 780536570}
   - component: {fileID: 780536571}
   m_Layer: 0
-  m_Name: UI
+  m_Name: PanelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -463,6 +463,7 @@ Transform:
   m_Children:
   - {fileID: 1445834910}
   - {fileID: 1754312575}
+  - {fileID: 1755429704}
   - {fileID: 1033770501}
   - {fileID: 630380218}
   m_Father: {fileID: 0}
@@ -482,9 +483,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainUIGO: {fileID: 1445834909}
   floorUIGO: {fileID: 1754312574}
+  wallUIGO: {fileID: 1755429703}
   TileUI: {fileID: 1754312577}
   MainUI: {fileID: 1445834913}
+  WallUI: {fileID: 1755429705}
   UIState: 0
+  cardManager: {fileID: 887340800}
+  gridSystem: {fileID: 1995943742}
 --- !u!1 &855708040
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,11 +603,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   cardPrefab: {fileID: 4516562221745931979, guid: bf9c20c25223f3c44891840aa283976e, type: 3}
-  playersDeck: {fileID: 11400000, guid: d77bd50084664e64da6ae03dac796c45, type: 2}
+  playerDecks:
+  - {fileID: 11400000, guid: d77bd50084664e64da6ae03dac796c45, type: 2}
+  - {fileID: 11400000, guid: 8ed7fdb6ce9d38a4f86d54c4ed0688a9, type: 2}
   forbiddenAreaRenderer: {fileID: 1082293900}
   backupCardTransform: {fileID: 0}
   cardsDashboard: {fileID: 2079585859}
   cardsPanel: {fileID: 415231181}
+  _playersDeck: {fileID: 0}
   card: {fileID: 0}
   DeployMode: 0
   GridSystem: {fileID: 1995943742}
@@ -859,7 +867,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 780536570}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1033770502
 MonoBehaviour:
@@ -1684,7 +1692,70 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floorUIDocument: {fileID: 1754312576}
-  CardManager: {fileID: 887340800}
+  cardManager: {fileID: 887340800}
+--- !u!1 &1755429703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1755429704}
+  - component: {fileID: 1755429707}
+  - component: {fileID: 1755429705}
+  m_Layer: 0
+  m_Name: WallUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &1755429704
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755429703}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 780536570}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1755429705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755429703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 222449e7bc5219640a0289156d592ceb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  wallUIDocument: {fileID: 1755429707}
+  cardManager: {fileID: 887340800}
+--- !u!114 &1755429707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755429703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 6b68d57f21f1b8c46a94227d1a848340, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: c38781fbabaf0f24cbab5e0c36276871, type: 3}
+  m_SortingOrder: 2
 --- !u!1 &1773756676
 GameObject:
   m_ObjectHideFlags: 0
@@ -1802,12 +1873,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _camera: {fileID: 1020299968}
-  _InputReader: {fileID: 11400000, guid: 63e4aa8ccfe23854bbc7e6bdd907b2ee, type: 2}
   GridGO: {fileID: 1413558891}
   widthGrid: 5
   heightGrid: 5
   cellSize: 1
   GridActive: 0
+  _gridSystemType: 0
+  EdgeState: 1
 --- !u!1 &2036445989
 GameObject:
   m_ObjectHideFlags: 0

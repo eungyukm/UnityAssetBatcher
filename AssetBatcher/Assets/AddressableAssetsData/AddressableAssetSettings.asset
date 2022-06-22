@@ -86,7 +86,8 @@ MonoBehaviour:
     m_LabelNames:
     - default
     - Base
-    - Plane
+    - Tile
+    - Wall
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 5bc83ac7b3032df43af0bf3d585df94a, type: 2}

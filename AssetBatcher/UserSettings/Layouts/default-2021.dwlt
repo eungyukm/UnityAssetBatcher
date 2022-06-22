@@ -19,7 +19,7 @@ MonoBehaviour:
     width: 2048
     height: 1068.8
   m_ShowMode: 4
-  m_Title: Game
+  m_Title: Console
   m_RootView: {fileID: 2}
   m_MinSize: {x: 875, y: 350}
   m_MaxSize: {x: 10000, y: 10000}
@@ -119,7 +119,7 @@ MonoBehaviour:
   m_MinSize: {x: 400, y: 200}
   m_MaxSize: {x: 32384, y: 16192}
   vertical: 0
-  controlID: 47
+  controlID: 77
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -144,7 +144,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 200}
   m_MaxSize: {x: 24288, y: 16192}
   vertical: 1
-  controlID: 48
+  controlID: 78
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_MinSize: {x: 300, y: 100}
   m_MaxSize: {x: 24288, y: 8096}
   vertical: 0
-  controlID: 175
+  controlID: 79
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -216,8 +216,8 @@ MonoBehaviour:
     y: 0
     width: 587.19995
     height: 622.4
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
@@ -242,8 +242,8 @@ MonoBehaviour:
     y: 0
     width: 600.00006
     height: 622.4
-  m_MinSize: {x: 202, y: 221}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -275,7 +275,7 @@ MonoBehaviour:
   m_MinSize: {x: 200, y: 100}
   m_MaxSize: {x: 16192, y: 8096}
   vertical: 0
-  controlID: 49
+  controlID: 120
 --- !u!114 &12
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -1546,9 +1546,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: 86900000
-      m_LastClickedID: 36998
-      m_ExpandedIDs: 785bc1ff0afbffff
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 0afbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -1819,9 +1819,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: -2.8479006, y: -2.2712352, z: -7.013856}
+    m_Target: {x: 0, y: -0.00000011920929, z: -0.99999994}
     speed: 2
-    m_Value: {x: -2.8479006, y: -2.2712352, z: -7.013856}
+    m_Value: {x: 0, y: -0.00000011920929, z: -0.99999994}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -1868,13 +1868,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0.023099482, y: -0.9556427, z: 0.07787242, w: 0.28339997}
+    m_Target: {x: 0.050134275, y: -0.77529323, z: 0.06199685, w: 0.626682}
     speed: 2
-    m_Value: {x: 0.023097564, y: -0.9555633, z: 0.07786595, w: 0.28337643}
+    m_Value: {x: 0.05013009, y: -0.77522856, z: 0.061991677, w: 0.6266297}
   m_Size:
-    m_Target: 6.516531
+    m_Target: 4.813407
     speed: 2
-    m_Value: 6.516531
+    m_Value: 4.813407
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -2316,22 +2316,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Scripts/Gizmo
+    - Assets/ART/Models/Prop
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 16
   m_LastFolders:
-  - Assets/Scripts/Gizmo
+  - Assets/ART/Models/Prop
   m_LastFoldersGridSize: 16
   m_LastProjectPath: D:\06_RnD_Unity\UnityAssetBatcher\AssetBatcher
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: c0740000
-    m_LastClickedID: 29888
-    m_ExpandedIDs: 00000000fa720000fc720000fe72000000730000027300000473000006730000087300000a7300000c7300000e73000010730000127300001473000016730000187300001c7300001e7300008682000000ca9a3b
+    scrollPos: {x: 0, y: 40.599976}
+    m_SelectedIDs: c8850000
+    m_LastClickedID: 34248
+    m_ExpandedIDs: 0000000046740000487400004a7400004c7400004e74000050740000527400005474000056740000587400005a7400005c7400005e74000060740000627400006474000066740000687400006a7400006c7400001476000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2359,7 +2359,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000fa720000fc720000fe72000000730000027300000473000006730000087300000a7300000c7300000e73000010730000127300001473000016730000187300001a7300001c7300001e730000
+    m_ExpandedIDs: 0000000046740000487400004a7400004c7400004e74000050740000527400005474000056740000587400005a7400005c7400005e74000060740000627400006474000066740000687400006a7400006c740000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -2390,15 +2390,15 @@ MonoBehaviour:
     m_ExpandedInstanceIDs: c62300006cc30000a2be00001ebf0000107100003c73000000000000048400003a760000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
-      m_Name: GizmoTransform
-      m_OriginalName: GizmoTransform
+      m_Name: Prop
+      m_OriginalName: Prop
       m_EditFieldRect:
         serializedVersion: 2
         x: 0
         y: 0
         width: 0
         height: 0
-      m_UserData: 37366
+      m_UserData: 34248
       m_IsWaitingForDelay: 0
       m_IsRenaming: 0
       m_OriginalEventType: 0

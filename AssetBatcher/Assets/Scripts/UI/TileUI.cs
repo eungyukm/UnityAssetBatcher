@@ -3,22 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class TileUI : MonoBehaviour
 {
-    public UIDocument floorUIDocument;
-    public Button tileTypeButton;
-    public Button floorTypeButton02;
-
-    public Button PreviousButton;
+    [SerializeField] private UIDocument floorUIDocument;
+    [SerializeField] private CardManager cardManager;
     
+    private Button _previousButton;
+    
+    private Button _floorTypeButton01;
+    private Button _floorTypeButton02;
 
-    public CardManager CardManager;
+    public UnityAction<UIState> OnClosePanel;
 
-    public UnityAction OnClosePanel;
-
-    private VisualElement tileUIRoot;
+    private VisualElement _tileUIRoot;
 
     private void Awake()
     {
@@ -27,31 +27,34 @@ public class TileUI : MonoBehaviour
 
     private void OnEnable()
     {
-        tileUIRoot = floorUIDocument.GetComponent<UIDocument>().rootVisualElement;
-        tileTypeButton = tileUIRoot.Q<Button>("Floor01");
-        PreviousButton = tileUIRoot.Q<Button>("PreviousBtn");
+        _tileUIRoot = floorUIDocument.rootVisualElement;
+        _previousButton = _tileUIRoot.Q<Button>("PreviousBtn");
+        _floorTypeButton01 = _tileUIRoot.Q<Button>("Floor01");
         
-        tileTypeButton.clicked += TileTypeButtonPressed;
+        
+        _previousButton.clickable.clicked += ClosePanel;
+        _floorTypeButton01.clicked += FloorTypeButton01Pressed;
 
-        floorTypeButton02 = tileUIRoot.Q<Button>("Floor02");
-        floorTypeButton02.clicked += () =>
+        _floorTypeButton02 = _tileUIRoot.Q<Button>("Floor02");
+        _floorTypeButton02.clicked += () =>
         {
-        };
-
-        PreviousButton.clickable.clicked += () =>
-        {
-            Debug.Log("PreviousButton Clicked!!");
-            OnClosePanel?.Invoke();
         };
     }
 
     private void OnDisable()
     {
-        tileTypeButton.clicked -= TileTypeButtonPressed;
+        _previousButton.clickable.clicked += ClosePanel;
+        _floorTypeButton01.clicked -= FloorTypeButton01Pressed;
+    }
+    
+    private void ClosePanel()
+    {
+        UIState goToPanel = UIState.MainUI;
+        OnClosePanel?.Invoke(goToPanel);
     }
 
-    private void TileTypeButtonPressed()
+    private void FloorTypeButton01Pressed()
     {
-        CardManager.ActivateCard();
+        cardManager.ActivateCard();
     }
 }

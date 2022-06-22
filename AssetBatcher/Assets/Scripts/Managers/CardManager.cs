@@ -1,6 +1,8 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 /// <summary>
 /// 카드의 Drag 움직임 관리
@@ -10,7 +12,7 @@ public class CardManager : MonoBehaviour
     public Camera mainCamera;
     public LayerMask playingFieldMask;
     public GameObject cardPrefab;
-    public DeckData playersDeck;
+    [SerializeField] private DeckData[] playerDecks;
     public MeshRenderer forbiddenAreaRenderer;
 
     public UnityAction<CardData, Vector3, Placeable.Faction> OnCardUsed;
@@ -22,6 +24,7 @@ public class CardManager : MonoBehaviour
     private bool cardIsActive = false; //사실일 때, 카드는 운동장 위로 끌려가고 있다.
     private GameObject previewHolder;
 
+    public DeckData _playersDeck;
     public Card card;
 
     public DeployMode DeployMode;
@@ -47,8 +50,6 @@ public class CardManager : MonoBehaviour
 
     private void Start()
     {
-        LoadDeck();
-
         InitEnvironment();
     }
 
@@ -72,20 +73,45 @@ public class CardManager : MonoBehaviour
     }
     
     /// <summary>
-    /// 카드 덱 로드
+    /// 01. 카드 덱 로드
     /// </summary>
-    public void LoadDeck()
+    public void LoadDeck(DeckType deckType)
     {
-        Debug.Log("Load Deck!!");
         DeckLoader newDeckLoaderComp = gameObject.AddComponent<DeckLoader>();
         newDeckLoaderComp.OnDeckLoaded += DeckLoaded;
-        newDeckLoaderComp.LoadDeck(playersDeck);
+        DeckData deck = SwitchDeck(deckType.ToString());
+        if (deck != null)
+        {
+            _playersDeck = deck;
+            newDeckLoaderComp.LoadDeck(deck);
+        }
+        else
+        {
+            Debug.LogWarning("LoadDeck Fail!!");
+        }
+    }
+    
+    /// <summary>
+    /// DeckLabel과 동일한 deck을 Return 하는 코드
+    /// return null을 할 경우, 해당 Deck이 없음
+    /// </summary>
+    /// <param name="deckLabel"></param>
+    /// <returns></returns>
+    private DeckData SwitchDeck(string deckLabel)
+    {
+        Debug.Log("Deck Label : " + deckLabel);
+        foreach (var deck in playerDecks)
+        {
+            if (deck.labelsToInclude[0].labelString == deckLabel)
+            {
+                return deck;
+            }
+        }
+        return null;
     }
 
     private void DeckLoaded()
     {
-        Debug.Log("Player's deck loaded");
-        
         LoadCard();
     }
 
@@ -100,7 +126,7 @@ public class CardManager : MonoBehaviour
         card = backupCardTransform.GetComponent<Card>();
         
         //카드 스크립트에 카드 데이터 입력
-        card.InitialiseWithData(playersDeck.GetCardFromDeck());
+        card.InitialiseWithData(_playersDeck.GetCardFromDeck());
 
         // 카드 SetActive false
         DeActivateCard();
@@ -111,15 +137,11 @@ public class CardManager : MonoBehaviour
     /// </summary>
     private void CardReleased()
     {
-        Debug.Log("[CM] CardReleased!!");
-        
         RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(card.MousePos);
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask))
         {
-            Debug.Log("[CM] pos : " + hit.point);
-
             Vector3 hitPos;
             // Grid System을 사용했을 경우,
             if (GridSystem.GridActive)
@@ -267,4 +289,14 @@ public enum DeployMode
 {
     DeSelectedObject,
     SelectedObject,
+}
+
+public enum DeckType
+{
+    None,
+    Tile,
+    Wall,
+    Prop,
+    Light,
+    NPC
 }

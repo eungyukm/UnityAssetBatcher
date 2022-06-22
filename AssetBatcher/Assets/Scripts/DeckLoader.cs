@@ -19,8 +19,11 @@ public class DeckLoader : MonoBehaviour
     {
         targetDeck.CardsRetrieved((List<CardData>)obj.Result);
 
-        if(OnDeckLoaded != null)
+        if (OnDeckLoaded != null)
+        {
             OnDeckLoaded();
+        }
+            
 
         Destroy(this);
     }

@@ -9,6 +9,7 @@ public class MainUI : MonoBehaviour
 {
     public UIDocument MainUIDocument;
     public Button TitleButton;
+    public Button WallButton;
 
     public UnityAction<UIState> OnUISateChanged;
     
@@ -21,17 +22,25 @@ public class MainUI : MonoBehaviour
     {
         var mainUIRoot = MainUIDocument.GetComponent<UIDocument>().rootVisualElement;
         TitleButton = mainUIRoot.Q<Button>("FloorBtn");
+        WallButton = mainUIRoot.Q<Button>("WallBtn");
+        
         TitleButton.clicked += TitleButtonPressed;
+        WallButton.clicked += WallButtonPressed;
     }
 
     private void OnDisable()
     {
         TitleButton.clicked -= TitleButtonPressed;
+        WallButton.clicked -= WallButtonPressed;
     }
 
     private void TitleButtonPressed()
     {
-        Debug.Log("floorButton Pressed!!");
         OnUISateChanged?.Invoke(UIState.TileUI);
+    }
+
+    private void WallButtonPressed()
+    {
+        OnUISateChanged?.Invoke(UIState.WallUI);
     }
 }

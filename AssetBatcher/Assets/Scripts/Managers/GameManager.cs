@@ -264,6 +264,7 @@ public class GameManager : MonoBehaviour
 
             case Placeable.PlaceableType.Obstacle:
                 var oScript = go.GetComponent<Obstacle>();
+                // TODO : Die Method 수정
                 oScript.Activate(pDataRef);
 
                 // TODO : 아래 수정
@@ -276,7 +277,8 @@ public class GameManager : MonoBehaviour
                 //TODO: activate the spell and… ?
                 break;
         }
-
+        
+        // TODO : Die Method 수정
         go.GetComponent<Placeable>().OnDie += OnPlaceableDead;
     }
 
