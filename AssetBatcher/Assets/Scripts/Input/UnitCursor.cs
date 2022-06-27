@@ -22,7 +22,7 @@ public class UnitCursor : MonoBehaviour
 
     public WorldObjectsManager WorldObjectsManager;
 
-    [FormerlySerializedAs("Mode")] public GameTransformMode transformMode;
+    public GameTransformMode transformMode = GameTransformMode.SelectMode;
 
     private GameObject hitObj;
 
@@ -161,12 +161,12 @@ public class UnitCursor : MonoBehaviour
         Arrow.SetActive(true);
         Arrow.transform.position = hitObj.transform.position;
     }
-}
-
-public enum GameTransformMode
-{
-    SelectMode,
-    MoveMode,
-    ScaleMode,
-    RotationMode
+    
+    public enum GameTransformMode
+    {
+        SelectMode,
+        MoveMode,
+        ScaleMode,
+        RotationMode
+    }
 }

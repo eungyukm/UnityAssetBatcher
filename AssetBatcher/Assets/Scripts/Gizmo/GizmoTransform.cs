@@ -7,10 +7,9 @@ using RuntimeGizmos;
 public class GizmoTransform : MonoBehaviour
 {
 	public TransformType transformType = TransformType.Move;
-    
-    public KeyCode translationSnapping = KeyCode.LeftControl;
-    
-    public float movementSnap = .25f;
+
+	public float movementSnap = .25f;
+	public float scaleSnap = 0.25f;
     
     public float handleLength = .25f;
     public float handleWidth = .003f;
@@ -79,6 +78,47 @@ public class GizmoTransform : MonoBehaviour
     void Update()
     {
         SetNearAxis();
+
+        if (mainTargetRoot == null)
+        {
+	        return;
+        }
+        
+        Vector2 mo = new Vector2(InputReader.MousePos.x, InputReader.MousePos.y);
+
+        float theta = CalculateRotationAmount(Axis.X, mo, mainTargetRoot);
+
+        mainTargetRoot.transform.localRotation = Quaternion.Euler(Vector3.right * theta);
+    }
+
+    private float CalculateRotationAmount(Axis axis, Vector2 mousePos, Transform target)
+    {
+	    Ray mouseRay = Camera.main.ScreenPointToRay(mousePos);
+	    Debug.DrawRay(mouseRay.origin, mouseRay.direction * 1000f, Color.red);
+	    float mouseRayLength = mouseRay.direction.magnitude;
+	    float targetVectorLength = 0f;
+
+	    switch (axis)
+	    {
+		    case Axis.X:
+			    // targetVectorLength = target.up.magnitude;
+			    targetVectorLength = Vector3.up.magnitude;
+			    break;
+		    case Axis.Y:
+			    targetVectorLength = target.right.magnitude;
+			    break;
+		    case Axis.Z:
+			    targetVectorLength = target.forward.magnitude;
+			    break;
+	    }
+	    // float dot = Vector3.Dot(mainTargetRoot.up, -mouseRay.direction);
+	    float dot = Vector3.Dot(Vector3.up, -mouseRay.direction);
+	    float radian = Mathf.Acos(dot / mouseRayLength / targetVectorLength);
+	    float theta = radian * Mathf.Rad2Deg;
+	    
+	    Debug.Log("up Vector : " + target.up);
+	    Debug.Log("theta : " + theta);
+	    return theta;
     }
 
     void LateUpdate()
@@ -145,16 +185,11 @@ public class GizmoTransform : MonoBehaviour
 	    isTransforming = true;
 
 	    Vector3 originalPivot = pivotPoint;
-
-	    Vector3 otherAxis1, otherAxis2;
-	    Vector3 axis = GetNearAxisDirection(out otherAxis1, out otherAxis2);
+	    
+	    Vector3 axis = GetNearAxisDirection();
 	    Vector3 planeNormal = hasTranslatingAxisPlane ? axis : (transform.position - originalPivot).normalized;
 	    Vector3 projectedAxis = Vector3.ProjectOnPlane(axis, planeNormal).normalized;
 	    Vector3 previousMousePosition = Vector3.zero;
-
-	    Vector3 currentSnapMovementAmount = Vector3.zero;
-	    float currentSnapRotationAmount = 0;
-	    float currentSnapScaleAmount = 0;
 
 	    while (isMoseLeftClicked)
 	    {
@@ -168,8 +203,17 @@ public class GizmoTransform : MonoBehaviour
 		    {
 			    if (transType == TransformType.Move)
 			    {
-				    currentSnapMovementAmount = CurrentSnapMovementAmount(mousePosition, previousMousePosition,
-					    projectedAxis, axis, isSnapping, currentSnapMovementAmount, otherAxis1, otherAxis2);
+				    CurrentSnapMovementAmount(mousePosition, previousMousePosition,
+					    projectedAxis, axis, isSnapping);
+			    }
+			    else if (transType == TransformType.Rotate)
+			    {
+
+			    }
+			    else if(transType == TransformType.Scale)
+			    {
+				    CurrentSnapScaleAmount(mousePosition, previousMousePosition,
+					    projectedAxis, axis, isSnapping);				    
 			    }
 		    }
 
@@ -183,64 +227,38 @@ public class GizmoTransform : MonoBehaviour
 
 	    SetPivotPoint();
     }
-
-    private Vector3 CurrentSnapMovementAmount(Vector3 mousePosition, Vector3 previousMousePosition,
-	    Vector3 projectedAxis, Vector3 axis, bool isSnapping, Vector3 currentSnapMovementAmount, Vector3 otherAxis1,
-	    Vector3 otherAxis2)
+    /// <summary>
+    /// 움직임 값을 연산합니다.
+    /// </summary>
+    /// <param name="mousePosition"></param>
+    /// <param name="previousMousePosition"></param>
+    /// <param name="projectedAxis"></param>
+    /// <param name="axis"></param>
+    /// <param name="isSnapping"></param>
+    private void CurrentSnapMovementAmount(Vector3 mousePosition, Vector3 previousMousePosition,
+	    Vector3 projectedAxis, Vector3 axis, bool isSnapping)
     {
 	    Vector3 movement = Vector3.zero;
-
-	    if (hasTranslatingAxisPlane)
-	    {
-		    movement = mousePosition - previousMousePosition;
-	    }
-	    else
-	    {
-		    float moveAmount = ExtVector3.MagnitudeInDirection(mousePosition - previousMousePosition, projectedAxis) *
-		                       moveSpeedMultiplier;
-		    movement = axis * moveAmount;
-	    }
+	    Vector3 currentSnapMovementAmount = Vector3.zero;
+	    
+	    float moveAmount = ExtVector3.MagnitudeInDirection(mousePosition - previousMousePosition, projectedAxis) *
+	                       moveSpeedMultiplier;
+	    movement = axis * moveAmount;
 
 	    if (isSnapping && movementSnap > 0)
 	    {
-		    currentSnapMovementAmount += movement;
 		    movement = Vector3.zero;
+		    
+		    moveAmount = ExtVector3.MagnitudeInDirection(mousePosition - mainTargetRoot.transform.position, projectedAxis) *
+		                 moveSpeedMultiplier;
+		    currentSnapMovementAmount += axis * moveAmount;
 
-		    if (hasTranslatingAxisPlane)
+		    float remainder;
+		    float snapAmount = CalculateSnapAmount(movementSnap, currentSnapMovementAmount.magnitude, out remainder);
+
+		    if (snapAmount != 0)
 		    {
-			    float amountInAxis1 = ExtVector3.MagnitudeInDirection(currentSnapMovementAmount, otherAxis1);
-			    float amountInAxis2 = ExtVector3.MagnitudeInDirection(currentSnapMovementAmount, otherAxis2);
-
-			    float remainder1;
-			    float snapAmount1 = CalculateSnapAmount(movementSnap, amountInAxis1, out remainder1);
-			    float remainder2;
-			    float snapAmount2 = CalculateSnapAmount(movementSnap, amountInAxis2, out remainder2);
-
-			    if (snapAmount1 != 0)
-			    {
-				    Vector3 snapMove = (otherAxis1 * snapAmount1);
-				    movement += snapMove;
-				    currentSnapMovementAmount -= snapMove;
-			    }
-
-			    if (snapAmount2 != 0)
-			    {
-				    Vector3 snapMove = (otherAxis2 * snapAmount2);
-				    movement += snapMove;
-				    currentSnapMovementAmount -= snapMove;
-			    }
-		    }
-		    else
-		    {
-			    float remainder;
-			    float snapAmount =
-				    CalculateSnapAmount(movementSnap, currentSnapMovementAmount.magnitude, out remainder);
-
-			    if (snapAmount != 0)
-			    {
-				    movement = currentSnapMovementAmount.normalized * snapAmount;
-				    currentSnapMovementAmount = currentSnapMovementAmount.normalized * remainder;
-			    }
+			    movement = currentSnapMovementAmount.normalized * snapAmount;
 		    }
 	    }
 
@@ -249,50 +267,119 @@ public class GizmoTransform : MonoBehaviour
 	    target.Translate(movement, Space.World);
 
 	    SetPivotPointOffset(movement);
-	    return currentSnapMovementAmount;
     }
+    
+    /// <summary>
+    /// Scale 조절하는 코드
+    /// </summary>
+    /// <param name="mousePosition"></param>
+    /// <param name="previousMousePosition"></param>
+    /// <param name="projectedAxis"></param>
+    /// <param name="axis"></param>
+    /// <param name="isSnapping"></param>
+    private void CurrentSnapScaleAmount(Vector3 mousePosition, Vector3 previousMousePosition,
+	    Vector3 projectedAxis, Vector3 axis, bool isSnapping)
+    {
+	    Transform target = mainTargetRoot;
+	    
+	    float scale = 0f;
+	    float currentScaleAmount = 0f;
 
+	    float scaleAmount = ExtVector3.MagnitudeInDirection(mousePosition - previousMousePosition, projectedAxis) *
+	                        moveSpeedMultiplier;
+
+	    if (isSnapping && scaleSnap > 0)
+	    {
+		    currentScaleAmount = ExtVector3.MagnitudeInDirection(mousePosition - mainTargetRoot.transform.position , projectedAxis) *
+		                         moveSpeedMultiplier;;
+		    scaleAmount = 0f;
+		    
+		    float localScale = (axis.x * target.transform.localScale.x) + 
+		                       (axis.y * target.transform.localScale.y) +
+		                       (axis.z * target.transform.localScale.z);
+		    
+		    float remainder;
+		    float snapAmount =
+			    CalculateScaleSnapAmount(scaleSnap, localScale, currentScaleAmount);
+
+		    if (snapAmount != 0)
+		    {
+			    scaleAmount = snapAmount;
+		    }
+		    
+		    target.transform.localScale += axis * scaleAmount;
+	    }
+	    else
+	    {
+		    target.transform.localScale += axis * scaleAmount;
+	    }
+	    
+    }
     #endregion
 
     float CalculateSnapAmount(float snapValue, float currentAmount, out float remainder)
     {
+	    Debug.Log("currentAmount : " + currentAmount);
 	    remainder = 0;
-	    if (snapValue <= 0) return currentAmount;
+	    if (snapValue <= 0)
+	    {
+		    return currentAmount;
+	    }
 
 	    float currentAmountAbs = Mathf.Abs(currentAmount);
 	    if (currentAmountAbs > snapValue)
 	    {
 		    remainder = currentAmountAbs % snapValue;
+		    Debug.Log("1 : " + snapValue);
+		    Debug.Log("2 : " + (Mathf.Sign(currentAmount)));
+		    Debug.Log("3 : " + Mathf.Floor(currentAmountAbs / snapValue));
 		    return snapValue * (Mathf.Sign(currentAmount) * Mathf.Floor(currentAmountAbs / snapValue));
 	    }
 
 	    return 0;
     }
-
-    Vector3 GetNearAxisDirection(out Vector3 otherAxis1, out Vector3 otherAxis2)
+    
+    float CalculateScaleSnapAmount(float snapValue, float localScale, float currentAmount)
     {
-	    otherAxis1 = otherAxis2 = Vector3.zero;
+	    if (snapValue <= 0)
+	    {
+		    return currentAmount;
+	    }
 
+	    float currentAmountAbs = Mathf.Abs(currentAmount);
+	    Debug.Log("localScale : " + localScale);
+	    Debug.Log("currentAmount : " + currentAmount);
+	    if (currentAmountAbs > localScale + snapValue)
+	    {
+		    Debug.Log("1 : " + currentAmountAbs);
+		    Debug.Log("2 : " + (Mathf.Sign(currentAmount)));
+		    Debug.Log("3 : " + Mathf.Floor(currentAmountAbs / snapValue));
+		    return snapValue;
+	    }
+
+	    return 0;
+    }
+    
+    /// <summary>
+    /// 근접한 Axis를 Retrun 합니다.
+    /// </summary>
+    /// <returns></returns>
+    Vector3 GetNearAxisDirection()
+    {
 	    if (nearAxis != Axis.None)
 	    {
 		    if (nearAxis == Axis.X)
 		    {
-			    otherAxis1 = axisInfo.yDirection;
-			    otherAxis2 = axisInfo.zDirection;
 			    return axisInfo.xDirection;
 		    }
 
 		    if (nearAxis == Axis.Y)
 		    {
-			    otherAxis1 = axisInfo.xDirection;
-			    otherAxis2 = axisInfo.zDirection;
 			    return axisInfo.yDirection;
 		    }
 
 		    if (nearAxis == Axis.Z)
 		    {
-			    otherAxis1 = axisInfo.xDirection;
-			    otherAxis2 = axisInfo.yDirection;
 			    return axisInfo.zDirection;
 		    }
 
@@ -475,17 +562,14 @@ public class GizmoTransform : MonoBehaviour
     {
 	    handleLines.Clear();
 
-	    if (transformType == TransformType.Move)
+	    if (transformType == TransformType.Move || transformType == TransformType.Scale)
 	    {
 		    float lineWidth = handleWidth * GetDistanceMultiplier();
 
 		    float xLineLength = 0;
 		    float yLineLength = 0;
 		    float zLineLength = 0;
-		    if (transformType == TransformType.Move)
-		    {
-			    xLineLength = yLineLength = zLineLength = GetHandleLength();
-		    }
+		    xLineLength = yLineLength = zLineLength = GetHandleLength();
 
 		    AddQuads(pivotPoint, axisInfo.xDirection, axisInfo.yDirection, axisInfo.zDirection, xLineLength, lineWidth,
 			    handleLines.x);
@@ -493,6 +577,10 @@ public class GizmoTransform : MonoBehaviour
 			    handleLines.y);
 		    AddQuads(pivotPoint, axisInfo.zDirection, axisInfo.xDirection, axisInfo.yDirection, zLineLength, lineWidth,
 			    handleLines.z);
+	    }
+	    else if (transformType == TransformType.Rotate)
+	    {
+		    
 	    }
     }
 

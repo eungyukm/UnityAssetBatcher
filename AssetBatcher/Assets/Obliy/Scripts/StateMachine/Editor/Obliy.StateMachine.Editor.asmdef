@@ -1,0 +1,16 @@
+{
+    "name": "Obliy.StateMachine.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:21b808c92af10412f9ebf4e00ef705c8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

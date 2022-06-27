@@ -1,69 +1,155 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class TopPanelUI : MonoBehaviour
 {
-    public UIDocument TopPanelDocument;
+    [SerializeField]private UIDocument topPanelDocument;
+
+    private VisualElement topPanelUIRoot;
+    private Button _selectButtom;
+    private Button _moveButton;
+    private Button _rotationButton;
+    private Button _scaleButton;
+    private Button _alignmentButton;
+    private Button _playButton;
+
+    public GridSystem gridSystem;
+    public UnitCursor unitCursor;
     
-    private Button SelectButtom;
-    private Button MoveButton;
-    private Button RotationButton;
-    private Button ScaleButton;
-    private Button AlignmentButton;
-
-    public GridSystem GridSystem;
-    public UnitCursor UnitCursor;
-
+    
     private bool _onSnap = false;
+
+    private const string iconSelectStyle = "Icon_Selected";
+    private const string labelSelectStyle = "Label_Selected";
 
     private void OnEnable()
     {
-        var topPanelUIRoot = TopPanelDocument.GetComponent<UIDocument>().rootVisualElement;
+        topPanelUIRoot = topPanelDocument.GetComponent<UIDocument>().rootVisualElement;
 
-        SelectButtom = topPanelUIRoot.Q<Button>("SelectBtn");
-        SelectButtom.clicked += SelectButtonPressed;
+        _selectButtom = topPanelUIRoot.Q<Button>("SelectBtn");
+        _selectButtom.clicked += SelectButtonPressed;
 
-        MoveButton = topPanelUIRoot.Q<Button>("MoveBtn");
-        MoveButton.clicked += MoveButtonPressed;
+        _moveButton = topPanelUIRoot.Q<Button>("MoveBtn");
+        _moveButton.clicked += MoveButtonPressed;
 
-        RotationButton = topPanelUIRoot.Q<Button>("RotationBtn");
-        RotationButton.clicked += RotationButtonPressed;
+        _rotationButton = topPanelUIRoot.Q<Button>("RotationBtn");
+        _rotationButton.clicked += RotationButtonPressed;
         
-        ScaleButton = topPanelUIRoot.Q<Button>("ScaleBtn");
-        ScaleButton.clicked += ScaleButtonPressed;
+        _scaleButton = topPanelUIRoot.Q<Button>("ScaleBtn");
+        _scaleButton.clicked += ScaleButtonPressed;
         
-        AlignmentButton = topPanelUIRoot.Q<Button>("AlignmentBtn");
-        AlignmentButton.clicked += AlignmentButtonPressed;
+        _alignmentButton = topPanelUIRoot.Q<Button>("AlignmentBtn");
+        _alignmentButton.clicked += AlignmentButtonPressed;
+
+        _playButton = topPanelUIRoot.Q<Button>("PlayBtn");
+        _playButton.clicked += PlayButtonPressed;
     }
     
     private void SelectButtonPressed()
     {
-        UnitCursor.SwitchMode(GameTransformMode.SelectMode);
+        unitCursor.SwitchMode(UnitCursor.GameTransformMode.SelectMode);
+        SwitchTransformMode();
     }
 
     private void MoveButtonPressed()
     {
-        UnitCursor.SwitchMode(GameTransformMode.MoveMode);
-
-        UnitCursor.OnMoveButtonPressed?.Invoke();
+        unitCursor.SwitchMode(UnitCursor.GameTransformMode.MoveMode);
+        SwitchTransformMode();
     }
 
     private void RotationButtonPressed()
     {
-        UnitCursor.SwitchMode(GameTransformMode.RotationMode);
+        unitCursor.SwitchMode(UnitCursor.GameTransformMode.RotationMode);
+        SwitchTransformMode();
     }
 
     private void ScaleButtonPressed()
     {
-        UnitCursor.SwitchMode(GameTransformMode.ScaleMode);
+        unitCursor.SwitchMode(UnitCursor.GameTransformMode.ScaleMode);
+        SwitchTransformMode();
     }
 
     private void AlignmentButtonPressed()
     {
-        Debug.Log("OnClicked Snap!!");
         _onSnap = !_onSnap;
-        GridSystem.SnapSwitch(_onSnap);
+        gridSystem.SnapSwitch(_onSnap);
+
+        if (_onSnap)
+        {
+            SelectedButtonStyle("Snap");
+        }
+        else
+        {
+            DeSelectedButtonStyle("Snap");
+        }
+    }
+
+    private void PlayButtonPressed()
+    {
+        SceneManager.LoadScene("InGame");
+    }
+
+    private void SwitchTransformMode()
+    {
+        AllDeSelectedButton();
+        switch (unitCursor.transformMode)
+        {
+            case UnitCursor.GameTransformMode.SelectMode:
+                SelectedButtonStyle("Select");
+                break;
+            case UnitCursor.GameTransformMode.MoveMode:
+                SelectedButtonStyle("Move");
+                break;
+            case UnitCursor.GameTransformMode.ScaleMode:
+                SelectedButtonStyle("Scale");
+                break;
+            case UnitCursor.GameTransformMode.RotationMode:
+                SelectedButtonStyle("Rotation");
+                break;
+        }
+    }
+
+    private void AllDeSelectedButton()
+    {
+        var SelectIcon = topPanelUIRoot.Q<VisualElement>("SelectIcon");
+        var MoveIcon = topPanelUIRoot.Q<VisualElement>("MoveIcon");
+        var RotationIcon = topPanelUIRoot.Q<VisualElement>("RotationIcon");
+        var ScaleIcon = topPanelUIRoot.Q<VisualElement>("ScaleIcon");
+        
+        var SelectLabel = topPanelUIRoot.Q<VisualElement>("SelectLabel");
+        var MoveLabel = topPanelUIRoot.Q<VisualElement>("MoveLabel");
+        var RotationLabel = topPanelUIRoot.Q<VisualElement>("RotationLabel");
+        var ScaleLabel = topPanelUIRoot.Q<VisualElement>("ScaleLabel");
+        
+        SelectIcon.RemoveFromClassList(iconSelectStyle);
+        MoveIcon.RemoveFromClassList(iconSelectStyle);
+        RotationIcon.RemoveFromClassList(iconSelectStyle);
+        ScaleIcon.RemoveFromClassList(iconSelectStyle);
+        
+        SelectLabel.RemoveFromClassList(labelSelectStyle);
+        MoveLabel.RemoveFromClassList(labelSelectStyle);
+        RotationLabel.RemoveFromClassList(labelSelectStyle);
+        ScaleLabel.RemoveFromClassList(labelSelectStyle);
+    }
+
+    private void SelectedButtonStyle(string name)
+    {
+        var icon = topPanelUIRoot.Q<VisualElement>(name + "Icon");
+        var label = topPanelUIRoot.Q<VisualElement>(name + "Label");
+        icon.AddToClassList(iconSelectStyle);
+        label.AddToClassList(labelSelectStyle);
+    }
+
+    private void DeSelectedButtonStyle(string name)
+    {
+        var icon = topPanelUIRoot.Q<VisualElement>(name + "Icon");
+        var label = topPanelUIRoot.Q<VisualElement>(name + "Label");
+        icon.RemoveFromClassList(iconSelectStyle);
+        label.RemoveFromClassList(labelSelectStyle);
     }
 }

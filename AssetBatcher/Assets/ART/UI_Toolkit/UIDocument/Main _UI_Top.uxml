@@ -1,0 +1,41 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/ART/UI_Toolkit/USS/Main_UI.uss?fileID=7433441132597879392&amp;guid=62ec1809b6472cc43aadf21bbd458f95&amp;type=3#Main_UI" />
+    <ui:VisualElement name="TopPanel" style="width: 100%; height: 10%; flex-direction: row; margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; background-color: rgb(255, 255, 255); scale: 1 1;">
+        <ui:Button display-tooltip-when-elided="true" name="HomeBtn" class="Top_Button Button_Text" style="width: 150px; height: 100%;">
+            <ui:VisualElement name="HomeIcon" class="Icon_DeSelected" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/home_icon.png?fileID=2800000&amp;guid=e8f21b2f54709524c943496e4e27666a&amp;type=3#home_icon&apos;); color: rgb(89, 65, 241);" />
+            <ui:Label text="Home" display-tooltip-when-elided="true" name="HomeLabel" class="Label_DeSelected" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="UndoBtn" class="Top_Button Button_Text Top_BT_RD" style="background-image: none; -unity-background-scale-mode: stretch-to-fill; width: 150px; height: 100%;">
+            <ui:VisualElement name="UndoIcon" class="Icon_DeSelected" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/left_arrow_icon.png?fileID=2800000&amp;guid=c5e05c31cd331a244a469efcd8773e56&amp;type=3#left_arrow_icon&apos;); -unity-background-scale-mode: scale-to-fit; -unity-font-style: normal;" />
+            <ui:Label text="Undo" display-tooltip-when-elided="true" name="UndoLabel" class="Label_DeSelected" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="RedoBtn" class="Top_Button" style="background-image: none; -unity-background-scale-mode: stretch-to-fill; width: 150px; height: 100%;">
+            <ui:VisualElement name="RedoIcon" class="IconDefault Icon_DeSelected" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/right_arrow_icon.png?fileID=2800000&amp;guid=0eb82197674d2d14c9790f44f858b5b7&amp;type=3#right_arrow_icon&apos;); -unity-background-scale-mode: scale-to-fit;" />
+            <ui:Label text="Redo" display-tooltip-when-elided="true" name="RedoLabel" class="Label_DeSelected" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="SelectBtn" class="Top_Button Top_BT_RD" style="background-image: none; -unity-background-scale-mode: stretch-to-fill; width: 150px; height: 100%;">
+            <ui:VisualElement name="SelectIcon" class="Icon_DeSelected" style="background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/select_icon.png?fileID=2800000&amp;guid=e2787c87c74ff5847b992690eda89ef2&amp;type=3#select_icon&apos;);" />
+            <ui:Label text="Select" display-tooltip-when-elided="true" name="SelectLabel" class="Label_DeSelected" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="MoveBtn" class="Top_Button Top_BT_RD" style="background-image: none; -unity-background-scale-mode: stretch-to-fill; width: 150px; height: 100%;">
+            <ui:VisualElement name="MoveIcon" class="Icon_DeSelected" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/move_icon.png?fileID=2800000&amp;guid=77dc17f11142514479d14440c0d0b92d&amp;type=3#move_icon&apos;); -unity-background-scale-mode: scale-to-fit; -unity-font-style: normal;" />
+            <ui:Label text="Move" display-tooltip-when-elided="true" name="MoveLabel" class="Label_DeSelected" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="RotationBtn" class="Top_Button Top_BT_RD" style="width: 150px; height: 100%;">
+            <ui:VisualElement name="RotationIcon" class="IconDefault Icon_DeSelected" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/rotate_icon.png?fileID=2800000&amp;guid=7d016a5ae266e4946a255698fd7688cc&amp;type=3#rotate_icon&apos;);" />
+            <ui:Label text="Rotation" display-tooltip-when-elided="true" name="RotationLabel" class="Label_DeSelected" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="ScaleBtn" class="Top_Button Top_BT_RD" style="background-image: none; -unity-background-scale-mode: stretch-to-fill; width: 150px; height: 100%;">
+            <ui:VisualElement name="ScaleIcon" class="IconDefault Icon_DeSelected" style="background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/scale_icon.png?fileID=2800000&amp;guid=863f3dd3658609b45a829df0abae0ecc&amp;type=3#scale_icon&apos;);" />
+            <ui:Label text="Scale" display-tooltip-when-elided="true" name="ScaleLabel" class="Label_DeSelected" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="AlignmentBtn" class="Top_Button Top_BT_RD" style="background-image: none; -unity-background-scale-mode: stretch-to-fill; width: 150px; height: 100%;">
+            <ui:VisualElement name="SnapIcon" class="IconDefault Icon_DeSelected" style="background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/snap_icon.png?fileID=2800000&amp;guid=aa1c8c7ffcb81604996704dc52cc9415&amp;type=3#snap_icon&apos;);" />
+            <ui:Label text="Snap" display-tooltip-when-elided="true" name="SnapLabel" class="Label_DeSelected" />
+        </ui:Button>
+        <ui:Button display-tooltip-when-elided="true" name="PlayBtn" class="Top_Button Top_BT_RD" style="width: 150px; height: 100%;">
+            <ui:VisualElement name="PlayIcon" class="IconDefault Icon_DeSelected" style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/play_icon.png?fileID=2800000&amp;guid=6247620cc2ecda0418456e7e09c3ea05&amp;type=3#play_icon&apos;); -unity-background-scale-mode: scale-to-fit; -unity-font-style: normal;" />
+            <ui:Label text="Play" display-tooltip-when-elided="true" name="PlayLabel" class="Label_DeSelected" />
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

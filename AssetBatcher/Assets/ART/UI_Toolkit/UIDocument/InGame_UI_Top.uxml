@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/ART/UI_Toolkit/USS/Main_UI.uss?fileID=7433441132597879392&amp;guid=62ec1809b6472cc43aadf21bbd458f95&amp;type=3#Main_UI" />
+    <ui:VisualElement style="width: 100%; height: 10%; flex-direction: row-reverse; margin-left: 5px; margin-right: 5px; margin-top: 5px; margin-bottom: 5px; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px;">
+        <ui:Button text="Exit" display-tooltip-when-elided="true" name="ExitBtn" style="background-image: none; -unity-background-scale-mode: stretch-to-fill; -unity-text-align: lower-center; border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom-width: 1px; width: 150px; height: 100%; color: rgb(0, 0, 0); font-size: 20px; -unity-font-style: bold;">
+            <ui:VisualElement style="width: 100%; height: 70%; background-image: url(&apos;project://database/Assets/ART/Textures/Icon/exit_icon.png?fileID=2800000&amp;guid=6432fd414a429a54bb0a132e9e4fab4a&amp;type=3#exit_icon&apos;); -unity-background-scale-mode: scale-to-fit; -unity-font-style: normal;" />
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>
