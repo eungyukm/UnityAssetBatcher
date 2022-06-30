@@ -17,12 +17,21 @@ public class ScreenSpaceOutlines : ScriptableRendererFeature
     private class ViewSpaceNormalsTexturePss : ScriptableRenderPass
     {
         private ViewSpaceNormalsTextureSettings normalsTextureSettings;
+        private readonly List<ShaderTagId> shaderTagIdList;
         private readonly RenderTargetHandle normals;
+        
 
         public ViewSpaceNormalsTexturePss(RenderPassEvent renderPassEvent)
         {
             this.renderPassEvent = renderPassEvent;
             normals.Init("_SceneViewSpaceNormals");
+            shaderTagIdList = new List<ShaderTagId>
+            {
+                new ShaderTagId("UniversalForward"),
+                new ShaderTagId("UniversalForwardOnly"),
+                new ShaderTagId("LightweightForward"),
+                new ShaderTagId("SRPDefaultUnlit")
+            };
         }
 
         public override void Configure(CommandBuffer cmd, RenderTextureDescriptor cameraTextureDescriptor)
@@ -45,6 +54,14 @@ public class ScreenSpaceOutlines : ScriptableRendererFeature
             {
                 context.ExecuteCommandBuffer(cmd);
                 cmd.Clear();
+
+                DrawingSettings drawSettings = CreateDrawingSettings(
+                    shaderTagIdList, ref renderingData,
+                    renderingData.cameraData.defaultOpaqueSortFlags);
+                FilteringSettings filteringSettings = FilteringSettings.defaultValue;
+                context.DrawRenderers(renderingData.cullResults,
+                        ref drawSettings, ref filteringSettings);
+                )
             }
         }
 
