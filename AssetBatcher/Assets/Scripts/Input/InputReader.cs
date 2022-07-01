@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 [CreateAssetMenu(menuName = "SO/InputReader", fileName = "InputReader")]
-public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameInput.IUnitCursorModeActions
+public class InputReader : ScriptableObject, GameInput.IUnitCursorModeActions
 {
     private GameInput _gameInput;
 
@@ -11,22 +11,27 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
     public UnityAction<Vector2> OnMouseLeftClickedAction = delegate {  };
     public UnityAction OnMouseLeftClickDownAction = delegate {  };
     public UnityAction OnMouseLeftClickUPAction = delegate {  };
-    public UnityAction<Vector2> OnMouseCursorClickAction = delegate {  };
-    
+
     public UnityAction OnCtrlDownAction = delegate {  };
     public UnityAction OnCtrlUPAction = delegate {  };
     
     public Vector2 MousePos = new Vector2(0, 0);
-
-
-    private InputMode _inputMode = InputMode.Deploy;
+    
+    public UnityAction OnGrapPresseAction = delegate {  };
+    public UnityAction OnScaleAction = delegate {  };
+    public UnityAction OnRotationAction = delegate {  };
+    
+    public UnityAction OnXKeyAction = delegate {  };
+    public UnityAction OnYKeyAction = delegate {  };
+    public UnityAction OnZKeyAction = delegate {  };
+    
+    private InputMode _inputMode = InputMode.None;
 
     private void OnEnable()
     {
         if (_gameInput == null)
         {
             _gameInput = new GameInput();
-            _gameInput.Deployment.SetCallbacks(this);
             _gameInput.UnitCursorMode.SetCallbacks(this);
         }
         _gameInput.Enable();
@@ -42,9 +47,8 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
         Debug.Log("Mode : " + inputMode);
         switch (inputMode)
         {
-            case InputMode.Deploy:
+            case InputMode.None:
                 DeActivateInput();
-                OnDeploymentModeStart();
                 break;
             case InputMode.UnitCursor:
                 DeActivateInput();
@@ -55,13 +59,7 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
 
     private void DeActivateInput()
     {
-        _gameInput.Deployment.Disable();
         _gameInput.UnitCursorMode.Disable();
-    }
-    
-    public void OnDeploymentModeStart()
-    {
-        _gameInput.Deployment.Enable();
     }
 
 
@@ -111,17 +109,57 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
         }
     }
 
-    public Vector2 GetMousePos()
-    {
-        return MousePos;
-    }
-
-    public void OnMouseCursorLeftClick(InputAction.CallbackContext context)
+    public void OnGrap(InputAction.CallbackContext context)
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            OnMouseCursorClickAction?.Invoke(MousePos);
+            OnGrapPresseAction?.Invoke();
         }
+    }
+
+    public void OnScale(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            OnScaleAction?.Invoke();
+        }
+    }
+
+    public void OnRotation(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            OnRotationAction?.Invoke();
+        }
+    }
+
+    public void OnKeyboardX(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            OnXKeyAction?.Invoke();
+        }
+    }
+
+    public void OnKeyboardY(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            OnYKeyAction?.Invoke();
+        }
+    }
+
+    public void OnKeyboardZ(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            OnZKeyAction?.Invoke();
+        }
+    }
+
+    public Vector2 GetMousePos()
+    {
+        return MousePos;
     }
 
     public void OnMousPoint(InputAction.CallbackContext context)
@@ -136,6 +174,6 @@ public class InputReader : ScriptableObject, GameInput.IDeploymentActions, GameI
 }
 public enum InputMode
 {
-    Deploy,
+    None,
     UnitCursor,
 }

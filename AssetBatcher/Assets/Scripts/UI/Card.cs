@@ -62,16 +62,4 @@ public class Card : MonoBehaviour
     {
         canvasGroup.alpha = (isActive) ? .01f : 1f;
     }
-
-    public void InputToggle(bool isActive)
-    {
-        if (isActive)
-        {
-            inputReader.ModeSwitch(InputMode.Deploy);
-        }
-        else
-        {
-            inputReader.ModeSwitch(InputMode.UnitCursor);
-        }
-    }
 }

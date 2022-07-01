@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using RuntimeGizmos;
 
+/// <summary>
+/// 김은규 작성
+/// </summary>
 [RequireComponent(typeof(Camera))]
-public class GizmoTransform : MonoBehaviour
+public class GizmoTransform : MouseCursor
 {
 	public TransformType transformType = TransformType.Move;
 
@@ -19,21 +22,12 @@ public class GizmoTransform : MonoBehaviour
     
     public bool forceUpdatePivotPointOnChange = true;
 
-    public LayerMask selectionMask = Physics.DefaultRaycastLayers;
-    public Camera myCamera {get; private set;}
-
     public bool isTransforming {get; private set;}
 		
     public Axis translatingAxisPlane {get {return planeAxis;}}
     public bool hasTranslatingAxisPlane {get {return translatingAxisPlane != Axis.None && translatingAxisPlane != Axis.Any;}}
 
-    public Vector3 pivotPoint {get; private set;}
-
-    // 선택한 오브젝트
-    public Transform mainTargetRoot;
-
     AxisInfo axisInfo;
-    Axis nearAxis = Axis.None;
     Axis planeAxis = Axis.None;
     TransformType translatingType;
 
@@ -42,84 +36,88 @@ public class GizmoTransform : MonoBehaviour
     WaitForEndOfFrame waitForEndOFFrame = new WaitForEndOfFrame();
     Coroutine forceUpdatePivotCoroutine;
     
-    public GameObject Arrow;
     public GridSystem GridSystem;
-    public InputReader InputReader;
-    
+
     private bool isMoseLeftClicked = false;
     private bool isKeyboardCtrlPressed = false;
 
-    void Awake()
+    private Vector3 originRotation;
+
+    protected override void Awake()
     {
-        myCamera = GetComponent<Camera>();
+	    base.Awake();
     }
 
-    void OnEnable()
+    public override void OnEnable()
     {
+	    base.OnEnable();
         forceUpdatePivotCoroutine = StartCoroutine(ForceUpdatePivotPointAtEndOfFrame());
+    
 
-        InputReader.OnMouseLeftClickDownAction += MouseLeftDown;
-        InputReader.OnMouseLeftClickUPAction += MouseLeftUP;
-        InputReader.OnMouseCursorClickAction += GetTarget;
-
-        InputReader.OnCtrlDownAction += KeyboardCtrlDown;
-        InputReader.OnCtrlUPAction += KeyboardCtrlUP;
+    
+        _InputReader.OnCtrlDownAction += KeyboardCtrlDown;
+        _InputReader.OnCtrlUPAction += KeyboardCtrlUP;
     }
 
-    void OnDisable()
+    public override void OnDisable()
     {
+	    base.OnDisable();
 	    StopCoroutine(forceUpdatePivotCoroutine);
-	    
-	    InputReader.OnMouseLeftClickDownAction -= MouseLeftDown;
-	    InputReader.OnMouseLeftClickUPAction -= MouseLeftUP;
-	    InputReader.OnMouseCursorClickAction -= GetTarget;
     }
+    
     
     void Update()
     {
         SetNearAxis();
-
-        if (mainTargetRoot == null)
-        {
-	        return;
-        }
-        
-        Vector2 mo = new Vector2(InputReader.MousePos.x, InputReader.MousePos.y);
-
-        float theta = CalculateRotationAmount(Axis.X, mo, mainTargetRoot);
-
-        mainTargetRoot.transform.localRotation = Quaternion.Euler(Vector3.right * theta);
+        SetRotate();
     }
 
-    private float CalculateRotationAmount(Axis axis, Vector2 mousePos, Transform target)
+    #region Object Rotation
+    private void SetRotate()
     {
-	    Ray mouseRay = Camera.main.ScreenPointToRay(mousePos);
-	    Debug.DrawRay(mouseRay.origin, mouseRay.direction * 1000f, Color.red);
-	    float mouseRayLength = mouseRay.direction.magnitude;
-	    float targetVectorLength = 0f;
+	    if (transformMode != GameTransformMode.RotationMode)
+	    {
+		    return;
+	    }
 
-	    switch (axis)
+	    if (mainTargetRoot == null)
+	    {
+		    return;
+	    }
+	    Vector3 originMousePos = Camera.main.WorldToScreenPoint(mainTargetRoot.transform.position);
+	    Vector2 mousePos = new Vector2(_InputReader.MousePos.x, _InputReader.MousePos.y);
+
+	    float theta = CalculateRotationAmount(originMousePos, mousePos, mainTargetRoot);
+	    
+	    Vector3 rotation = Vector3.zero;
+
+	    switch (rotateAxis)
 	    {
 		    case Axis.X:
-			    // targetVectorLength = target.up.magnitude;
-			    targetVectorLength = Vector3.up.magnitude;
+			    rotation = originRotation + Vector3.right * theta;
 			    break;
 		    case Axis.Y:
-			    targetVectorLength = target.right.magnitude;
+			    rotation = originRotation + Vector3.up * theta;
 			    break;
 		    case Axis.Z:
-			    targetVectorLength = target.forward.magnitude;
+			    rotation = originRotation + Vector3.forward * theta;
 			    break;
 	    }
-	    // float dot = Vector3.Dot(mainTargetRoot.up, -mouseRay.direction);
-	    float dot = Vector3.Dot(Vector3.up, -mouseRay.direction);
-	    float radian = Mathf.Acos(dot / mouseRayLength / targetVectorLength);
-	    float theta = radian * Mathf.Rad2Deg;
-	    
-	    Debug.Log("up Vector : " + target.up);
-	    Debug.Log("theta : " + theta);
+	    mainTargetRoot.transform.localRotation = Quaternion.Euler(rotation);
+    }
+
+    private float CalculateRotationAmount(Vector2 originMousePos, Vector2 currentMousePos, Transform target)
+    {
+	    float theta = 0f;
+
+	    float rotationAngle = Mathf.Atan2(currentMousePos.y - originMousePos.y, currentMousePos.x - originMousePos.x) * Mathf.Rad2Deg;
+
+	    // 시계 방향 회전하기 위해 -값으로 반환
+	    theta = -rotationAngle;
 	    return theta;
     }
+    #endregion
+
 
     void LateUpdate()
     {
@@ -148,13 +146,13 @@ public class GizmoTransform : MonoBehaviour
 
     #region TransformSelected
     
-    private void MouseLeftDown()
+    protected override void MouseLeftDown()
     {
 	    isMoseLeftClicked = true;
 	    TransformSelected();
     }
 
-    private void MouseLeftUP()
+    protected override void MouseLeftUP()
     {
 	    isMoseLeftClicked = false;
     }
@@ -171,15 +169,17 @@ public class GizmoTransform : MonoBehaviour
 
     private void TransformSelected()
     {
+	    Debug.Log("Transform Selected!");
 	    if (mainTargetRoot != null)
 	    {
+		    Debug.Log("nearAxis : " + nearAxis);
 		    if (nearAxis != Axis.None)
 		    {
 			    StartCoroutine(TransformSelected(translatingType));
 		    }
 	    }
     }
-    
+
     IEnumerator TransformSelected(TransformType transType)
     {
 	    isTransforming = true;
@@ -193,7 +193,7 @@ public class GizmoTransform : MonoBehaviour
 
 	    while (isMoseLeftClicked)
 	    {
-		    Ray mouseRay = myCamera.ScreenPointToRay(InputReader.MousePos);
+		    Ray mouseRay = myCamera.ScreenPointToRay(_InputReader.MousePos);
 		    Vector3 mousePosition =
 			    Geometry.LinePlaneIntersect(mouseRay.origin, mouseRay.direction, originalPivot, planeNormal);
 		    bool isSnapping = isKeyboardCtrlPressed;
@@ -208,7 +208,7 @@ public class GizmoTransform : MonoBehaviour
 			    }
 			    else if (transType == TransformType.Rotate)
 			    {
-
+				    
 			    }
 			    else if(transType == TransformType.Scale)
 			    {
@@ -268,7 +268,7 @@ public class GizmoTransform : MonoBehaviour
 
 	    SetPivotPointOffset(movement);
     }
-    
+
     /// <summary>
     /// Scale 조절하는 코드
     /// </summary>
@@ -317,6 +317,7 @@ public class GizmoTransform : MonoBehaviour
     }
     #endregion
 
+    #region CacluateAmount
     float CalculateSnapAmount(float snapValue, float currentAmount, out float remainder)
     {
 	    Debug.Log("currentAmount : " + currentAmount);
@@ -359,6 +360,8 @@ public class GizmoTransform : MonoBehaviour
 
 	    return 0;
     }
+    #endregion
+
     
     /// <summary>
     /// 근접한 Axis를 Retrun 합니다.
@@ -396,44 +399,18 @@ public class GizmoTransform : MonoBehaviour
     /// <summary>
     /// 선택한 Target을 추가 삭제 함
     /// </summary>
-    void GetTarget(Vector2 pos)
+    protected override void GetTarget(Vector2 pos)
     {
-	    if (nearAxis == Axis.None)
-	    {
-		    RaycastHit hitInfo;
-		    if (Physics.Raycast(myCamera.ScreenPointToRay(InputReader.MousePos), out hitInfo, Mathf.Infinity,
-			        selectionMask))
-		    {
-			    Transform target = hitInfo.transform;
-			    ClearAndAddTarget(target);
-		    }
-	    }
-    }
+	    base.GetTarget(pos);
 
-    void ClearAndAddTarget(Transform target)
-    {
-	    mainTargetRoot = target;
-	    SetPivotPoint();
     }
     #endregion
 
     #region SetPivot
-    /// <summary>
-    /// Pivot을 설정합니다. 
-    /// </summary>
-    public void SetPivotPoint()
-    {
-	    if (mainTargetRoot != null)
-	    {
-		    pivotPoint = mainTargetRoot.position;
-		    Arrow.transform.position = pivotPoint;
-	    }
-    }
-
-    void SetPivotPointOffset(Vector3 offset)
+    private void SetPivotPointOffset(Vector3 offset)
     {
 	    pivotPoint += offset;
-	    Arrow.transform.position = pivotPoint;
+	    SetArrowGizmo();
     }
     #endregion
 
@@ -578,10 +555,6 @@ public class GizmoTransform : MonoBehaviour
 		    AddQuads(pivotPoint, axisInfo.zDirection, axisInfo.xDirection, axisInfo.yDirection, zLineLength, lineWidth,
 			    handleLines.z);
 	    }
-	    else if (transformType == TransformType.Rotate)
-	    {
-		    
-	    }
     }
 
     void AddQuads(Vector3 axisStart, Vector3 axisDirection, Vector3 axisOtherDirection1, Vector3 axisOtherDirection2,
@@ -628,53 +601,27 @@ public class GizmoTransform : MonoBehaviour
 	    return square;
     }
     #endregion
-
-    public enum TransformType
+    
+    # region Move Rotation Scale Setup
+    protected override void OnGrapMode()
     {
-	    Move,
-	    Rotate,
-	    Scale
+	    base.OnGrapMode();
+
+	    transformType = TransformType.Move;
     }
 
-    public enum Axis
+    protected override void OnScaleMode()
     {
-	    None,
-	    X,
-	    Y,
-	    Z,
-	    Any
+	    base.OnScaleMode();
+
+	    transformType = TransformType.Scale;
     }
 
-    public struct AxisInfo
+    protected override void OnRotationMode()
     {
-	    public Vector3 pivot;
-	    public Vector3 xDirection;
-	    public Vector3 yDirection;
-	    public Vector3 zDirection;
+	    base.OnRotationMode();
 
-	    public void Set(Transform target, Vector3 pivot)
-	    {
-		    xDirection = Vector3.right;
-		    yDirection = Vector3.up;
-		    zDirection = Vector3.forward;
-
-		    this.pivot = pivot;
-	    }
+	    transformType = TransformType.Rotate;
     }
-
-    public class AxisVectors
-    {
-	    public List<Vector3> x = new List<Vector3>();
-	    public List<Vector3> y = new List<Vector3>();
-	    public List<Vector3> z = new List<Vector3>();
-	    public List<Vector3> all = new List<Vector3>();
-
-	    public void Clear()
-	    {
-		    x.Clear();
-		    y.Clear();
-		    z.Clear();
-		    all.Clear();
-	    }
-    }
+    # endregion
 }

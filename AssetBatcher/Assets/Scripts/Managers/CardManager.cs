@@ -187,8 +187,6 @@ public class CardManager : MonoBehaviour
         DeployMode = DeployMode.SelectedObject;
         card.gameObject.SetActive(true);
         forbiddenAreaRenderer.enabled = true;
-        
-        card.InputToggle(true);
     }
     
     /// <summary>
@@ -199,8 +197,6 @@ public class CardManager : MonoBehaviour
         DeployMode = DeployMode.DeSelectedObject;
         card.gameObject.SetActive(false);
         forbiddenAreaRenderer.enabled = false;
-        
-        card.InputToggle(false);
     }
     
     /// <summary>

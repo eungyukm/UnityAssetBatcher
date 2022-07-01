@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class ObjectInfoUI : MonoBehaviour
@@ -14,7 +15,7 @@ public class ObjectInfoUI : MonoBehaviour
     private Label _objectRotationLabel;
     private Label _objectScaleLabel;
 
-    public UnitCursor UnitCursor;
+    [FormerlySerializedAs("UnitCursor")] public MouseCursor mouseCursor;
 
     private void OnEnable()
     {
@@ -25,7 +26,7 @@ public class ObjectInfoUI : MonoBehaviour
         _objectRotationLabel = _rightPanelUIRoot.Q<Label>("RotationLabel");
         _objectScaleLabel = _rightPanelUIRoot.Q<Label>("ScaleLabel");
         
-        UnitCursor.OnSelectedObject += OnSelectedObject;
+        // UnitCursor.OnSelectedObject += OnSelectedObject;
     }
     private void OnDisable()
     {

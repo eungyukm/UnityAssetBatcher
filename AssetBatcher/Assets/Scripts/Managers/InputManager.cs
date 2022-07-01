@@ -6,7 +6,7 @@ public class InputManager : MonoBehaviour
 {
     public InputReader _InputReader;
     
-    private InputMode _inputMode = InputMode.Deploy;
+    private InputMode _inputMode = InputMode.None;
     // Start is called before the first frame update
     void Start()
     {

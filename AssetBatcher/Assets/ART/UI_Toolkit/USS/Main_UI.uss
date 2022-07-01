@@ -3,53 +3,34 @@
 }
 
 .Top_Button {
-    font-size: 30px;
-    -unity-text-outline-color: rgb(255, 255, 255);
-    color: rgb(89, 65, 242);
-    background-color: rgb(255, 255, 255);
-    border-left-color: rgba(255, 255, 255, 255);
-    border-right-color: rgba(255, 255, 255, 255);
-    border-top-color: rgba(255, 255, 255, 255);
-    border-bottom-color: rgba(255, 255, 255, 255);
-}
-
-#TopPanel {
-    background-color: rgb(242, 242, 242);
-    color: rgb(240, 235, 253);
+    -unity-background-scale-mode: scale-to-fit;
+    width: 10%;
+    height: 80%;
+    background-color: rgba(255, 255, 255, 255);
 }
 
 .Top_Button:hover {
-    font-size: 30px;
     background-color: rgb(255, 255, 255);
-    -unity-text-outline-color: rgb(255, 255, 255);
     border-left-color: rgb(242, 242, 242);
     border-right-color: rgb(242, 242, 242);
     border-top-color: rgb(242, 242, 242);
     border-bottom-color: rgb(242, 242, 242);
-    color: rgb(242, 242, 242);
     scale: 1.05 1.05;
 }
 
 .Top_Button_Selected {
-    -unity-background-image-tint-color: rgb(255, 255, 255);
-    -unity-background-scale-mode: scale-to-fit;
 }
 
 .Label_DeSelected {
-    color: rgb(78, 78, 78);
+    color: rgb(94, 94, 94);
     font-size: 13px;
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
 }
 
 .Icon_Selected {
-    -unity-background-image-tint-color: rgb(4, 77, 244);
 }
 
 .Icon_DeSelected {
-    -unity-background-image-tint-color: rgb(77, 77, 77);
+    -unity-background-image-tint-color: rgb(94, 94, 94);
     -unity-background-scale-mode: scale-to-fit;
     background-image: none;
     height: 70%;
@@ -65,8 +46,6 @@
 }
 
 .Label_Selected {
-    color: rgb(4, 77, 244);
-    font-size: 13px;
     border-left-color: rgb(255, 255, 255);
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
@@ -74,9 +53,6 @@
 }
 
 .Icon_Selected {
-    -unity-background-image-tint-color: rgb(4, 77, 245);
-    -unity-background-scale-mode: scale-to-fit;
-    background-image: none;
     height: 70%;
     width: 100%;
     border-top-left-radius: 0;

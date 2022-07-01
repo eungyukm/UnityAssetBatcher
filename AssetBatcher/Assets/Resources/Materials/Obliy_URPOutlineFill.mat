@@ -28,12 +28,12 @@ Material:
     - _Factor: 0
     - _Intensity: 1
     - _Mask: 0
-    - _OutlineWidth: 0.91
+    - _OutlineWidth: 0.99
     - _SrcBlend: 5
     - _Units: 0
     - _ZTest: 4
     - _ZWrite: 0
     m_Colors:
-    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OutlineColor: {r: 0, g: 0.61978376, b: 0.91, a: 0.5764706}
     - _TintColor: {r: 0, g: 1, b: 0.050632954, a: 1}
   m_BuildTextureStacks: []

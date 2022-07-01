@@ -15,6 +15,8 @@ public class UnitGrid
     private int[,] gridArray;
     
     private EdgeState _edgeState = EdgeState.Horizontal;
+
+    private bool isTextMeshActive = false;
     
     public event EventHandler<OnGridValueChangedEventArgs> OnGridValueChanged;
     public class OnGridValueChangedEventArgs : EventArgs {
@@ -29,27 +31,29 @@ public class UnitGrid
         this.cellSize = cellSize;
 
         gridArray = new int[width, height];
-        // Debug.Log(width + " : " + height);
-        
-        TextMesh[,] debugTextArray = new TextMesh[width, height];
-        
-        for (int x = 0; x < gridArray.GetLength(0); x++)
-        {
-            for (int z = 0; z < gridArray.GetLength(1); z++)
-            {
-                debugTextArray[x, z] = UtilsClass.CreateWorldText(gridArray[x, z].ToString(), null, GetWorldCenterPosition(x, z), Mathf.FloorToInt(cellSize * 5), Color.white, TextAnchor.MiddleCenter);
-                // Debug.Log(x + " : " + z);
 
-                Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z +1), Color.blue, 100f);
-                Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x + 1, z), Color.blue, 100f);
-            }
-        }
-        Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width,height), Color.blue, 100f);
-        Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width,height), Color.blue, 100f);
+        if (isTextMeshActive)
+        {
+            TextMesh[,] debugTextArray = new TextMesh[width, height];
         
-        OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) => {
-            debugTextArray[eventArgs.x, eventArgs.z].text = gridArray[eventArgs.x, eventArgs.z].ToString();
-        };
+            for (int x = 0; x < gridArray.GetLength(0); x++)
+            {
+                for (int z = 0; z < gridArray.GetLength(1); z++)
+                {
+                    debugTextArray[x, z] = UtilsClass.CreateWorldText(gridArray[x, z].ToString(), null, GetWorldCenterPosition(x, z), Mathf.FloorToInt(cellSize * 5), Color.white, TextAnchor.MiddleCenter);
+                    // Debug.Log(x + " : " + z);
+
+                    Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x, z +1), Color.blue, 100f);
+                    Debug.DrawLine(GetWorldPosition(x, z), GetWorldPosition(x + 1, z), Color.blue, 100f);
+                }
+            }
+            Debug.DrawLine(GetWorldPosition(0, height), GetWorldPosition(width,height), Color.blue, 100f);
+            Debug.DrawLine(GetWorldPosition(width, 0), GetWorldPosition(width,height), Color.blue, 100f);
+        
+            OnGridValueChanged += (object sender, OnGridValueChangedEventArgs eventArgs) => {
+                debugTextArray[eventArgs.x, eventArgs.z].text = gridArray[eventArgs.x, eventArgs.z].ToString();
+            };
+        }
     }
 
     private Vector3 GetWorldPosition(int x, int z)

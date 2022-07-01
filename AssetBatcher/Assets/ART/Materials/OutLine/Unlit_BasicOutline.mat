@@ -19,10 +19,15 @@ Material:
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
-    m_TexEnvs: []
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Outline: 0.0196
+    - _Alpha: 0.269
+    - _Outline: 0.0113
     m_Colors:
     - _OutlineColor: {r: 0, g: 13.646635, b: 63.999992, a: 1}
   m_BuildTextureStacks: []

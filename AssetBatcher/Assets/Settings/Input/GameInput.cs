@@ -24,74 +24,6 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
     ""name"": ""GameInput"",
     ""maps"": [
         {
-            ""name"": ""Deployment"",
-            ""id"": ""b6e63067-3461-4cc9-a4c3-343ef3c9da46"",
-            ""actions"": [
-                {
-                    ""name"": ""Mouse"",
-                    ""type"": ""Value"",
-                    ""id"": ""0042c4b6-30fa-46e8-b29b-249e697e580e"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""MouseLeftClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""2b28b9ac-da74-43ad-beb8-b9b6f63af631"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""KeyboardCtrl"",
-                    ""type"": ""Button"",
-                    ""id"": ""94177b17-1983-419c-bbfe-fc0d4c020379"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                }
-            ],
-            ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""3e80b8ff-f1e1-4fb8-86be-c5675f96e06a"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Mouse"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""87005998-ef7d-4401-a503-75234a9d7059"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseLeftClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""7c0ce705-9c01-4812-a2db-372fda262952"",
-                    ""path"": ""<Keyboard>/ctrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""KeyboardCtrl"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                }
-            ]
-        },
-        {
             ""name"": ""UnitCursorMode"",
             ""id"": ""d149482c-af0a-47ab-8151-5b0d4e681f91"",
             ""actions"": [
@@ -99,15 +31,6 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""name"": ""MouseLeftClick"",
                     ""type"": ""Button"",
                     ""id"": ""0e8b08b0-2eb2-4c0d-963d-39131559406b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MouseCursorLeftClick"",
-                    ""type"": ""Button"",
-                    ""id"": ""1a70bb70-080c-43a1-9f3e-64b78cc58343"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -130,20 +53,63 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Grap"",
+                    ""type"": ""Button"",
+                    ""id"": ""c474aa8a-82e4-4d1a-b576-30933af57429"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Scale"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d04963d-ba19-4e39-8552-f3d519847abb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Rotation"",
+                    ""type"": ""Button"",
+                    ""id"": ""9d4cf76a-577b-48bd-b443-1e562820781c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KeyboardX"",
+                    ""type"": ""Button"",
+                    ""id"": ""5134d171-bfb3-4581-8344-0924614b7569"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KeyboardY"",
+                    ""type"": ""Button"",
+                    ""id"": ""875174de-b29b-4251-88c2-620e6d57e2df"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KeyboardZ"",
+                    ""type"": ""Button"",
+                    ""id"": ""800d3a91-bc44-4d83-aab0-0bdf74bb1319"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
-                {
-                    ""name"": """",
-                    ""id"": ""2e768c65-6c9b-4678-a080-bdfa36bf94c4"",
-                    ""path"": ""<Mouse>/leftButton"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MouseCursorLeftClick"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
                 {
                     ""name"": """",
                     ""id"": ""65f5aca4-346d-4e12-ad7e-117c6ea04099"",
@@ -176,23 +142,89 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""action"": ""KeyboardCtrl"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7c0b35af-0144-4db3-a9a1-7fb6ff37504c"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Grap"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c6287069-7f6e-43ab-9bd4-5ff2d1227d29"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Scale"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4cbc145c-7a29-4484-a9c7-0627bb2b6b71"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rotation"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6b5117ef-fcce-43bc-bdbd-101bd05162aa"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef5c0146-efca-4539-84d7-1c5441f941e2"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e7a2ff4-2f14-4a60-b795-965a9b06a475"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardZ"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
     ""controlSchemes"": []
 }");
-        // Deployment
-        m_Deployment = asset.FindActionMap("Deployment", throwIfNotFound: true);
-        m_Deployment_Mouse = m_Deployment.FindAction("Mouse", throwIfNotFound: true);
-        m_Deployment_MouseLeftClick = m_Deployment.FindAction("MouseLeftClick", throwIfNotFound: true);
-        m_Deployment_KeyboardCtrl = m_Deployment.FindAction("KeyboardCtrl", throwIfNotFound: true);
         // UnitCursorMode
         m_UnitCursorMode = asset.FindActionMap("UnitCursorMode", throwIfNotFound: true);
         m_UnitCursorMode_MouseLeftClick = m_UnitCursorMode.FindAction("MouseLeftClick", throwIfNotFound: true);
-        m_UnitCursorMode_MouseCursorLeftClick = m_UnitCursorMode.FindAction("MouseCursorLeftClick", throwIfNotFound: true);
         m_UnitCursorMode_MousPoint = m_UnitCursorMode.FindAction("MousPoint", throwIfNotFound: true);
         m_UnitCursorMode_KeyboardCtrl = m_UnitCursorMode.FindAction("KeyboardCtrl", throwIfNotFound: true);
+        m_UnitCursorMode_Grap = m_UnitCursorMode.FindAction("Grap", throwIfNotFound: true);
+        m_UnitCursorMode_Scale = m_UnitCursorMode.FindAction("Scale", throwIfNotFound: true);
+        m_UnitCursorMode_Rotation = m_UnitCursorMode.FindAction("Rotation", throwIfNotFound: true);
+        m_UnitCursorMode_KeyboardX = m_UnitCursorMode.FindAction("KeyboardX", throwIfNotFound: true);
+        m_UnitCursorMode_KeyboardY = m_UnitCursorMode.FindAction("KeyboardY", throwIfNotFound: true);
+        m_UnitCursorMode_KeyboardZ = m_UnitCursorMode.FindAction("KeyboardZ", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -249,70 +281,31 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Deployment
-    private readonly InputActionMap m_Deployment;
-    private IDeploymentActions m_DeploymentActionsCallbackInterface;
-    private readonly InputAction m_Deployment_Mouse;
-    private readonly InputAction m_Deployment_MouseLeftClick;
-    private readonly InputAction m_Deployment_KeyboardCtrl;
-    public struct DeploymentActions
-    {
-        private @GameInput m_Wrapper;
-        public DeploymentActions(@GameInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Mouse => m_Wrapper.m_Deployment_Mouse;
-        public InputAction @MouseLeftClick => m_Wrapper.m_Deployment_MouseLeftClick;
-        public InputAction @KeyboardCtrl => m_Wrapper.m_Deployment_KeyboardCtrl;
-        public InputActionMap Get() { return m_Wrapper.m_Deployment; }
-        public void Enable() { Get().Enable(); }
-        public void Disable() { Get().Disable(); }
-        public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(DeploymentActions set) { return set.Get(); }
-        public void SetCallbacks(IDeploymentActions instance)
-        {
-            if (m_Wrapper.m_DeploymentActionsCallbackInterface != null)
-            {
-                @Mouse.started -= m_Wrapper.m_DeploymentActionsCallbackInterface.OnMouse;
-                @Mouse.performed -= m_Wrapper.m_DeploymentActionsCallbackInterface.OnMouse;
-                @Mouse.canceled -= m_Wrapper.m_DeploymentActionsCallbackInterface.OnMouse;
-                @MouseLeftClick.started -= m_Wrapper.m_DeploymentActionsCallbackInterface.OnMouseLeftClick;
-                @MouseLeftClick.performed -= m_Wrapper.m_DeploymentActionsCallbackInterface.OnMouseLeftClick;
-                @MouseLeftClick.canceled -= m_Wrapper.m_DeploymentActionsCallbackInterface.OnMouseLeftClick;
-                @KeyboardCtrl.started -= m_Wrapper.m_DeploymentActionsCallbackInterface.OnKeyboardCtrl;
-                @KeyboardCtrl.performed -= m_Wrapper.m_DeploymentActionsCallbackInterface.OnKeyboardCtrl;
-                @KeyboardCtrl.canceled -= m_Wrapper.m_DeploymentActionsCallbackInterface.OnKeyboardCtrl;
-            }
-            m_Wrapper.m_DeploymentActionsCallbackInterface = instance;
-            if (instance != null)
-            {
-                @Mouse.started += instance.OnMouse;
-                @Mouse.performed += instance.OnMouse;
-                @Mouse.canceled += instance.OnMouse;
-                @MouseLeftClick.started += instance.OnMouseLeftClick;
-                @MouseLeftClick.performed += instance.OnMouseLeftClick;
-                @MouseLeftClick.canceled += instance.OnMouseLeftClick;
-                @KeyboardCtrl.started += instance.OnKeyboardCtrl;
-                @KeyboardCtrl.performed += instance.OnKeyboardCtrl;
-                @KeyboardCtrl.canceled += instance.OnKeyboardCtrl;
-            }
-        }
-    }
-    public DeploymentActions @Deployment => new DeploymentActions(this);
-
     // UnitCursorMode
     private readonly InputActionMap m_UnitCursorMode;
     private IUnitCursorModeActions m_UnitCursorModeActionsCallbackInterface;
     private readonly InputAction m_UnitCursorMode_MouseLeftClick;
-    private readonly InputAction m_UnitCursorMode_MouseCursorLeftClick;
     private readonly InputAction m_UnitCursorMode_MousPoint;
     private readonly InputAction m_UnitCursorMode_KeyboardCtrl;
+    private readonly InputAction m_UnitCursorMode_Grap;
+    private readonly InputAction m_UnitCursorMode_Scale;
+    private readonly InputAction m_UnitCursorMode_Rotation;
+    private readonly InputAction m_UnitCursorMode_KeyboardX;
+    private readonly InputAction m_UnitCursorMode_KeyboardY;
+    private readonly InputAction m_UnitCursorMode_KeyboardZ;
     public struct UnitCursorModeActions
     {
         private @GameInput m_Wrapper;
         public UnitCursorModeActions(@GameInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @MouseLeftClick => m_Wrapper.m_UnitCursorMode_MouseLeftClick;
-        public InputAction @MouseCursorLeftClick => m_Wrapper.m_UnitCursorMode_MouseCursorLeftClick;
         public InputAction @MousPoint => m_Wrapper.m_UnitCursorMode_MousPoint;
         public InputAction @KeyboardCtrl => m_Wrapper.m_UnitCursorMode_KeyboardCtrl;
+        public InputAction @Grap => m_Wrapper.m_UnitCursorMode_Grap;
+        public InputAction @Scale => m_Wrapper.m_UnitCursorMode_Scale;
+        public InputAction @Rotation => m_Wrapper.m_UnitCursorMode_Rotation;
+        public InputAction @KeyboardX => m_Wrapper.m_UnitCursorMode_KeyboardX;
+        public InputAction @KeyboardY => m_Wrapper.m_UnitCursorMode_KeyboardY;
+        public InputAction @KeyboardZ => m_Wrapper.m_UnitCursorMode_KeyboardZ;
         public InputActionMap Get() { return m_Wrapper.m_UnitCursorMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -325,15 +318,30 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @MouseLeftClick.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseLeftClick;
                 @MouseLeftClick.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseLeftClick;
                 @MouseLeftClick.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseLeftClick;
-                @MouseCursorLeftClick.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseCursorLeftClick;
-                @MouseCursorLeftClick.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseCursorLeftClick;
-                @MouseCursorLeftClick.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseCursorLeftClick;
                 @MousPoint.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMousPoint;
                 @MousPoint.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMousPoint;
                 @MousPoint.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMousPoint;
                 @KeyboardCtrl.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardCtrl;
                 @KeyboardCtrl.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardCtrl;
                 @KeyboardCtrl.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardCtrl;
+                @Grap.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnGrap;
+                @Grap.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnGrap;
+                @Grap.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnGrap;
+                @Scale.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnScale;
+                @Scale.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnScale;
+                @Scale.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnScale;
+                @Rotation.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnRotation;
+                @Rotation.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnRotation;
+                @Rotation.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnRotation;
+                @KeyboardX.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardX;
+                @KeyboardX.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardX;
+                @KeyboardX.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardX;
+                @KeyboardY.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardY;
+                @KeyboardY.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardY;
+                @KeyboardY.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardY;
+                @KeyboardZ.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardZ;
+                @KeyboardZ.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardZ;
+                @KeyboardZ.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardZ;
             }
             m_Wrapper.m_UnitCursorModeActionsCallbackInterface = instance;
             if (instance != null)
@@ -341,30 +349,44 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @MouseLeftClick.started += instance.OnMouseLeftClick;
                 @MouseLeftClick.performed += instance.OnMouseLeftClick;
                 @MouseLeftClick.canceled += instance.OnMouseLeftClick;
-                @MouseCursorLeftClick.started += instance.OnMouseCursorLeftClick;
-                @MouseCursorLeftClick.performed += instance.OnMouseCursorLeftClick;
-                @MouseCursorLeftClick.canceled += instance.OnMouseCursorLeftClick;
                 @MousPoint.started += instance.OnMousPoint;
                 @MousPoint.performed += instance.OnMousPoint;
                 @MousPoint.canceled += instance.OnMousPoint;
                 @KeyboardCtrl.started += instance.OnKeyboardCtrl;
                 @KeyboardCtrl.performed += instance.OnKeyboardCtrl;
                 @KeyboardCtrl.canceled += instance.OnKeyboardCtrl;
+                @Grap.started += instance.OnGrap;
+                @Grap.performed += instance.OnGrap;
+                @Grap.canceled += instance.OnGrap;
+                @Scale.started += instance.OnScale;
+                @Scale.performed += instance.OnScale;
+                @Scale.canceled += instance.OnScale;
+                @Rotation.started += instance.OnRotation;
+                @Rotation.performed += instance.OnRotation;
+                @Rotation.canceled += instance.OnRotation;
+                @KeyboardX.started += instance.OnKeyboardX;
+                @KeyboardX.performed += instance.OnKeyboardX;
+                @KeyboardX.canceled += instance.OnKeyboardX;
+                @KeyboardY.started += instance.OnKeyboardY;
+                @KeyboardY.performed += instance.OnKeyboardY;
+                @KeyboardY.canceled += instance.OnKeyboardY;
+                @KeyboardZ.started += instance.OnKeyboardZ;
+                @KeyboardZ.performed += instance.OnKeyboardZ;
+                @KeyboardZ.canceled += instance.OnKeyboardZ;
             }
         }
     }
     public UnitCursorModeActions @UnitCursorMode => new UnitCursorModeActions(this);
-    public interface IDeploymentActions
-    {
-        void OnMouse(InputAction.CallbackContext context);
-        void OnMouseLeftClick(InputAction.CallbackContext context);
-        void OnKeyboardCtrl(InputAction.CallbackContext context);
-    }
     public interface IUnitCursorModeActions
     {
         void OnMouseLeftClick(InputAction.CallbackContext context);
-        void OnMouseCursorLeftClick(InputAction.CallbackContext context);
         void OnMousPoint(InputAction.CallbackContext context);
         void OnKeyboardCtrl(InputAction.CallbackContext context);
+        void OnGrap(InputAction.CallbackContext context);
+        void OnScale(InputAction.CallbackContext context);
+        void OnRotation(InputAction.CallbackContext context);
+        void OnKeyboardX(InputAction.CallbackContext context);
+        void OnKeyboardY(InputAction.CallbackContext context);
+        void OnKeyboardZ(InputAction.CallbackContext context);
     }
 }

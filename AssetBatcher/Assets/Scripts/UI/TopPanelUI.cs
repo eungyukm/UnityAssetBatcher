@@ -19,7 +19,8 @@ public class TopPanelUI : MonoBehaviour
     private Button _playButton;
 
     public GridSystem gridSystem;
-    public UnitCursor unitCursor;
+    [FormerlySerializedAs("unitCursor")] public MouseCursor mouseCursor;
+    public GizmoTransform gizmoTransform;
     
     
     private bool _onSnap = false;
@@ -52,25 +53,25 @@ public class TopPanelUI : MonoBehaviour
     
     private void SelectButtonPressed()
     {
-        unitCursor.SwitchMode(UnitCursor.GameTransformMode.SelectMode);
+        mouseCursor.SwitchMode(MouseCursor.GameTransformMode.SelectMode);
         SwitchTransformMode();
     }
 
     private void MoveButtonPressed()
     {
-        unitCursor.SwitchMode(UnitCursor.GameTransformMode.MoveMode);
+        mouseCursor.SwitchMode(MouseCursor.GameTransformMode.MoveMode);
         SwitchTransformMode();
     }
 
     private void RotationButtonPressed()
     {
-        unitCursor.SwitchMode(UnitCursor.GameTransformMode.RotationMode);
+        mouseCursor.SwitchMode(MouseCursor.GameTransformMode.RotationMode);
         SwitchTransformMode();
     }
 
     private void ScaleButtonPressed()
     {
-        unitCursor.SwitchMode(UnitCursor.GameTransformMode.ScaleMode);
+        mouseCursor.SwitchMode(MouseCursor.GameTransformMode.ScaleMode);
         SwitchTransformMode();
     }
 
@@ -97,18 +98,18 @@ public class TopPanelUI : MonoBehaviour
     private void SwitchTransformMode()
     {
         AllDeSelectedButton();
-        switch (unitCursor.transformMode)
+        switch (mouseCursor.transformMode)
         {
-            case UnitCursor.GameTransformMode.SelectMode:
+            case MouseCursor.GameTransformMode.SelectMode:
                 SelectedButtonStyle("Select");
                 break;
-            case UnitCursor.GameTransformMode.MoveMode:
+            case MouseCursor.GameTransformMode.MoveMode:
                 SelectedButtonStyle("Move");
                 break;
-            case UnitCursor.GameTransformMode.ScaleMode:
+            case MouseCursor.GameTransformMode.ScaleMode:
                 SelectedButtonStyle("Scale");
                 break;
-            case UnitCursor.GameTransformMode.RotationMode:
+            case MouseCursor.GameTransformMode.RotationMode:
                 SelectedButtonStyle("Rotation");
                 break;
         }

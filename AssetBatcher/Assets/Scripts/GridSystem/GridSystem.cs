@@ -9,8 +9,6 @@ public class GridSystem : MonoBehaviour
 {
     private UnitGrid _unitGrid;
 
-    public Camera _camera;
-
     public GameObject GridGO;
 
     public int widthGrid = 5;
@@ -28,8 +26,6 @@ public class GridSystem : MonoBehaviour
     
     void Start()
     {
-        _camera = Camera.main;
-        
         CreateGrid(widthGrid, heightGrid);
     }
 
