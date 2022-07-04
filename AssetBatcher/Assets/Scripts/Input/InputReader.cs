@@ -24,6 +24,7 @@ public class InputReader : ScriptableObject, GameInput.IUnitCursorModeActions
     public UnityAction OnXKeyAction = delegate {  };
     public UnityAction OnYKeyAction = delegate {  };
     public UnityAction OnZKeyAction = delegate {  };
+    public UnityAction OnWKeyAction = delegate {  };
     
     private InputMode _inputMode = InputMode.None;
 
@@ -154,6 +155,14 @@ public class InputReader : ScriptableObject, GameInput.IUnitCursorModeActions
         if (context.phase == InputActionPhase.Performed)
         {
             OnZKeyAction?.Invoke();
+        }
+    }
+
+    public void OnKeyboardW(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            OnWKeyAction?.Invoke();
         }
     }
 

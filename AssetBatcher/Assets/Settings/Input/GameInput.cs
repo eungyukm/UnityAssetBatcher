@@ -107,6 +107,15 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""KeyboardW"",
+                    ""type"": ""Button"",
+                    ""id"": ""c0257bca-6842-4122-9645-3180a948d35b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -208,6 +217,17 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""action"": ""KeyboardZ"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ee40951-e1db-468a-be7d-73f2423143d9"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardW"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -225,6 +245,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         m_UnitCursorMode_KeyboardX = m_UnitCursorMode.FindAction("KeyboardX", throwIfNotFound: true);
         m_UnitCursorMode_KeyboardY = m_UnitCursorMode.FindAction("KeyboardY", throwIfNotFound: true);
         m_UnitCursorMode_KeyboardZ = m_UnitCursorMode.FindAction("KeyboardZ", throwIfNotFound: true);
+        m_UnitCursorMode_KeyboardW = m_UnitCursorMode.FindAction("KeyboardW", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -293,6 +314,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_UnitCursorMode_KeyboardX;
     private readonly InputAction m_UnitCursorMode_KeyboardY;
     private readonly InputAction m_UnitCursorMode_KeyboardZ;
+    private readonly InputAction m_UnitCursorMode_KeyboardW;
     public struct UnitCursorModeActions
     {
         private @GameInput m_Wrapper;
@@ -306,6 +328,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         public InputAction @KeyboardX => m_Wrapper.m_UnitCursorMode_KeyboardX;
         public InputAction @KeyboardY => m_Wrapper.m_UnitCursorMode_KeyboardY;
         public InputAction @KeyboardZ => m_Wrapper.m_UnitCursorMode_KeyboardZ;
+        public InputAction @KeyboardW => m_Wrapper.m_UnitCursorMode_KeyboardW;
         public InputActionMap Get() { return m_Wrapper.m_UnitCursorMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -342,6 +365,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @KeyboardZ.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardZ;
                 @KeyboardZ.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardZ;
                 @KeyboardZ.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardZ;
+                @KeyboardW.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardW;
+                @KeyboardW.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardW;
+                @KeyboardW.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnKeyboardW;
             }
             m_Wrapper.m_UnitCursorModeActionsCallbackInterface = instance;
             if (instance != null)
@@ -373,6 +399,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @KeyboardZ.started += instance.OnKeyboardZ;
                 @KeyboardZ.performed += instance.OnKeyboardZ;
                 @KeyboardZ.canceled += instance.OnKeyboardZ;
+                @KeyboardW.started += instance.OnKeyboardW;
+                @KeyboardW.performed += instance.OnKeyboardW;
+                @KeyboardW.canceled += instance.OnKeyboardW;
             }
         }
     }
@@ -388,5 +417,6 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         void OnKeyboardX(InputAction.CallbackContext context);
         void OnKeyboardY(InputAction.CallbackContext context);
         void OnKeyboardZ(InputAction.CallbackContext context);
+        void OnKeyboardW(InputAction.CallbackContext context);
     }
 }

@@ -6,7 +6,7 @@
     -unity-background-scale-mode: scale-to-fit;
     width: 10%;
     height: 80%;
-    background-color: rgba(255, 255, 255, 255);
+    background-color: rgb(255, 255, 255);
 }
 
 .Top_Button:hover {
@@ -18,15 +18,17 @@
     scale: 1.05 1.05;
 }
 
-.Top_Button_Selected {
-}
-
 .Label_DeSelected {
     color: rgb(94, 94, 94);
     font-size: 13px;
 }
 
-.Icon_Selected {
+.Label_Selected {
+    border-left-color: rgb(255, 255, 255);
+    border-right-color: rgb(255, 255, 255);
+    border-top-color: rgb(255, 255, 255);
+    border-bottom-color: rgb(255, 255, 255);
+    color: rgba(4, 77, 245, 255);
 }
 
 .Icon_DeSelected {
@@ -45,14 +47,10 @@
     border-bottom-width: 0;
 }
 
-.Label_Selected {
-    border-left-color: rgb(255, 255, 255);
-    border-right-color: rgb(255, 255, 255);
-    border-top-color: rgb(255, 255, 255);
-    border-bottom-color: rgb(255, 255, 255);
-}
-
 .Icon_Selected {
+    -unity-background-image-tint-color: rgb(4, 77, 245);
+    -unity-background-scale-mode: scale-to-fit;
+    background-image: none;
     height: 70%;
     width: 100%;
     border-top-left-radius: 0;

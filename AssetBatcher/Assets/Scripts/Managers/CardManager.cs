@@ -32,7 +32,7 @@ public class CardManager : MonoBehaviour
     public GridSystem GridSystem;
     
     // TODO : plane y height 변경
-    public float planeHeight = 0.3f;
+    public float planeHeight = 0.0f;
 
     private void Awake()
     {
@@ -156,7 +156,6 @@ public class CardManager : MonoBehaviour
             
             if (OnCardUsed != null)
             {
-                hitPos.y += planeHeight;
                 OnCardUsed(card.cardData, hitPos, Placeable.Faction.Player);
             }
             
@@ -221,9 +220,10 @@ public class CardManager : MonoBehaviour
         RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(card.MousePos);
         bool planeHit = Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask);
-
+        
         if (planeHit)
         {
+            Debug.Log("hit point : " + hit.point);
             if (!cardIsActive)
             {
                 cardIsActive = true;
@@ -239,10 +239,12 @@ public class CardManager : MonoBehaviour
                 else
                 {
                     previewHolder.transform.position = hit.point;
+                    Debug.Log("previewHolder : " + previewHolder.transform.position);
                 }
                 
                 PlaceableData[] dataToSpawn = card.cardData.placeablesData;
                 Vector3[] offsets = card.cardData.relativeOffsets;
+                Debug.Log("offsets : " + offsets[0]);
 
                 //spawn all the preview Placeables and parent them to the cardPreview
                 for (int i = 0; i < dataToSpawn.Length; i++)
@@ -251,7 +253,7 @@ public class CardManager : MonoBehaviour
                         offsets[i],
                         Quaternion.identity,
                         previewHolder.transform);
-                    newPlaceable.transform.localPosition = new Vector3(0, planeHeight, 0);
+                    newPlaceable.transform.localPosition = new Vector3(0, 0, 0);
                 }
             }
             else

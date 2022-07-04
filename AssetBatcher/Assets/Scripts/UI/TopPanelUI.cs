@@ -28,8 +28,16 @@ public class TopPanelUI : MonoBehaviour
     private const string iconSelectStyle = "Icon_Selected";
     private const string labelSelectStyle = "Label_Selected";
 
+    public InputReader InputReader;
+
     private void OnEnable()
     {
+        InputReader.OnWKeyAction += SelectButtonPressed;
+        InputReader.OnGrapPresseAction += MoveButtonPressed;
+        InputReader.OnRotationAction += RotationButtonPressed;
+        InputReader.OnScaleAction += ScaleButtonPressed;
+        
+        
         topPanelUIRoot = topPanelDocument.GetComponent<UIDocument>().rootVisualElement;
 
         _selectButtom = topPanelUIRoot.Q<Button>("SelectBtn");
@@ -142,6 +150,11 @@ public class TopPanelUI : MonoBehaviour
     {
         var icon = topPanelUIRoot.Q<VisualElement>(name + "Icon");
         var label = topPanelUIRoot.Q<VisualElement>(name + "Label");
+
+        if (icon == null)
+        {
+            Debug.Log("icon is null");
+        }
         icon.AddToClassList(iconSelectStyle);
         label.AddToClassList(labelSelectStyle);
     }

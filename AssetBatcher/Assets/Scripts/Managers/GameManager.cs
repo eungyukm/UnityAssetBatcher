@@ -280,6 +280,8 @@ public class GameManager : MonoBehaviour
         
         // TODO : Die Method 수정
         go.GetComponent<Placeable>().OnDie += OnPlaceableDead;
+
+        go.layer = 10;
     }
 
 
