@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="LodingBar" src="project://database/Assets/ART/UI_Toolkit/UIDocument/LodingBar.uxml?fileID=9197481963319205126&amp;guid=60d08ac1e48fa8d4aa2d1fd716d9a1fe&amp;type=3#LodingBar" />
+    <ui:VisualElement name="Progressbar_Straight_Panel" style="align-items: center; justify-content: flex-end; flex-grow: 1;">
+        <ui:Instance template="LodingBar" name="LodingBar" style="align-items: stretch; justify-content: center; flex-grow: 1;" />
+    </ui:VisualElement>
+</ui:UXML>

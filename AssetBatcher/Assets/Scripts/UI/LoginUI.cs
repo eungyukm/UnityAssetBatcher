@@ -18,6 +18,7 @@ public class LoginUI : MonoBehaviour
     private TextField _pwTextField;
 
     private Action onLoginAction;
+    public Action onLoginButtonPressed;
 
     private void OnEnable()
     {
@@ -27,7 +28,7 @@ public class LoginUI : MonoBehaviour
         _pwTextField = loginUIRoot.Q<TextField>("PassWordField");
 
         _loginButton.clicked += LoginButtonPressed;
-        
+
         _loginWebRequest = GetComponent<LoginWebRequest>();
 
         onLoginAction += LoginResult;
@@ -35,6 +36,7 @@ public class LoginUI : MonoBehaviour
 
     private void LoginButtonPressed()
     {
+        onLoginButtonPressed?.Invoke();
         string id = _idTextField.text;
         string pw = _pwTextField.text;
         

@@ -1,0 +1,4 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Template name="Progressbar_Circular_None" src="project://database/Assets/ART/UI_Toolkit/UIDocument/Progressbar_Circular_None.uxml?fileID=9197481963319205126&amp;guid=c5497786722dc5b45b32b98e4a3c2734&amp;type=3#Progressbar_Circular_None" />
+    <ui:Instance template="Progressbar_Circular_None" name="Progressbar_Circular_None" style="flex-grow: 1; align-items: center; justify-content: center;" />
+</ui:UXML>
