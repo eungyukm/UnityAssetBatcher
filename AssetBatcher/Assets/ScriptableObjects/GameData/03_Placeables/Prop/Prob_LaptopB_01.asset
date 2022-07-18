@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Prob_LaptopB_01
   m_EditorClassIdentifier: 
   pType: 1
-  associatedPrefab: {fileID: 1187354761585338969, guid: a7cd5876e0dabdc488541fc972dfd354, type: 3}
+  associatedPrefab: {fileID: 8275665184723955364, guid: b77da3ef4767ac947af141d0c70620a3, type: 3}
   alternatePrefab: {fileID: 0}
   attackType: 0
   targetType: 2

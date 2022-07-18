@@ -176,6 +176,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6276121988868322414}
+  - component: {fileID: 312336321615961949}
   m_Layer: 0
   m_Name: Prob_LaptopDesk01
   m_TagString: Untagged
@@ -202,6 +203,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &312336321615961949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6652541360047124180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bfef4f327be19446a1ca66888157464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pType: 1
+  faction: 0
+  targetType: 0
+  dieAudioClip: {fileID: 0}
+  timeToRemoval: 0
 --- !u!1 &7936536401277207136
 GameObject:
   m_ObjectHideFlags: 0

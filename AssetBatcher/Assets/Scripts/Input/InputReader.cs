@@ -26,6 +26,8 @@ public class InputReader : ScriptableObject, GameInput.IUnitCursorModeActions
     public UnityAction OnZKeyAction = delegate {  };
     public UnityAction OnWKeyAction = delegate {  };
     
+    public UnityAction<Vector2> OnMouseScrollAction = delegate(Vector2 arg0) {  };
+
     private InputMode _inputMode = InputMode.None;
 
     private void OnEnable()
@@ -163,6 +165,15 @@ public class InputReader : ScriptableObject, GameInput.IUnitCursorModeActions
         if (context.phase == InputActionPhase.Performed)
         {
             OnWKeyAction?.Invoke();
+        }
+    }
+
+    public void OnMouseScroll(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            Debug.Log("value : " + context.ReadValue<Vector2>());
+            OnMouseScrollAction?.Invoke(context.ReadValue<Vector2>());
         }
     }
 

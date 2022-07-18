@@ -11,10 +11,12 @@ public class PanelManager : MonoBehaviour
     public GameObject mainUIGO;
     public GameObject floorUIGO;
     public GameObject wallUIGO;
+    public GameObject propUIGO;
     
     public TileUI TileUI;
     public MainUI MainUI;
     public WallUI WallUI;
+    public PropUI PropUI;
 
     public UIState UIState = UIState.None;
 
@@ -26,12 +28,14 @@ public class PanelManager : MonoBehaviour
         MainUI.OnUISateChanged += PanelSwitch;
         TileUI.OnClosePanel += PanelSwitch;
         WallUI.OnClosePanel += PanelSwitch;
+        PropUI.OnClosePanel += PanelSwitch;
     }
 
     private void OnDisable()
     {
         TileUI.OnClosePanel -= PanelSwitch;
         WallUI.OnClosePanel -= PanelSwitch;
+        PropUI.OnClosePanel -= PanelSwitch;
     }
     
     void Start()
@@ -71,6 +75,12 @@ public class PanelManager : MonoBehaviour
                 cardManager.LoadDeck(DeckType.Wall);
                 gridSystem.SwitchGridType(GridSystemType.Wall);
                 break;
+            case UIState.PropUI:
+                AllUISetActiveFalse();
+                propUIGO.SetActive(true);
+                cardManager.LoadDeck(DeckType.Prop);
+                gridSystem.SwitchGridType(GridSystemType.None);
+                break;
         }
     }
 
@@ -87,5 +97,6 @@ public enum UIState
     None,
     MainUI,
     TileUI,
-    WallUI
+    WallUI,
+    PropUI,
 }

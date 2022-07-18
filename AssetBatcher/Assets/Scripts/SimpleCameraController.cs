@@ -2,12 +2,15 @@
 using UnityEngine.InputSystem;
 #endif
 
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace UnityTemplateProjects
 {
     public class SimpleCameraController : MonoBehaviour
     {
+        public InputReader InputReader;
+
         class CameraState
         {
             public float yaw;
@@ -126,6 +129,14 @@ namespace UnityTemplateProjects
         {
             m_TargetCameraState.SetFromTransform(transform);
             m_InterpolatingCameraState.SetFromTransform(transform);
+
+            InputReader.OnMouseScrollAction += MouseScrollAction;
+        }
+
+        private void MouseScrollAction(Vector2 scroll)
+        {
+            Vector3 translage = Vector3.forward * scroll.y / 120f;
+            m_TargetCameraState.Translate(translage);
         }
 
         Vector3 GetInputTranslationDirection()

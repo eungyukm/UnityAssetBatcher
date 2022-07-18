@@ -8,8 +8,9 @@ using UnityEngine.UIElements;
 public class MainUI : MonoBehaviour
 {
     public UIDocument MainUIDocument;
-    public Button TitleButton;
-    public Button WallButton;
+    private Button TitleButton;
+    private Button WallButton;
+    private Button PropButton;
 
     public UnityAction<UIState> OnUISateChanged;
     
@@ -23,15 +24,19 @@ public class MainUI : MonoBehaviour
         var mainUIRoot = MainUIDocument.GetComponent<UIDocument>().rootVisualElement;
         TitleButton = mainUIRoot.Q<Button>("FloorBtn");
         WallButton = mainUIRoot.Q<Button>("WallBtn");
+        PropButton = mainUIRoot.Q<Button>("PropBtn");
+        
         
         TitleButton.clicked += TitleButtonPressed;
         WallButton.clicked += WallButtonPressed;
+        PropButton.clicked += PropButtonPressed;
     }
 
     private void OnDisable()
     {
         TitleButton.clicked -= TitleButtonPressed;
         WallButton.clicked -= WallButtonPressed;
+        PropButton.clicked -= PropButtonPressed;
     }
 
     private void TitleButtonPressed()
@@ -42,5 +47,10 @@ public class MainUI : MonoBehaviour
     private void WallButtonPressed()
     {
         OnUISateChanged?.Invoke(UIState.WallUI);
+    }
+
+    private void PropButtonPressed()
+    {
+        OnUISateChanged?.Invoke(UIState.PropUI);
     }
 }

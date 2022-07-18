@@ -1,0 +1,26 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/ART/UI_Toolkit/USS/Button_Style.uss?fileID=7433441132597879392&amp;guid=6604eec5fa83a8f45b5a5eaac2e11df3&amp;type=3#Button_Style" />
+    <ui:VisualElement style="width: 100%; height: 100%; align-items: flex-start; justify-content: center;">
+        <ui:VisualElement style="height: 60%; width: 7%; background-color: rgb(255, 255, 255); justify-content: space-around; border-top-left-radius: 25px; border-bottom-left-radius: 25px; border-top-right-radius: 25px; border-bottom-right-radius: 25px;">
+            <ui:VisualElement style="width: 100%; height: 50px; flex-direction: row; margin-left: 0; margin-right: 0; margin-top: 0; margin-bottom: 0; padding-left: 5px; padding-right: 5px; padding-top: 5px; padding-bottom: 5px; color: rgb(94, 94, 94);">
+                <ui:Button display-tooltip-when-elided="true" name="PreviousBtn" style="width: 30%; height: 100%; background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/left_arrow_icon.png?fileID=2800000&amp;guid=c5e05c31cd331a244a469efcd8773e56&amp;type=3#left_arrow_icon&apos;); -unity-background-scale-mode: scale-to-fit; -unity-background-image-tint-color: rgb(94, 94, 94); background-color: rgb(255, 255, 255); border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0; border-top-left-radius: 0; border-bottom-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0;" />
+                <ui:Label text="Prop" display-tooltip-when-elided="true" style="height: 100%; width: 70%; font-size: 30px; -unity-text-align: upper-center; align-items: center; justify-content: flex-end;" />
+            </ui:VisualElement>
+            <ui:Button display-tooltip-when-elided="true" name="Prop01" class="Button_Style Button_Align" style="width: 100%; height: 15%; background-image: none; left: 0; top: 0; right: 0; bottom: 0;">
+                <ui:VisualElement class="Image_Style" style="background-image: url(&apos;project://database/Assets/ART/UI/CardArt/Prop/Prob_LaptopB_01.png?fileID=2800000&amp;guid=d42fe352162155f49ad56f21f4191440&amp;type=3#Prob_LaptopB_01&apos;); -unity-background-scale-mode: scale-to-fit; flex-direction: column; flex-wrap: wrap;" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" name="Prop02" class="Button_Style Button_Align" style="width: 100%; height: 15%;">
+                <ui:VisualElement class="Image_Style" style="background-image: url(&apos;project://database/Assets/ART/UI/CardArt/Prop/Prob_LaptopDesk01.png?fileID=2800000&amp;guid=50f5fb6dcad8b0648b88d1b4bd9e15e2&amp;type=3#Prob_LaptopDesk01&apos;); -unity-background-scale-mode: scale-to-fit;" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" class="Button_Style Button_Align" style="width: 100%; height: 15%;">
+                <ui:VisualElement class="Image_Style" style="background-image: url(&apos;project://database/Assets/ART/UI/CardArt/Prop/Prob_Table_01.png?fileID=2800000&amp;guid=d4e89cc476814b04f98338afa9461631&amp;type=3#Prob_Table_01&apos;); -unity-background-scale-mode: scale-to-fit;" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" class="Button_Style Button_Align" style="width: 100%; height: 15%;">
+                <ui:VisualElement class="Image_Style" style="background-image: url(&apos;project://database/Assets/ART/Textures/Plane/TexturesCom_Marble_TilesRectangle4_512_albedo.tif?fileID=2800000&amp;guid=9dbef284e5fe8e541a28ae30a4ebbbd3&amp;type=3#TexturesCom_Marble_TilesRectangle4_512_albedo&apos;); -unity-background-scale-mode: scale-to-fit;" />
+            </ui:Button>
+            <ui:Button display-tooltip-when-elided="true" class="Button_Style Button_Align" style="width: 100%; height: 15%;">
+                <ui:VisualElement class="Image_Style" style="background-image: url(&apos;project://database/Assets/ART/Textures/Plane/TexturesCom_Tiles_Plain_512_albedo.tif?fileID=2800000&amp;guid=366bbce32ab2fe84abafda059375cfd0&amp;type=3#TexturesCom_Tiles_Plain_512_albedo&apos;); -unity-background-scale-mode: scale-to-fit;" />
+            </ui:Button>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
