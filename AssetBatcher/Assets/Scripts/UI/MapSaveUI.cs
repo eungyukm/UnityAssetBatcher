@@ -18,10 +18,12 @@ public class MapSaveUI : MonoBehaviour
     private TextField _mapSubject;
     private TextField _mapData;
 
-    public UnityAction onSaveAction;
+    public UnityAction onSaveComplate;
     public UnityAction<UIState> onClosePanel;
+    public UnityAction<int> onSaveButtonClicked;
 
     private MapWebRequest _mapWebRequest;
+    public MapSaveManager MapSaveManager;
 
     private void OnEnable()
     {
@@ -36,13 +38,14 @@ public class MapSaveUI : MonoBehaviour
         _closeButton.clicked += ClosePanel;
 
         _mapWebRequest = GetComponent<MapWebRequest>();
-        _mapWebRequest.OnCreateMap += MapSaveResult;
+        onSaveButtonClicked += MapSaveResult;
     }
 
     private void SaveMap()
     {
+        string mapData = MapSaveManager.SaveMapData();
         // TODO : witer와 info idx 수정
-        _mapWebRequest.MapCreate(_mapSubject.text, _mapData.text, 1,1);
+        _mapWebRequest.MapCreate(_mapSubject.text, mapData, 1,1, onSaveButtonClicked);
         
     }
 
@@ -51,12 +54,12 @@ public class MapSaveUI : MonoBehaviour
         if (code == 200)
         {
             Debug.Log("저장!");
-            onSaveAction?.Invoke();
+            onSaveComplate?.Invoke();
         }
         else
         {
             Debug.Log("저장 에러!");
-            onSaveAction?.Invoke();
+            onSaveComplate?.Invoke();
         }
     }
 

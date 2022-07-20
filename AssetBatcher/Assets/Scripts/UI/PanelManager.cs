@@ -34,6 +34,8 @@ public class PanelManager : MonoBehaviour
         PropUI.OnClosePanel += PanelSwitch;
         MapSaveUI.onClosePanel += PanelSwitch;
         TopPanelUI.OnSaveAction += PanelSwitch;
+
+        MapSaveUI.onSaveComplate += MapSave;
     }
 
     private void OnDisable()
@@ -43,6 +45,8 @@ public class PanelManager : MonoBehaviour
         PropUI.OnClosePanel -= PanelSwitch;
         MapSaveUI.onClosePanel -= PanelSwitch;
         TopPanelUI.OnSaveAction -= PanelSwitch;
+        
+        MapSaveUI.onSaveComplate -= MapSave;
     }
     
     void Start()
@@ -55,6 +59,11 @@ public class PanelManager : MonoBehaviour
         mainUIGO.SetActive(true);
         floorUIGO.SetActive(false);
         UIState = UIState.MainUI;
+    }
+
+    private void MapSave()
+    {
+        PanelSwitch(UIState.MainUI);
     }
 
     private void PanelSwitch(UIState uiState)

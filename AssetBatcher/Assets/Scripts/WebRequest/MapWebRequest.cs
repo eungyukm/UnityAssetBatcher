@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using UnityEngine.Networking;
 using System.Text;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
+using UnityEngine.Events;
 
 public class MapWebRequest : MonoBehaviour
 {
@@ -14,22 +14,20 @@ public class MapWebRequest : MonoBehaviour
 
     private string mapCreateUri = "api/map_create";
 
-    public Action<int> OnCreateMap;
-
     private void Start()
     {
         
     }
 
 
-    public void MapCreate(string subject, string text, int writer_idx, int info_idx)
+    public void MapCreate(string subject, string text, int writer_idx, int info_idx, UnityAction<int> OnCreateMap)
     {
         var mapData = new MapDataReq(subject, text, writer_idx, info_idx);
         StartCoroutine(MapCreateRoutine(mapCreateUri, mapData, OnCreateMap));
     }
     
 
-    private IEnumerator MapCreateRoutine(string uri, MapDataReq info, Action<int> OnCreateMap)
+    private IEnumerator MapCreateRoutine(string uri, MapDataReq info, UnityAction<int> OnCreateMap)
     {
         var json = JsonConvert.SerializeObject(info);
         var url = string.Format("{0}{1}", this.host, uri);
@@ -53,6 +51,7 @@ public class MapWebRequest : MonoBehaviour
             if (code == 200)
             {
                 Debug.Log("Map Create");
+                OnCreateMap?.Invoke(code);
             }
             else
             {
@@ -70,10 +69,10 @@ public class MapWebRequest : MonoBehaviour
 
         public MapDataReq(string subject, string text, int writer_idx, int info_idx)
         {
-            this.map_data_subject = subject;
-            this.map_data_text = text;
-            this.map_data_writer_idx = writer_idx;
-            this.map_info_idx = info_idx;
+            map_data_subject = subject;
+            map_data_text = text;
+            map_data_writer_idx = writer_idx;
+            map_info_idx = info_idx;
         }
     }
 }
