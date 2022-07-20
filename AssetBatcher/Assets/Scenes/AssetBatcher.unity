@@ -234,6 +234,81 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &422180505
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 422180506}
+  - component: {fileID: 422180509}
+  - component: {fileID: 422180508}
+  - component: {fileID: 422180507}
+  m_Layer: 0
+  m_Name: MapSaveUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &422180506
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422180505}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 780536570}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &422180507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422180505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9504195d593be4148be7799595ca166a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &422180508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422180505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1f4161a6c8ff10468b3f2e8a05b6396, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MapSaveUIDocument: {fileID: 422180509}
+--- !u!114 &422180509
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 422180505}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 6b68d57f21f1b8c46a94227d1a848340, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 7aef5688b39b6c94e8f5527b3523f535, type: 3}
+  m_SortingOrder: 0
 --- !u!1 &539292070
 GameObject:
   m_ObjectHideFlags: 0
@@ -412,6 +487,7 @@ Transform:
   - {fileID: 1151881901}
   - {fileID: 1033770501}
   - {fileID: 630380218}
+  - {fileID: 422180506}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -431,10 +507,13 @@ MonoBehaviour:
   floorUIGO: {fileID: 1754312574}
   wallUIGO: {fileID: 1755429703}
   propUIGO: {fileID: 1151881900}
+  mapSaveUIGO: {fileID: 422180505}
   TileUI: {fileID: 1754312577}
   MainUI: {fileID: 1445834913}
   WallUI: {fileID: 1755429705}
   PropUI: {fileID: 1151881904}
+  MapSaveUI: {fileID: 422180508}
+  TopPanelUI: {fileID: 1033770503}
   UIState: 0
   cardManager: {fileID: 887340800}
   gridSystem: {fileID: 1995943742}

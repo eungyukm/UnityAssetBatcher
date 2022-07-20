@@ -12,11 +12,14 @@ public class PanelManager : MonoBehaviour
     public GameObject floorUIGO;
     public GameObject wallUIGO;
     public GameObject propUIGO;
+    public GameObject mapSaveUIGO;
     
     public TileUI TileUI;
     public MainUI MainUI;
     public WallUI WallUI;
     public PropUI PropUI;
+    public MapSaveUI MapSaveUI;
+    public TopPanelUI TopPanelUI;
 
     public UIState UIState = UIState.None;
 
@@ -29,6 +32,8 @@ public class PanelManager : MonoBehaviour
         TileUI.OnClosePanel += PanelSwitch;
         WallUI.OnClosePanel += PanelSwitch;
         PropUI.OnClosePanel += PanelSwitch;
+        MapSaveUI.onClosePanel += PanelSwitch;
+        TopPanelUI.OnSaveAction += PanelSwitch;
     }
 
     private void OnDisable()
@@ -36,6 +41,8 @@ public class PanelManager : MonoBehaviour
         TileUI.OnClosePanel -= PanelSwitch;
         WallUI.OnClosePanel -= PanelSwitch;
         PropUI.OnClosePanel -= PanelSwitch;
+        MapSaveUI.onClosePanel -= PanelSwitch;
+        TopPanelUI.OnSaveAction -= PanelSwitch;
     }
     
     void Start()
@@ -81,6 +88,10 @@ public class PanelManager : MonoBehaviour
                 cardManager.LoadDeck(DeckType.Prop);
                 gridSystem.SwitchGridType(GridSystemType.None);
                 break;
+            case UIState.MapSaveUI:
+                AllUISetActiveFalse();
+                mapSaveUIGO.SetActive(true);
+                break;
         }
     }
 
@@ -89,6 +100,7 @@ public class PanelManager : MonoBehaviour
         mainUIGO.SetActive(false);
         floorUIGO.SetActive(false);
         wallUIGO.SetActive(false);
+        mapSaveUIGO.SetActive(false);
     }
 }
 
@@ -99,4 +111,5 @@ public enum UIState
     TileUI,
     WallUI,
     PropUI,
+    MapSaveUI,
 }

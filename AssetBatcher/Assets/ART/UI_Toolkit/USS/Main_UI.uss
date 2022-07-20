@@ -4,7 +4,7 @@
 
 .Top_Button {
     -unity-background-scale-mode: scale-to-fit;
-    width: 10%;
+    width: 9%;
     height: 80%;
     background-color: rgb(255, 255, 255);
 }
@@ -28,7 +28,7 @@
     border-right-color: rgb(255, 255, 255);
     border-top-color: rgb(255, 255, 255);
     border-bottom-color: rgb(255, 255, 255);
-    color: rgba(4, 77, 245, 255);
+    color: rgb(4, 77, 245);
 }
 
 .Icon_DeSelected {

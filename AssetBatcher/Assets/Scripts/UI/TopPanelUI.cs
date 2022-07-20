@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
@@ -17,11 +18,11 @@ public class TopPanelUI : MonoBehaviour
     private Button _scaleButton;
     private Button _alignmentButton;
     private Button _playButton;
+    private Button _saveButton;
 
     public GridSystem gridSystem;
     [FormerlySerializedAs("unitCursor")] public MouseCursor mouseCursor;
     public GizmoTransform gizmoTransform;
-    
     
     private bool _onSnap = false;
 
@@ -29,6 +30,8 @@ public class TopPanelUI : MonoBehaviour
     private const string labelSelectStyle = "Label_Selected";
 
     public InputReader InputReader;
+
+    public UnityAction<UIState> OnSaveAction;
 
     private void OnEnable()
     {
@@ -57,6 +60,9 @@ public class TopPanelUI : MonoBehaviour
 
         _playButton = topPanelUIRoot.Q<Button>("PlayBtn");
         _playButton.clicked += PlayButtonPressed;
+
+        _saveButton = topPanelUIRoot.Q<Button>("SaveBtn");
+        _saveButton.clicked += MapSaveButtonPressed;
     }
     
     private void SelectButtonPressed()
@@ -101,6 +107,11 @@ public class TopPanelUI : MonoBehaviour
     private void PlayButtonPressed()
     {
         SceneManager.LoadScene("InGame");
+    }
+
+    private void MapSaveButtonPressed()
+    {
+        OnSaveAction?.Invoke(UIState.MapSaveUI);
     }
 
     private void SwitchTransformMode()
