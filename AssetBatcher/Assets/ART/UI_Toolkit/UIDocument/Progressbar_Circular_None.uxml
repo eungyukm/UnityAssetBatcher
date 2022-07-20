@@ -1,10 +1,10 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <ui:VisualElement name="Container" style="width: 128px; height: 128px; position: relative; align-items: center; justify-content: center; flex-grow: 0;">
         <ui:VisualElement name="Outer_Pivot" style="width: 1px; height: 1px; flex-grow: 0;">
-            <ui:VisualElement name="Outer_Image" style="left: -64px; top: -64px; flex-shrink: 0; width: 128px; height: 128px; background-image: url(&apos;project://database/Assets/ART/Sprites/OuterCircle.png?fileID=2800000&amp;guid=5ff3ecad717997d4cb7c48fde3ef23b9&amp;type=3#OuterCircle&apos;); position: relative;" />
+            <ui:VisualElement name="Outer_Image" style="left: -64px; top: -64px; flex-shrink: 0; width: 128px; height: 128px; background-image: url(&apos;project://database/Assets/ART/Sprites/OuterCircle.png?fileID=2800000&amp;guid=5ff3ecad717997d4cb7c48fde3ef23b9&amp;type=3#OuterCircle&apos;); position: relative; -unity-background-image-tint-color: rgb(2, 77, 245);" />
         </ui:VisualElement>
         <ui:VisualElement name="Inner_Pivot" style="width: 1px; height: 1px;">
-            <ui:VisualElement name="Inner_Image" style="flex-shrink: 0; width: 100px; height: 100px; left: -50px; top: -50px; background-image: url(&apos;project://database/Assets/ART/Sprites/InnerCircle.png?fileID=2800000&amp;guid=7d843e36f7093ad45aebb06ad92f7d2d&amp;type=3#InnerCircle&apos;);" />
+            <ui:VisualElement name="Inner_Image" style="flex-shrink: 0; width: 100px; height: 100px; left: -50px; top: -50px; background-image: url(&apos;project://database/Assets/ART/Sprites/InnerCircle.png?fileID=2800000&amp;guid=7d843e36f7093ad45aebb06ad92f7d2d&amp;type=3#InnerCircle&apos;); -unity-background-image-tint-color: rgba(2, 77, 245, 255);" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

@@ -31,6 +31,12 @@ public class CircularProgressBarAnimation : MonoBehaviour
         StartCoroutine(AnimateUI(duration));
     }
 
+    public void StopCircularProgressBar()
+    {
+        // Disable the visiblity
+        m_Root.style.visibility = Visibility.Hidden;
+    }
+
 
     private IEnumerator AnimateUI(float duration)
     {
@@ -43,9 +49,5 @@ public class CircularProgressBarAnimation : MonoBehaviour
 
         //Wait until tweens finish (+1 extra second for display purposes) 
         yield return new WaitForSeconds(duration + 1f);
-
-        //Disable the visiblity
-        m_Root.style.visibility = Visibility.Hidden;
-
     }
 }

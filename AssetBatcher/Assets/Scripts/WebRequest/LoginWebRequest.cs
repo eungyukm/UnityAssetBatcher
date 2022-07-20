@@ -9,18 +9,19 @@ using System.Text.RegularExpressions;
 
 public class LoginWebRequest : MonoBehaviour
 {
-    private string host = "https://obliy.azurewebsites.net/";
+    // private string host = "https://obliy.azurewebsites.net/";
+    private string host = "http://127.0.0.1:8000/";
 
     private string loginUri = "api/account/login_result";
     
-    public void LoginAction(string loginMemberName, string loginPassword, Action OnLogin)
+    public void LoginAction(string loginMemberName, string loginPassword, Action<int> OnLogin)
     {
         Debug.LogFormat("{0} {1}",loginMemberName, loginPassword);
         var info = new member_req(loginMemberName, loginPassword);
         StartCoroutine(this.LoginRoutine(loginUri, info, OnLogin));
     }
     
-    private IEnumerator LoginRoutine(string uri, member_req info, Action OnLogin)
+    private IEnumerator LoginRoutine(string uri, member_req info, Action<int> OnLogin)
     {
         var json = JsonConvert.SerializeObject(info);
         var url = string.Format("{0}{1}", this.host, uri);
@@ -44,8 +45,12 @@ public class LoginWebRequest : MonoBehaviour
             if (code == 200)
             {
                 Debug.Log("Login");
-                OnLogin?.Invoke();
             }
+            else
+            {
+                Debug.Log("Login Failed");
+            }
+            OnLogin?.Invoke(code);
         }
     }
     

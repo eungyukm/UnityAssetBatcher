@@ -17,8 +17,9 @@ public class LoginUI : MonoBehaviour
     private TextField _idTextField;
     private TextField _pwTextField;
 
-    private Action onLoginAction;
+    private Action<int> onLoginAction;
     public Action onLoginButtonPressed;
+    public Action onLoginFailAction;
 
     private void OnEnable()
     {
@@ -43,8 +44,15 @@ public class LoginUI : MonoBehaviour
         _loginWebRequest.LoginAction(id, pw, onLoginAction);
     }
 
-    private void LoginResult()
+    private void LoginResult(int code)
     {
-        SceneManager.LoadScene("AssetBatcher");
+        if (code == 200)
+        {
+            SceneManager.LoadScene("AssetBatcher");
+        }
+        else
+        {
+            onLoginFailAction?.Invoke();
+        }
     }
 }

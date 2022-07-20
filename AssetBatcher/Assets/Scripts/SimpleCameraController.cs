@@ -100,9 +100,9 @@ namespace UnityTemplateProjects
 
             lookAction.AddBinding("<Gamepad>/rightStick").WithProcessor("scaleVector2(x=15, y=15)");
             movementAction.AddCompositeBinding("Dpad")
-                .With("Up", "<Keyboard>/w")
+                // .With("Up", "<Keyboard>/w")
                 .With("Up", "<Keyboard>/upArrow")
-                .With("Down", "<Keyboard>/s")
+                // .With("Down", "<Keyboard>/s")
                 .With("Down", "<Keyboard>/downArrow")
                 .With("Left", "<Keyboard>/a")
                 .With("Left", "<Keyboard>/leftArrow")
