@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using static UnityEditor.EditorGUI;
@@ -155,3 +156,4 @@ namespace Obliy.StateMachine.Editor
 		}
 	}
 }
+#endif

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Net.NetworkInformation;
@@ -8,6 +9,11 @@ using Newtonsoft.Json;
 public class MapSaveManager : MonoBehaviour
 {
     private WorldObjectsManager _worldObjectsManager;
+
+    private void Start()
+    {
+        _worldObjectsManager = GetComponent<WorldObjectsManager>();
+    }
 
     public string SaveMapData()
     {

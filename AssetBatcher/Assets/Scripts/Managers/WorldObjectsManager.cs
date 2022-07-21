@@ -10,14 +10,9 @@ public class WorldObjectsManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        worldObjects = new List<GameObject>();
         worldObjects.Add(GameObjects[0]);
         worldObjects.Add(GameObjects[1]);
         worldObjects.Add(GameObjects[2]);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿#if UNITY_EDITOR
+using System.IO;
 using System.Text;
 using UnityEngine;
 using UnityEditor;
@@ -60,3 +61,4 @@ internal class ScriptTemplates
 		}
 	}
 }
+#endif

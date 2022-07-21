@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 using Obliy.StateMachine.ScriptableObjects;
@@ -83,3 +84,4 @@ namespace Obliy.StateMachine.Editor
 		}
 	}
 }
+# endif

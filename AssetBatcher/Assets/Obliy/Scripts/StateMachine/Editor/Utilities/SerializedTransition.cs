@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿#if UNITY_EDITOR
+using UnityEditor;
 
 namespace Obliy.StateMachine.Editor
 {
@@ -45,3 +46,4 @@ namespace Obliy.StateMachine.Editor
 		}
 	}
 }
+#endif
