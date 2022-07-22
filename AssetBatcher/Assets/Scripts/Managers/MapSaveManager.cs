@@ -12,7 +12,7 @@ public class MapSaveManager : MonoBehaviour
 
     private void Start()
     {
-        _worldObjectsManager = WorldObjectsManager.instance;
+        // _worldObjectsManager = WorldObjectsManager.instance;
     }
 
     public string SaveMapData()

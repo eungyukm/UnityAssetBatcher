@@ -34,7 +34,10 @@ public class GameManager : MonoBehaviour
     private bool updateAllPlaceables; //업데이트 루프에 있는 모든 AIBrain을 강제로 업데이트하는 데 사용됨
     private const float THINKING_DELAY = 2f;
 
-    public GameObject ObjectsGO;
+    private GameObject _worldObjectManager;
+
+    [SerializeField] private ObjectEventChannelSO _addObjectEventChannelSo = default;
+    [SerializeField] private ObjectEventChannelSO _removeObjectEventChannelSo = default;
 
     private void Awake()
     {
@@ -80,6 +83,8 @@ public class GameManager : MonoBehaviour
 
         if (autoStart)
             StartMatch();
+
+        _worldObjectManager = FindObjectOfType<WorldObjectsManager>().gameObject;
     }
 
     //인트로 컷신에 의해 호출되는 것
@@ -215,16 +220,22 @@ public class GameManager : MonoBehaviour
             var newPlaceableGO = Instantiate(prefabToSpawn, position + cardData.relativeOffsets[pNum], rot);
             
             // 부모를 Objects로 설정합니다.
-            newPlaceableGO.transform.SetParent(ObjectsGO.transform);
+            newPlaceableGO.transform.SetParent(_worldObjectManager.transform);
             
             SetupPlaceable(newPlaceableGO, pDataRef, pFaction);
 
+            ObjectSO objectSo = new ObjectSO(newPlaceableGO, 0);
+            
+            _addObjectEventChannelSo?.RaiseEvent(objectSo);
+            
             // TODO : 아래 수정
             // appearEffectPool.UseParticles(position + cardData.relativeOffsets[pNum]);
         }
         //audioManager.PlayAppearSFX(position);
 
         updateAllPlaceables = true; //will force all AIBrains to update next time the Update loop is run
+        
+        
     }
 
     //Placeable GameObject에 모든 스크립트 및 수신기 설정

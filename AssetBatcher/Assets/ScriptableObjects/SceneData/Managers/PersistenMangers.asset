@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: PersistenMangers
   m_EditorClassIdentifier: 
   Description: "SceneLoader\uB97C \uAE46\uC9C0\uACE0 \uC788\uB294 ScriptableObject\uC785\uB2C8\uB2E4."
-  sceneType: 0
+  sceneType: 1
   sceneReference:
-    m_AssetGUID: 
+    m_AssetGUID: 1200adbb72aff024484b63b0cb89f913
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

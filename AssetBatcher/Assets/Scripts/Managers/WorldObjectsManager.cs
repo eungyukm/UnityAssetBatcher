@@ -5,31 +5,35 @@ using UnityEngine;
 
 public class WorldObjectsManager : MonoBehaviour
 {
-    public static WorldObjectsManager instance { get; private set; }
+    [SerializeField] private WorldObjectSO _currentWorldObject = default;
 
-    private void Awake()
+    [SerializeField] private ObjectEventChannelSO _addObjectEvent = default;
+    [SerializeField] private ObjectEventChannelSO _removeObjectEvent = default;
+
+    private void OnEnable()
     {
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        }
-        else
-        {
-            instance = this;
-        }
-        DontDestroyOnLoad(this);
+        _addObjectEvent.OnEventRaised += AddObjec;
+        _removeObjectEvent.OnEventRaised += RemoveObject;
+    }
+
+    private void OnDisable()
+    {
+        _addObjectEvent.OnEventRaised -= AddObjec;
+        _removeObjectEvent.OnEventRaised -= RemoveObject;        
     }
 
 
     public List<GameObject> worldObjects{ set; get; }
 
     public GameObject[] GameObjects;
-    // Start is called before the first frame update
-    void Start()
+
+    private void AddObjec(ObjectSO objectSo)
     {
-        worldObjects = new List<GameObject>();
-        worldObjects.Add(GameObjects[0]);
-        worldObjects.Add(GameObjects[1]);
-        worldObjects.Add(GameObjects[2]);
+        _currentWorldObject.Add(objectSo);
+    }
+
+    private void RemoveObject(ObjectSO objectSo)
+    {
+        _currentWorldObject.Remove(objectSo);
     }
 }

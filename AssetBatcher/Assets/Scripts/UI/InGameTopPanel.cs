@@ -8,7 +8,9 @@ using UnityEngine.UIElements;
 public class InGameTopPanel : MonoBehaviour
 {
     public UIDocument TopPanel;
-    private Button _exitButton; 
+    private Button _exitButton;
+
+    private LocationExit _locationExit;
 
     private void OnEnable()
     {
@@ -22,8 +24,13 @@ public class InGameTopPanel : MonoBehaviour
         _exitButton.clicked -= ExitButtonPressed;
     }
 
+    private void Awake()
+    {
+        _locationExit = GetComponent<LocationExit>();
+    }
+
     private void ExitButtonPressed()
     {
-        SceneManager.LoadScene("AssetBatcher");
+        _locationExit.LoadNextScene();
     }
 }

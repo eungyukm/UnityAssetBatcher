@@ -33,6 +33,13 @@ public class TopPanelUI : MonoBehaviour
 
     public UnityAction<UIState> OnSaveAction;
 
+    private LocationExit _locationExit;
+
+    private void Awake()
+    {
+        _locationExit = GetComponent<LocationExit>();
+    }
+
     private void OnEnable()
     {
         InputReader.OnWKeyAction += SelectButtonPressed;
@@ -106,7 +113,7 @@ public class TopPanelUI : MonoBehaviour
 
     private void PlayButtonPressed()
     {
-        SceneManager.LoadScene("InGame");
+        _locationExit.LoadNextScene();
     }
 
     private void MapSaveButtonPressed()

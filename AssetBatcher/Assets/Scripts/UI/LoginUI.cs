@@ -21,6 +21,13 @@ public class LoginUI : MonoBehaviour
     public Action onLoginButtonPressed;
     public Action onLoginFailAction;
 
+    private StartGame _startGame;
+
+    private void Awake()
+    {
+        _startGame = GetComponent<StartGame>();
+    }
+
     private void OnEnable()
     {
         var loginUIRoot = loginPanelDocument.GetComponent<UIDocument>().rootVisualElement;
@@ -48,7 +55,7 @@ public class LoginUI : MonoBehaviour
     {
         if (code == 200)
         {
-            SceneManager.LoadScene("AssetBatcher");
+            _startGame.OnPlayButtonPress();
         }
         else
         {

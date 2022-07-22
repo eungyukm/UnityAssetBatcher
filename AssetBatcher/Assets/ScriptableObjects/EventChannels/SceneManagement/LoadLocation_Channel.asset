@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24921d6c81ce6b24388875afa3a12e81, type: 3}
+  m_Name: LoadLocation_Channel
+  m_EditorClassIdentifier: 
+  Description: "Location Scene\uC744 \uB85C\uB529 \uC911\uC774\uB77C\uB294 \uC774\uBCA4\uD2B8
+    Channel"

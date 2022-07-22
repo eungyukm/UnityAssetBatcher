@@ -12,11 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
   m_Name: ManagerScenes
   m_EditorClassIdentifier: 
-  m_GroupName: Packed Assets
+  m_GroupName: ManagerScenes
   m_Data:
     m_SerializedData: []
   m_GUID: 8e54fb5908a60274fa8264913917ff43
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: 1200adbb72aff024484b63b0cb89f913
+    m_Address: Assets/Scenes/PersistentManager.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b1ba41c5041023a4eaca8b57e6b524a9
+    m_Address: Assets/Scenes/GamePlay.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ee89eeeda0e7d8341a44692920723863, type: 2}
   m_SchemaSet:
