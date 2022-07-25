@@ -70,6 +70,7 @@ public class CardManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         card.OnLeftMouseClickAction += CardReleased;
+        card.OnRightMouseClickAction += CardCancel;
     }
     
     /// <summary>
@@ -158,14 +159,17 @@ public class CardManager : MonoBehaviour
             {
                 OnCardUsed(card.cardData, hitPos, Placeable.Faction.Player);
             }
-            
-            ClearPreviewObjects();
-            DeActivateCard();
         }
         else
         {
             Debug.Log("[CM] CardReleased not hit!!");
         }
+    }
+
+    private void CardCancel()
+    {
+        ClearPreviewObjects();
+        DeActivateCard();
     }
 
     //7. 카드를 플레이 필드에 놓고 끌 때 발생합니다(플레이 필드 밖으로 이동할 때).

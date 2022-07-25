@@ -46,6 +46,7 @@ public class PlayerSpawn : MonoBehaviour
 	{
 		Transform spawnLocation = GetSpawnLocation(spawnIndex, _spawnLocations);
 		MainPlayer playerInstance = InstantiatePlayer(_playerPrefab, spawnLocation, _playerCamera);
+		playerInstance.transform.parent = transform;
 		SetupCameras(playerInstance);
 	}
 

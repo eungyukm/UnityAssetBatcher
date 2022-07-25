@@ -22,6 +22,7 @@ public class Card : MonoBehaviour
     public InputReader inputReader;
     
     public UnityAction OnLeftMouseClickAction = delegate {  };
+    public UnityAction OnRightMouseClickAction = delegate {  };
 
     public Vector2 MousePos = new Vector2(0, 0);
 
@@ -38,11 +39,13 @@ public class Card : MonoBehaviour
     private void OnEnable()
     {
         inputReader.OnMouseLeftClickedAction += OnLeftMouseClicked;
+        inputReader.OnMouseRightClickAction += OnRightMouseClicked;
     }
 
     private void OnDisable()
     {
         inputReader.OnMouseLeftClickedAction -= OnLeftMouseClicked;
+        inputReader.OnMouseRightClickAction -= OnRightMouseClicked;
     }
 
     //called by CardManager, it feeds CardData so this card can display the placeable's portrait
@@ -61,5 +64,10 @@ public class Card : MonoBehaviour
     public void ChangeActiveState(bool isActive)
     {
         canvasGroup.alpha = (isActive) ? .01f : 1f;
+    }
+
+    public void OnRightMouseClicked()
+    {
+        OnRightMouseClickAction?.Invoke();
     }
 }

@@ -175,7 +175,6 @@ public class SceneLoader : MonoBehaviour
     private void OnGameplayManagersLoaded(AsyncOperationHandle<SceneInstance> obj)
     {
         _gameplayManagerSceneInstance = _gameplayManagerLoadingOpHandle.Result;
-
         StartCoroutine(UnloadPreviousScene());
     }
 

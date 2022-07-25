@@ -11,6 +11,7 @@ public class InputReader : ScriptableObject, GameInput.IUnitCursorModeActions
     public UnityAction<Vector2> OnMouseLeftClickedAction = delegate {  };
     public UnityAction OnMouseLeftClickDownAction = delegate {  };
     public UnityAction OnMouseLeftClickUPAction = delegate {  };
+    public UnityAction OnMouseRightClickAction = delegate {  };
 
     public UnityAction OnCtrlDownAction = delegate {  };
     public UnityAction OnCtrlUPAction = delegate {  };
@@ -174,6 +175,14 @@ public class InputReader : ScriptableObject, GameInput.IUnitCursorModeActions
         {
             Debug.Log("value : " + context.ReadValue<Vector2>());
             OnMouseScrollAction?.Invoke(context.ReadValue<Vector2>());
+        }
+    }
+
+    public void OnMouseRightClick(InputAction.CallbackContext context)
+    {
+        if (context.phase == InputActionPhase.Performed)
+        {
+            OnMouseRightClickAction?.Invoke();
         }
     }
 

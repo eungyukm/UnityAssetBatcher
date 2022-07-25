@@ -7,10 +7,6 @@ public class GameManager : MonoBehaviour
     [Header("Settings")] public bool autoStart;
 
     [Header("Public References")]
-    // TODO : 아래 수정
-    // public NavMeshSurface navMesh;
-    public GameObject playersCastle, opponentCastle;
-
     public GameObject introTimeline;
 
     public PlaceableData castlePData;
@@ -19,7 +15,6 @@ public class GameManager : MonoBehaviour
 
     private CardManager cardManager;
     // TODO : 아래 수정
-    // private CPUOpponent CPUOpponent;
     // private InputManager inputManager;
     // private AudioManager audioManager;
     // private UIManager UIManager;
@@ -43,7 +38,6 @@ public class GameManager : MonoBehaviour
     {
         cardManager = GetComponent<CardManager>();
         // TODO : 아래 수정
-        // CPUOpponent = GetComponent<CPUOpponent>();
         // inputManager = GetComponent<InputManager>();
         //audioManager = GetComponentInChildren<AudioManager>();
         // cinematicsManager = GetComponentInChildren<CinematicsManager>();
@@ -54,7 +48,6 @@ public class GameManager : MonoBehaviour
 
         //TODO : 아래 수정
         cardManager.OnCardUsed += UseCard;
-        // CPUOpponent.OnCardUsed += UseCard;
 
         //initialise Placeable lists, for the AIs to pick up and find a target
         playerUnits = new List<ThinkingPlaceable>();
@@ -81,18 +74,10 @@ public class GameManager : MonoBehaviour
 
         //audioManager.GoToDefaultSnapshot();
 
-        if (autoStart)
-            StartMatch();
-
         _worldObjectManager = FindObjectOfType<WorldObjectsManager>().gameObject;
     }
 
-    //인트로 컷신에 의해 호출되는 것
-    public void StartMatch()
-    {
-        // TODO : 컷 Scene
-        // CPUOpponent.StartActing();
-    }
+
 
     //업데이트는 장면의 모든 ThinkingPlace 테이블을 루프핑하고 해당 테이블이 작동하도록 합니다.
     private void Update()
@@ -241,51 +226,22 @@ public class GameManager : MonoBehaviour
     //Placeable GameObject에 모든 스크립트 및 수신기 설정
     private void SetupPlaceable(GameObject go, PlaceableData pDataRef, Placeable.Faction pFaction)
     {
-        // Debug.Log("pDataRef : " + pDataRef.pType);
-        //Add the appropriate script
         switch (pDataRef.pType)
         {
             case Placeable.PlaceableType.Unit:
                 var uScript = go.GetComponent<Unit>();
                 uScript.Activate(pFaction, pDataRef); //enables NavMeshAgent
                 uScript.OnDealDamage += OnPlaceableDealtDamage;
-                uScript.OnProjectileFired += OnProjectileFired;
                 AddPlaceableToList(uScript); //add the Unit to the appropriate list
-
-                // TODO : 아래 수정
-                // UIManager.AddHealthUI(uScript);
                 break;
 
             case Placeable.PlaceableType.Building:
-            case Placeable.PlaceableType.Castle:
-                var bScript = go.GetComponent<Building>();
-                bScript.Activate(pFaction, pDataRef);
-                bScript.OnDealDamage += OnPlaceableDealtDamage;
-                bScript.OnProjectileFired += OnProjectileFired;
-                AddPlaceableToList(bScript); //add the Building to the appropriate list
-                // TODO : 아래 수정
-                // UIManager.AddHealthUI(bScript);
-
-                //special case for castles
-                if (pDataRef.pType == Placeable.PlaceableType.Castle) bScript.OnDie += OnCastleDead;
-
-                // TODO : 아래 수정
-                // navMesh.BuildNavMesh(); //rebake the Navmesh
                 break;
 
             case Placeable.PlaceableType.Obstacle:
                 var oScript = go.GetComponent<Obstacle>();
                 // TODO : Die Method 수정
                 oScript.Activate(pDataRef);
-
-                // TODO : 아래 수정
-                // navMesh.BuildNavMesh(); //rebake the Navmesh
-                break;
-
-            case Placeable.PlaceableType.Spell:
-                //Spell sScript = newPlaceable.AddComponent<Spell>();
-                //sScript.Activate(pFaction, cardData.hitPoints);
-                //TODO: activate the spell and… ?
                 break;
         }
         
@@ -293,19 +249,6 @@ public class GameManager : MonoBehaviour
         go.GetComponent<Placeable>().OnDie += OnPlaceableDead;
 
         go.layer = 10;
-    }
-
-
-    private void OnProjectileFired(ThinkingPlaceable p)
-    {
-        var adjTargetPos = p.target.transform.position;
-        adjTargetPos.y = 1.5f;
-        var rot = Quaternion.LookRotation(adjTargetPos - p.projectileSpawnPoint.position);
-
-        var prj = Instantiate(p.projectilePrefab, p.projectileSpawnPoint.position, rot).GetComponent<Projectile>();
-        prj.target = p.target;
-        prj.damage = p.damage;
-        allProjectiles.Add(prj);
     }
 
     private void OnPlaceableDealtDamage(ThinkingPlaceable p)
@@ -319,40 +262,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void OnCastleDead(Placeable c)
-    {
-        // TODO : 아래 수정
-        // cinematicsManager.PlayCollapseCutscene(c.faction);
-        c.OnDie -= OnCastleDead;
-        gameOver = true; //stops the thinking loop
-
-        //stop all the ThinkingPlaceables		
-        ThinkingPlaceable thkPl;
-        for (var pN = 0; pN < allThinkingPlaceables.Count; pN++)
-        {
-            thkPl = allThinkingPlaceables[pN];
-            if (thkPl.state != ThinkingPlaceable.States.Dead)
-            {
-                thkPl.Stop();
-                thkPl.transform.LookAt(c.transform.position);
-
-                // TODO : 아래 수정
-                // UIManager.RemoveHealthUI(thkPl);
-            }
-        }
-
-        //audioManager.GoToEndMatchSnapshot();
-
-        // TODO : 아래 수정
-        // CPUOpponent.StopActing();
-    }
-
-    public void OnEndGameCutsceneOver()
-    {
-        // TODO : 아래 수정
-        // UIManager.ShowGameOverUI();
-    }
-
     private void OnPlaceableDead(Placeable p)
     {
         p.OnDie -= OnPlaceableDead; //remove the listener
@@ -363,7 +272,6 @@ public class GameManager : MonoBehaviour
                 var u = (Unit) p;
                 RemovePlaceableFromList(u);
                 u.OnDealDamage -= OnPlaceableDealtDamage;
-                u.OnProjectileFired -= OnProjectileFired;
                 // TODO : 아래 수정
                 // UIManager.RemoveHealthUI(u);
                 StartCoroutine(Dispose(u));
@@ -376,8 +284,6 @@ public class GameManager : MonoBehaviour
                 // TODO : 아래 수정
                 // UIManager.RemoveHealthUI(b);
                 b.OnDealDamage -= OnPlaceableDealtDamage;
-                b.OnProjectileFired -= OnProjectileFired;
-                StartCoroutine(RebuildNavmesh()); //need to fix for normal buildings
 
                 //we don't dispose of the Castle
                 if (p.pType != Placeable.PlaceableType.Castle)
@@ -385,7 +291,6 @@ public class GameManager : MonoBehaviour
                 break;
 
             case Placeable.PlaceableType.Obstacle:
-                StartCoroutine(RebuildNavmesh());
                 break;
 
             case Placeable.PlaceableType.Spell:
@@ -399,15 +304,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         Destroy(p.gameObject);
-    }
-
-    private IEnumerator RebuildNavmesh()
-    {
-        yield return new WaitForEndOfFrame();
-
-        // TODO : 아래 수정
-        // navMesh.BuildNavMesh();
-        //FIX: dragged obstacles are included in the navmesh when it's baked
     }
 
     private void AddPlaceableToList(ThinkingPlaceable p)

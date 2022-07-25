@@ -125,6 +125,15 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseRightClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""d927e323-7833-4e6c-9a61-1e4173b30aba"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -248,6 +257,17 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                     ""action"": ""MouseScroll"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39432ea9-c6d9-473b-a462-de4b453a4bd4"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseRightClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -267,6 +287,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         m_UnitCursorMode_KeyboardZ = m_UnitCursorMode.FindAction("KeyboardZ", throwIfNotFound: true);
         m_UnitCursorMode_KeyboardW = m_UnitCursorMode.FindAction("KeyboardW", throwIfNotFound: true);
         m_UnitCursorMode_MouseScroll = m_UnitCursorMode.FindAction("MouseScroll", throwIfNotFound: true);
+        m_UnitCursorMode_MouseRightClick = m_UnitCursorMode.FindAction("MouseRightClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -337,6 +358,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_UnitCursorMode_KeyboardZ;
     private readonly InputAction m_UnitCursorMode_KeyboardW;
     private readonly InputAction m_UnitCursorMode_MouseScroll;
+    private readonly InputAction m_UnitCursorMode_MouseRightClick;
     public struct UnitCursorModeActions
     {
         private @GameInput m_Wrapper;
@@ -352,6 +374,7 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         public InputAction @KeyboardZ => m_Wrapper.m_UnitCursorMode_KeyboardZ;
         public InputAction @KeyboardW => m_Wrapper.m_UnitCursorMode_KeyboardW;
         public InputAction @MouseScroll => m_Wrapper.m_UnitCursorMode_MouseScroll;
+        public InputAction @MouseRightClick => m_Wrapper.m_UnitCursorMode_MouseRightClick;
         public InputActionMap Get() { return m_Wrapper.m_UnitCursorMode; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -394,6 +417,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @MouseScroll.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseScroll;
                 @MouseScroll.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseScroll;
                 @MouseScroll.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseScroll;
+                @MouseRightClick.started -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseRightClick;
+                @MouseRightClick.performed -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseRightClick;
+                @MouseRightClick.canceled -= m_Wrapper.m_UnitCursorModeActionsCallbackInterface.OnMouseRightClick;
             }
             m_Wrapper.m_UnitCursorModeActionsCallbackInterface = instance;
             if (instance != null)
@@ -431,6 +457,9 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
                 @MouseScroll.started += instance.OnMouseScroll;
                 @MouseScroll.performed += instance.OnMouseScroll;
                 @MouseScroll.canceled += instance.OnMouseScroll;
+                @MouseRightClick.started += instance.OnMouseRightClick;
+                @MouseRightClick.performed += instance.OnMouseRightClick;
+                @MouseRightClick.canceled += instance.OnMouseRightClick;
             }
         }
     }
@@ -448,5 +477,6 @@ public partial class @GameInput : IInputActionCollection2, IDisposable
         void OnKeyboardZ(InputAction.CallbackContext context);
         void OnKeyboardW(InputAction.CallbackContext context);
         void OnMouseScroll(InputAction.CallbackContext context);
+        void OnMouseRightClick(InputAction.CallbackContext context);
     }
 }
