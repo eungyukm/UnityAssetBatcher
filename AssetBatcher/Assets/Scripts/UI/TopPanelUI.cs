@@ -21,9 +21,8 @@ public class TopPanelUI : MonoBehaviour
     private Button _saveButton;
 
     public GridSystem gridSystem;
-    [FormerlySerializedAs("unitCursor")] public MouseCursor mouseCursor;
-    public GizmoTransform gizmoTransform;
-    
+    public MouseCursor mouseCursor;
+
     private bool _onSnap = false;
 
     private const string iconSelectStyle = "Icon_Selected";
@@ -71,7 +70,22 @@ public class TopPanelUI : MonoBehaviour
         _saveButton = topPanelUIRoot.Q<Button>("SaveBtn");
         _saveButton.clicked += MapSaveButtonPressed;
     }
-    
+
+    private void OnDisable()
+    { 
+        InputReader.OnWKeyAction -= SelectButtonPressed;
+        InputReader.OnGrapPresseAction -= MoveButtonPressed;
+        InputReader.OnRotationAction -= RotationButtonPressed;
+        InputReader.OnScaleAction -= ScaleButtonPressed;
+        
+        _selectButtom.clicked += SelectButtonPressed;
+        _rotationButton.clicked += RotationButtonPressed;
+        _scaleButton.clicked += ScaleButtonPressed;
+        _alignmentButton.clicked += AlignmentButtonPressed;
+        _playButton.clicked += PlayButtonPressed;
+        _saveButton.clicked += MapSaveButtonPressed;
+    }
+
     private void SelectButtonPressed()
     {
         mouseCursor.SwitchMode(MouseCursor.GameTransformMode.SelectMode);

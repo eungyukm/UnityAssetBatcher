@@ -9,7 +9,7 @@ EditorBuildSettings:
     path: Assets/Scenes/Initialization.unity
     guid: 2dc4e01adda3b984abdaa80a8b4a792c
   - enabled: 0
-    path: Assets/Scenes/Login.unity
+    path: Assets/Scenes/App/Login.unity
     guid: 0b7375fb14fcf4c4a948ac38d0e8b587
   - enabled: 0
     path: Assets/Scenes/App/AssetBatcher.unity

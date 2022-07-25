@@ -10,24 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
-  m_Name: DataScriptableObjects
+  m_Name: PlayerData
   m_EditorClassIdentifier: 
-  m_GroupName: DataScriptableObjects
+  m_GroupName: PlayerData
   m_Data:
     m_SerializedData: []
-  m_GUID: d54f3f785510fd2499b3d9b38efb1b61
+  m_GUID: a295282621dd9734a8477a2a256a410b
   m_SerializeEntries:
-  - m_GUID: bda8b34b86de6ee4f9f80f812918e9ac
-    m_Address: Assets/ScriptableObjects/SceneData
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-  - m_GUID: 2843cdf584893f34988f20839f028f9b
-    m_Address: Assets/ScriptableObjects/WorldObjectData
+  - m_GUID: 94b785ac1c0e2fc4eba778a747dc5675
+    m_Address: Assets/ART/Characters/Prefabs/Models/avatarF.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ee89eeeda0e7d8341a44692920723863, type: 2}
   m_SchemaSet:
     m_Schemas:
-    - {fileID: 11400000, guid: 2370c0ce9dca2a54ca6197a3663ea525, type: 2}
-    - {fileID: 11400000, guid: 9748359fe81859d4996f2edaeaa54700, type: 2}
+    - {fileID: 11400000, guid: 8002abfc4691a6c47aa931e63b593eb6, type: 2}
+    - {fileID: 11400000, guid: 5ad065e9490d86743a075abae6ef9a06, type: 2}

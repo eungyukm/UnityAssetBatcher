@@ -14,7 +14,7 @@ public class WorldObjectSO : ScriptableObject
         {
             return;
         }
-        Debug.Log("Add!");
+        Debug.Log("[WorldObjectSO] Add!");
         PlaceableDatas.Add(objectSo);
     }
 
@@ -26,5 +26,10 @@ public class WorldObjectSO : ScriptableObject
         }
 
         PlaceableDatas.Remove(objectSo);
+    }
+    
+    public int GetCount()
+    {
+        return PlaceableDatas.Count;
     }
 }

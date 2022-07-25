@@ -9,8 +9,8 @@ using UnityEngine.Events;
 
 public class MapWebRequest : MonoBehaviour
 {
-    // private string host = "https://obliy.azurewebsites.net/";
-    private string host = "http://127.0.0.1:8000/";
+    private string host = "https://obliy.azurewebsites.net/";
+    // private string host = "http://127.0.0.1:8000/";
 
     private string mapCreateUri = "api/map_create";
 

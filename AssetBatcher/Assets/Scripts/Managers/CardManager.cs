@@ -34,6 +34,8 @@ public class CardManager : MonoBehaviour
     // TODO : plane y height 변경
     public float planeHeight = 0.0f;
 
+    public MouseCursor MouseCursor;
+
     private void Awake()
     {
         previewHolder = new GameObject("PreviewHolder");
@@ -140,6 +142,7 @@ public class CardManager : MonoBehaviour
     {
         RaycastHit hit;
         Ray ray = mainCamera.ScreenPointToRay(card.MousePos);
+        Debug.Log("playingFieldMask : " + playingFieldMask.value);
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, playingFieldMask))
         {
@@ -187,6 +190,7 @@ public class CardManager : MonoBehaviour
     /// </summary>
     public void ActivateCard()
     {
+        MouseCursor.SwitchMode(MouseCursor.GameTransformMode.None);
         DeployMode = DeployMode.SelectedObject;
         card.gameObject.SetActive(true);
         forbiddenAreaRenderer.enabled = true;
@@ -227,7 +231,7 @@ public class CardManager : MonoBehaviour
         
         if (planeHit)
         {
-            Debug.Log("hit point : " + hit.point);
+            // Debug.Log("hit point : " + hit.point);
             if (!cardIsActive)
             {
                 cardIsActive = true;
@@ -258,6 +262,7 @@ public class CardManager : MonoBehaviour
                         Quaternion.identity,
                         previewHolder.transform);
                     newPlaceable.transform.localPosition = new Vector3(0, 0, 0);
+                    newPlaceable.layer = LayerMask.NameToLayer("Default");
                 }
             }
             else

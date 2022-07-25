@@ -23,7 +23,9 @@ public class MapSaveUI : MonoBehaviour
     public UnityAction<int> onSaveButtonClicked;
 
     private MapWebRequest _mapWebRequest;
-    public MapSaveManager MapSaveManager;
+
+    [SerializeField] private StringEventChannelSO _stringEventChannelSo = default;
+    [SerializeField] private VoidEventChannelSO _saveButtonEventChannelSo = default;
 
     private void OnEnable()
     {
@@ -39,14 +41,18 @@ public class MapSaveUI : MonoBehaviour
 
         _mapWebRequest = GetComponent<MapWebRequest>();
         onSaveButtonClicked += MapSaveResult;
+        _stringEventChannelSo.OnEventRaised += SetMapData;
+    }
+
+    private void SetMapData(string mapData)
+    {
+        // TODO : witer와 info idx 수정
+        _mapWebRequest.MapCreate(_mapSubject.text, mapData, 1,1, onSaveButtonClicked);
     }
 
     private void SaveMap()
     {
-        string mapData = MapSaveManager.SaveMapData();
-        // TODO : witer와 info idx 수정
-        _mapWebRequest.MapCreate(_mapSubject.text, mapData, 1,1, onSaveButtonClicked);
-        
+        _saveButtonEventChannelSo.RaiseEvent();
     }
 
     private void MapSaveResult(int code)

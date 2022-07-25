@@ -9,37 +9,39 @@ using Newtonsoft.Json;
 public class MapSaveManager : MonoBehaviour
 {
     private WorldObjectsManager _worldObjectsManager;
+    public StringEventChannelSO StringEventChannelSo = default;
+    public VoidEventChannelSO SaveButtonEventChannelSo = default;
 
-    private void Start()
+    private void Awake()
     {
-        // _worldObjectsManager = WorldObjectsManager.instance;
+        _worldObjectsManager = GetComponent<WorldObjectsManager>();
     }
 
-    public string SaveMapData()
+    private void OnEnable()
+    {
+        SaveButtonEventChannelSo.OnEventRaise += SaveButtonClicked;
+    }
+
+    private void OnDisable()
+    {
+        SaveButtonEventChannelSo.OnEventRaise -= SaveButtonClicked;
+    }
+
+    private void SaveButtonClicked()
+    {
+        string mapData = SaveMapDataToJson();
+        StringEventChannelSo.RaiseEvent(mapData);
+    }
+
+    public string SaveMapDataToJson()
     {
         int count = 0;
-        int length = _worldObjectsManager.worldObjects.Count;
+        int length = _worldObjectsManager.WorldObjectSo.GetCount();
         MapMetaData[] mapMetaDatas = new MapMetaData[length];
-        foreach (var obstacle in _worldObjectsManager.worldObjects)
+        foreach (var placeableData in _worldObjectsManager.WorldObjectSo.PlaceableDatas)
         {
-            MapMetaData metaData = new MapMetaData();
-            metaData.idx = count;
-            metaData.model_label = obstacle.gameObject.name;
-            var position = obstacle.gameObject.transform.position;
-            metaData.pos_x = position.x;
-            metaData.pos_y = position.y;
-            metaData.pos_z = position.z;
-
-            var rotation = obstacle.transform.rotation;
-            metaData.rotation_x = rotation.x;
-            metaData.rotation_y = rotation.y;
-            metaData.rotation_z = rotation.z;
-
-            var localScale = obstacle.transform.localScale;
-            metaData.scale_x = localScale.x;
-            metaData.scale_y = localScale.y;
-            metaData.scale_z = localScale.z;
-            mapMetaDatas[count] = metaData;
+            MapMetaData data = placeableData.MetaData;
+            mapMetaDatas[count] = data;
             count++;
         }
 
@@ -52,10 +54,5 @@ public class MapSaveManager : MonoBehaviour
         {
             return "None";
         }
-    }
-
-    private void CreateMapData()
-    {
-        
     }
 }

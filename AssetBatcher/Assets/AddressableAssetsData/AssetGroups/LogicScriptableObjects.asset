@@ -17,8 +17,16 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: dd1127d48a4058d4b88e5bd7f71b8d55
   m_SerializeEntries:
-  - m_GUID: 4785b8ecfbb39fa4a8bc746d7e0724a5
-    m_Address: Assets/ScriptableObjects/EventChannels/SceneManagement
+  - m_GUID: 3cc3d4f520a8ce54094b880af071c2d8
+    m_Address: Assets/Obliy/ScriptableObjects/Input/InputReader.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 5f5626d6939b4034584a333db49f7972
+    m_Address: Assets/ScriptableObjects/EventChannels
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4c071be39798c3b499237b5879681616
+    m_Address: Assets/ScriptableObjects/Input
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

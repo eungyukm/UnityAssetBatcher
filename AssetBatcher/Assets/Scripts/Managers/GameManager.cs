@@ -4,21 +4,13 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Settings")] public bool autoStart;
-
-    [Header("Public References")]
-    public GameObject introTimeline;
-
-    public PlaceableData castlePData;
     // TODO : 아래 수정
     // public ParticlePool appearEffectPool;
 
     private CardManager cardManager;
     // TODO : 아래 수정
-    // private InputManager inputManager;
     // private AudioManager audioManager;
     // private UIManager UIManager;
-    // private CinematicsManager cinematicsManager;
 
     private List<ThinkingPlaceable> playerUnits, opponentUnits;
     private List<ThinkingPlaceable> playerBuildings, opponentBuildings;
@@ -43,9 +35,6 @@ public class GameManager : MonoBehaviour
         // cinematicsManager = GetComponentInChildren<CinematicsManager>();
         // UIManager = GetComponent<UIManager>();
 
-        if (autoStart)
-            introTimeline.SetActive(false);
-
         //TODO : 아래 수정
         cardManager.OnCardUsed += UseCard;
 
@@ -62,16 +51,10 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // TODO : 아래 수정
-        // SetupPlaceable(playersCastle, castlePData, Placeable.Faction.Player);
-        // SetupPlaceable(opponentCastle, castlePData, Placeable.Faction.Opponent);
-        
         // TODO : 덱을 로드하는 로직 수정
         // cardManager.LoadDeck();
 
         // TODO : 아래 수정
-        // CPUOpponent.LoadDeck();
-
         //audioManager.GoToDefaultSnapshot();
 
         _worldObjectManager = FindObjectOfType<WorldObjectsManager>().gameObject;
@@ -129,27 +112,6 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        Projectile currProjectile;
-        float progressToTarget;
-        for (var prjN = 0; prjN < allProjectiles.Count; prjN++)
-        {
-            currProjectile = allProjectiles[prjN];
-            progressToTarget = currProjectile.Move();
-            if (progressToTarget >= 1f)
-            {
-                if (currProjectile.target.state !=
-                    ThinkingPlaceable.States.Dead) //target might be dead already as this projectile is flying
-                {
-                    var newHP = currProjectile.target.SufferDamage(currProjectile.damage);
-                    // TODO : 아래 수정
-                    // currProjectile.target.healthBar.SetHealth(newHP);
-                }
-
-                Destroy(currProjectile.gameObject);
-                allProjectiles.RemoveAt(prjN);
-            }
-        }
-
         updateAllPlaceables = false; //is set to true by UseCard()
     }
 
@@ -203,7 +165,7 @@ public class GameManager : MonoBehaviour
             var prefabToSpawn = pFaction == Placeable.Faction.Player ? pDataRef.associatedPrefab :
                 pDataRef.alternatePrefab == null ? pDataRef.associatedPrefab : pDataRef.alternatePrefab;
             var newPlaceableGO = Instantiate(prefabToSpawn, position + cardData.relativeOffsets[pNum], rot);
-            
+
             // 부모를 Objects로 설정합니다.
             newPlaceableGO.transform.SetParent(_worldObjectManager.transform);
             

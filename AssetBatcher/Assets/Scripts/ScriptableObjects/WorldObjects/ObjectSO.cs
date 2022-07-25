@@ -7,6 +7,7 @@ using UnityEngine;
 public class ObjectSO : MonoBehaviour
 {
     [SerializeField] private MapMetaData _metaData;
+    public MapMetaData MetaData => _metaData; 
 
     public ObjectSO(GameObject mapObject, int idx)
     {

@@ -12,27 +12,13 @@ using UnityEngine.Serialization;
 /// </summary>
 public class MouseCursor : MonoBehaviour
 {
-    [SerializeField] private LayerMask _layerUnit;
-    [SerializeField] private LayerMask _layerOutLine;
-
     public InputReader _InputReader;
 
-    public List<Obstacle> PlaceableDatas = new List<Obstacle>();
-
-    public WorldObjectsManager WorldObjectsManager;
-
-    public GameTransformMode transformMode = GameTransformMode.SelectMode;
+    public GameTransformMode transformMode = GameTransformMode.None;
 
     private GameObject hitObj;
 
-    public UnityAction<GameObject> OnSelectedObject;
-    public UnityAction OnMoveButtonPressed;
-
-    [FormerlySerializedAs("Arrow")] public GameObject GizmoArrow;
-
-    protected UnityAction OnMouseLeftDown;
-    protected UnityAction OnMouseLeftUP;
-    protected UnityAction OnMouseLeftClicked;
+    public GameObject GizmoArrow;
 
     protected Axis rotateAxis;
     protected Axis nearAxis = Axis.None;
@@ -56,10 +42,7 @@ public class MouseCursor : MonoBehaviour
         {
             Debug.Log("Input Reader is null!!");
         }
-        
 
-        OnMoveButtonPressed += OnMoveButtonPress;
-        
         _InputReader.OnMouseLeftClickDownAction += MouseLeftDown;
         _InputReader.OnMouseLeftClickUPAction += MouseLeftUP;
         
@@ -74,12 +57,6 @@ public class MouseCursor : MonoBehaviour
         _InputReader.OnYKeyAction += OnRotationYMode;
         _InputReader.OnZKeyAction += OnRotationZMode;
     }
-
-    private void OnMoveButtonPress()
-    {
-        SwitchMode(GameTransformMode.MoveMode);
-    }
-
     public virtual void OnDisable()
     {
         _InputReader.OnMouseLeftClickDownAction -= MouseLeftDown;
@@ -87,6 +64,14 @@ public class MouseCursor : MonoBehaviour
         
         // 마우스 왼쪽 클릭
         _InputReader.OnMouseLeftClickedAction -= GetTarget;
+        
+        _InputReader.OnGrapPresseAction -= OnGrapMode;
+        _InputReader.OnScaleAction -= OnScaleMode;
+        _InputReader.OnRotationAction -= OnRotationMode;
+
+        _InputReader.OnXKeyAction -= OnRotationXMode;
+        _InputReader.OnYKeyAction -= OnRotationYMode;
+        _InputReader.OnZKeyAction -= OnRotationZMode;
     }
     
     void Start()
@@ -97,6 +82,7 @@ public class MouseCursor : MonoBehaviour
 
     public void SwitchMode(GameTransformMode gameTransformMode)
     {
+        ClearAndAddTarget(null);
         transformMode = gameTransformMode;
         switch (gameTransformMode)
         {
@@ -256,6 +242,10 @@ public class MouseCursor : MonoBehaviour
             pivotPoint = mainTargetRoot.position;
             SetArrowGizmo();
         }
+        else
+        {
+            GizmoArrow.SetActive(false);
+        }
     }
     
     public void SetArrowGizmo()
@@ -270,6 +260,7 @@ public class MouseCursor : MonoBehaviour
     [Serializable]
     public enum GameTransformMode
     {
+        None,
         SelectMode,
         MoveMode,
         ScaleMode,

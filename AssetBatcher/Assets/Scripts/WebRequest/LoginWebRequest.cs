@@ -9,8 +9,8 @@ using System.Text.RegularExpressions;
 
 public class LoginWebRequest : MonoBehaviour
 {
-    // private string host = "https://obliy.azurewebsites.net/";
-    private string host = "http://127.0.0.1:8000/";
+    private string host = "https://obliy.azurewebsites.net/";
+    // private string host = "http://127.0.0.1:8000/";
 
     private string loginUri = "api/account/login_result";
     

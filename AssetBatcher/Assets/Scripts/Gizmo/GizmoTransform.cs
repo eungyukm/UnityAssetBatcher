@@ -438,7 +438,15 @@ public class GizmoTransform : MouseCursor
 
     void SetNearAxis()
     {
-	    if (isTransforming) return;
+	    if (transformMode == GameTransformMode.None || transformMode == GameTransformMode.SelectMode)
+	    {
+		    return;
+	    }
+
+	    if (isTransforming)
+	    {
+		    return;
+	    }
 
 	    SetTranslatingAxis(transformType, Axis.None);
 

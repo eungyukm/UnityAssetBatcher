@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1567973920}
   - component: {fileID: 1567973919}
+  - component: {fileID: 1567973921}
   m_Layer: 0
   m_Name: WorldObjectManager
   m_TagString: Untagged
@@ -155,7 +156,6 @@ MonoBehaviour:
   _currentWorldObject: {fileID: 11400000, guid: 9bfb28e216bc02a47931b63d5f46c965, type: 2}
   _addObjectEvent: {fileID: 11400000, guid: 30ee4e573096c5e4fb2e9f1e84a16d31, type: 2}
   _removeObjectEvent: {fileID: 11400000, guid: 90dfb7df04142ca418ed3c8223543a5b, type: 2}
-  GameObjects: []
 --- !u!4 &1567973920
 Transform:
   m_ObjectHideFlags: 0
@@ -171,3 +171,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1567973921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1567973918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1e6d9c9e7883a64a896b332ba0e6243, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StringEventChannelSo: {fileID: 11400000, guid: b1b74d6cc6af95640a6488de9e31f2c5, type: 2}
+  SaveButtonEventChannelSo: {fileID: 11400000, guid: 3358121f452cbe74fb7008400f351c6d, type: 2}

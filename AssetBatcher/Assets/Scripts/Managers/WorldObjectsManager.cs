@@ -7,6 +7,8 @@ public class WorldObjectsManager : MonoBehaviour
 {
     [SerializeField] private WorldObjectSO _currentWorldObject = default;
 
+    public WorldObjectSO WorldObjectSo => _currentWorldObject;
+
     [SerializeField] private ObjectEventChannelSO _addObjectEvent = default;
     [SerializeField] private ObjectEventChannelSO _removeObjectEvent = default;
 
@@ -21,11 +23,6 @@ public class WorldObjectsManager : MonoBehaviour
         _addObjectEvent.OnEventRaised -= AddObjec;
         _removeObjectEvent.OnEventRaised -= RemoveObject;        
     }
-
-
-    public List<GameObject> worldObjects{ set; get; }
-
-    public GameObject[] GameObjects;
 
     private void AddObjec(ObjectSO objectSo)
     {
