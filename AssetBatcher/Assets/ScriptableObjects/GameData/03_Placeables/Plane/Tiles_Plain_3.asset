@@ -13,16 +13,4 @@ MonoBehaviour:
   m_Name: Tiles_Plain_3
   m_EditorClassIdentifier: 
   pType: 1
-  associatedPrefab: {fileID: 6102249275953247839, guid: 552e61e12edbcfc4baf86f40ac0f3ece, type: 3}
-  alternatePrefab: {fileID: 0}
-  attackType: 0
-  targetType: 2
-  attackRatio: 0
-  damagePerAttack: 0
-  attackRange: 0
-  hitPoints: 0
-  attackClip: {fileID: 0}
-  dieClip: {fileID: 0}
-  speed: 0
-  lifeTime: 100
-  damagePerSecond: 0
+  placeablePrefab: {fileID: 6102249275953247839, guid: 552e61e12edbcfc4baf86f40ac0f3ece, type: 3}

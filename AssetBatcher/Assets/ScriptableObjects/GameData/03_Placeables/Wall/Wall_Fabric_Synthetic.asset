@@ -13,16 +13,4 @@ MonoBehaviour:
   m_Name: Wall_Fabric_Synthetic
   m_EditorClassIdentifier: 
   pType: 1
-  associatedPrefab: {fileID: 8966691714592851424, guid: 63b46caf72f63e04bb637444c9011ab1, type: 3}
-  alternatePrefab: {fileID: 0}
-  attackType: 0
-  targetType: 2
-  attackRatio: 0
-  damagePerAttack: 0
-  attackRange: 0
-  hitPoints: 0
-  attackClip: {fileID: 0}
-  dieClip: {fileID: 0}
-  speed: 0
-  lifeTime: 100
-  damagePerSecond: 0
+  placeablePrefab: {fileID: 1199198786649793491, guid: 93bcf08c16c275b49adf3e5890e91805, type: 3}

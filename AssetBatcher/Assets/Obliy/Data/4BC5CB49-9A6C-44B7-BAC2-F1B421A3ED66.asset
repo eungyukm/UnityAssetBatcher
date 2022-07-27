@@ -15,7 +15,7 @@ MonoBehaviour:
   ID: 4BC5CB49-9A6C-44B7-BAC2-F1B421A3ED66
   FriendlyName: New Item
   Description: 
-  Category: 0
+  Category: 1
   Stackable: 0
   BuyPrice: 0
   SellPercentage: 0

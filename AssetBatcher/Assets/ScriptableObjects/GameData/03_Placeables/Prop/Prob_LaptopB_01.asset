@@ -13,16 +13,4 @@ MonoBehaviour:
   m_Name: Prob_LaptopB_01
   m_EditorClassIdentifier: 
   pType: 1
-  associatedPrefab: {fileID: 8275665184723955364, guid: b77da3ef4767ac947af141d0c70620a3, type: 3}
-  alternatePrefab: {fileID: 0}
-  attackType: 0
-  targetType: 2
-  attackRatio: 0
-  damagePerAttack: 0
-  attackRange: 0
-  hitPoints: 0
-  attackClip: {fileID: 0}
-  dieClip: {fileID: 0}
-  speed: 0
-  lifeTime: 100
-  damagePerSecond: 0
+  placeablePrefab: {fileID: 919132149155446097, guid: cbf183d0171831e43aa0ccebaf4b414d, type: 3}

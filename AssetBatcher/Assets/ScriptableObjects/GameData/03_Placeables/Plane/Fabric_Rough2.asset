@@ -13,16 +13,4 @@ MonoBehaviour:
   m_Name: Fabric_Rough2
   m_EditorClassIdentifier: 
   pType: 1
-  associatedPrefab: {fileID: 6102249275953247839, guid: 8db4157385092a141a54b1df8d4f1066, type: 3}
-  alternatePrefab: {fileID: 0}
-  attackType: 0
-  targetType: 2
-  attackRatio: 0
-  damagePerAttack: 0
-  attackRange: 0
-  hitPoints: 0
-  attackClip: {fileID: 0}
-  dieClip: {fileID: 0}
-  speed: 0
-  lifeTime: 100
-  damagePerSecond: 0
+  placeablePrefab: {fileID: 6102249275953247839, guid: 8db4157385092a141a54b1df8d4f1066, type: 3}
