@@ -90,24 +90,6 @@ public class GameManager : MonoBehaviour
                         out targetToPass);
                     if (!targetFound) Debug.LogError("No more targets!"); //this should only happen on Game Over
                     p.SetTarget(targetToPass);
-                    p.Seek();
-                    break;
-
-
-                case ThinkingPlaceable.States.Seeking:
-                    if (p.IsTargetInRange()) p.StartAttack();
-                    break;
-
-
-                case ThinkingPlaceable.States.Attacking:
-                    if (p.IsTargetInRange())
-                        if (Time.time >= p.lastBlowTime + p.attackRatio)
-                            p.DealBlow();
-                        //Animation will produce the damage, calling animation events OnDealDamage and OnProjectileFired. See ThinkingPlaceable
-                    break;
-
-                case ThinkingPlaceable.States.Dead:
-                    Debug.LogError("A dead ThinkingPlaceable shouldn't be in this loop");
                     break;
             }
         }

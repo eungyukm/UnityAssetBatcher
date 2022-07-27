@@ -9,11 +9,6 @@ public class Building : ThinkingPlaceable
     public PlayableDirector constructionTimeline;
     public PlayableDirector destructionTimeline;
 
-    private void Awake()
-    {
-        audioSource = GetComponent<AudioSource>();
-    }
-
     public void Activate(Faction pFaction, PlaceableData pData)
     {
         pType = pData.pType;
