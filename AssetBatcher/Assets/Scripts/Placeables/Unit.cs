@@ -24,10 +24,5 @@ public class Unit : ThinkingPlaceable
         state = States.Idle;
         navMeshAgent.enabled = true;
     }
-
-    public override void SetTarget(ThinkingPlaceable t)
-    {
-        base.SetTarget(t);
-    }
 }
 
