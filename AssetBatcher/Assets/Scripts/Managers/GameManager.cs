@@ -16,10 +16,8 @@ public class GameManager : MonoBehaviour
     private List<ThinkingPlaceable> playerBuildings, opponentBuildings;
     private List<ThinkingPlaceable> allPlayers, allOpponents; //건물 및 유닛을 모두 포함합니다.
     private List<ThinkingPlaceable> allThinkingPlaceables;
-    private List<Projectile> allProjectiles;
     private bool gameOver;
     private bool updateAllPlaceables; //업데이트 루프에 있는 모든 AIBrain을 강제로 업데이트하는 데 사용됨
-    private const float THINKING_DELAY = 2f;
 
     private GameObject _worldObjectManager;
 
@@ -46,7 +44,6 @@ public class GameManager : MonoBehaviour
         allPlayers = new List<ThinkingPlaceable>();
         allOpponents = new List<ThinkingPlaceable>();
         allThinkingPlaceables = new List<ThinkingPlaceable>();
-        allProjectiles = new List<Projectile>();
     }
 
     private void Start()
@@ -175,7 +172,6 @@ public class GameManager : MonoBehaviour
             case Placeable.PlaceableType.Unit:
                 var uScript = go.GetComponent<Unit>();
                 uScript.Activate(pFaction, pDataRef); //enables NavMeshAgent
-                AddPlaceableToList(uScript); //add the Unit to the appropriate list
                 break;
 
             case Placeable.PlaceableType.Building:
@@ -185,104 +181,7 @@ public class GameManager : MonoBehaviour
                 var oScript = go.GetComponent<Obstacle>();
                 break;
         }
-        
-        // TODO : Die Method 수정
-        go.GetComponent<Placeable>().OnDie += OnPlaceableDead;
 
         go.layer = 10;
-    }
-
-    private void OnPlaceableDead(Placeable p)
-    {
-        p.OnDie -= OnPlaceableDead; //remove the listener
-
-        switch (p.pType)
-        {
-            case Placeable.PlaceableType.Unit:
-                var u = (Unit) p;
-                RemovePlaceableFromList(u);
-                // TODO : 아래 수정
-                // UIManager.RemoveHealthUI(u);
-                StartCoroutine(Dispose(u));
-                break;
-
-            case Placeable.PlaceableType.Building:
-            case Placeable.PlaceableType.Castle:
-                var b = (Building) p;
-                RemovePlaceableFromList(b);
-                // TODO : 아래 수정
-                // UIManager.RemoveHealthUI(b);
-
-                //we don't dispose of the Castle
-                if (p.pType != Placeable.PlaceableType.Castle)
-                    StartCoroutine(Dispose(b));
-                break;
-
-            case Placeable.PlaceableType.Obstacle:
-                break;
-        }
-    }
-
-    private IEnumerator Dispose(ThinkingPlaceable p)
-    {
-        yield return new WaitForSeconds(3f);
-
-        Destroy(p.gameObject);
-    }
-
-    private void AddPlaceableToList(ThinkingPlaceable p)
-    {
-        allThinkingPlaceables.Add(p);
-
-        if (p.faction == Placeable.Faction.Player)
-        {
-            allPlayers.Add(p);
-
-            if (p.pType == Placeable.PlaceableType.Unit)
-                playerUnits.Add(p);
-            else
-                playerBuildings.Add(p);
-        }
-        else if (p.faction == Placeable.Faction.Opponent)
-        {
-            allOpponents.Add(p);
-
-            if (p.pType == Placeable.PlaceableType.Unit)
-                opponentUnits.Add(p);
-            else
-                opponentBuildings.Add(p);
-        }
-        else
-        {
-            Debug.LogError("Error in adding a Placeable in one of the player/opponent lists");
-        }
-    }
-
-    private void RemovePlaceableFromList(ThinkingPlaceable p)
-    {
-        allThinkingPlaceables.Remove(p);
-
-        if (p.faction == Placeable.Faction.Player)
-        {
-            allPlayers.Remove(p);
-
-            if (p.pType == Placeable.PlaceableType.Unit)
-                playerUnits.Remove(p);
-            else
-                playerBuildings.Remove(p);
-        }
-        else if (p.faction == Placeable.Faction.Opponent)
-        {
-            allOpponents.Remove(p);
-
-            if (p.pType == Placeable.PlaceableType.Unit)
-                opponentUnits.Remove(p);
-            else
-                opponentBuildings.Remove(p);
-        }
-        else
-        {
-            Debug.LogError("Error in removing a Placeable from one of the player/opponent lists");
-        }
     }
 }

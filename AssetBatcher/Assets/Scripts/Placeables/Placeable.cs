@@ -9,10 +9,7 @@ public class Placeable : MonoBehaviour
     
     [HideInInspector] public Faction faction;
     [HideInInspector] public PlaceableTarget targetType; //TODO: move to ThinkingPlaceable?
-    [HideInInspector] public AudioClip dieAudioClip;
 
-    public UnityAction<Placeable> OnDie;
-    
     public enum PlaceableType
     {
         Unit,
