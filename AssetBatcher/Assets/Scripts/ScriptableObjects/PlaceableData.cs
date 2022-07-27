@@ -21,10 +21,4 @@ public class PlaceableData : ScriptableObject
 
     [Header("Units")]
     public float speed = 5f; //이동 속도
-        
-    [Header("Obstacles and Spells")]
-    public float lifeTime = 5f; //배치 가능한 최대 수명 특히 장애물 유형에 중요하므로 잠시 후에 제거됨
-        
-    [Header("Spells")]
-    public float damagePerSecond = 1f; //불필요한 주문에 대한 초당 손상 수
 }

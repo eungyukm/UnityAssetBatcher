@@ -18,23 +18,6 @@ public class Obstacle : Placeable
 
     public void Activate(PlaceableData pData)
     {
-        timeToRemoval = pData.lifeTime;
         dieAudioClip = pData.dieClip;
-        //TODO: add more as necessary
-        
-        // TODO : Die Logic 제거
-        // StartCoroutine(Die());
-    }
-
-    private IEnumerator Die()
-    {
-        yield return new WaitForSeconds(timeToRemoval);
-            
-        //audioSource.PlayOneShot(dieAudioClip, 1f);
-
-        if(OnDie != null)
-            OnDie(this);
-
-        Destroy(this.gameObject);
     }
 }
