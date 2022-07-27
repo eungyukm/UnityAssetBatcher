@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.NetworkInformation;
 using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
@@ -17,10 +15,13 @@ public class ItemDatabase : EditorWindow
     private VisualElement _itemsTab;
     private static VisualTreeAsset _itemRowTemplate;
     private ListView _itemListView;
-    private float _itemHeight = 40f;
+    private float _itemHeight = 60f;
 
     private ScrollView _detailSection;
     private VisualElement _largeDisplayIcon;
+    private TextField _itemName;
+    private TextField _description;
+    private DropdownField _dropdownField;
     private Item _activeItem;
 
     [MenuItem("Item/Item Database")]
@@ -40,8 +41,8 @@ public class ItemDatabase : EditorWindow
         VisualElement rootFromUXML = visualTree.Instantiate();
         rootVisualElement.Add(rootFromUXML);
 
-        // var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Obliy/Editor/ItemDatabase.uss");
-        // rootVisualElement.styleSheets.Add(styleSheet);
+        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Obliy/Editor/ItemDatabase.uss");
+        rootVisualElement.styleSheets.Add(styleSheet);
 
         _itemRowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Obliy/Editor/ItemRowTemplate.uxml");
         _defaultItemIcon =
@@ -50,12 +51,14 @@ public class ItemDatabase : EditorWindow
         LoadAllItems();
         
         _itemsTab = rootVisualElement.Q<VisualElement>("ItemsTab");
-
+        GenerateListView();
+        
         _detailSection = rootVisualElement.Q<ScrollView>("ScrollView_Details");
         _detailSection.style.visibility = Visibility.Hidden;
         _largeDisplayIcon = _detailSection.Q<VisualElement>("Icon");
-        
-        GenerateListView();
+        _itemName = _detailSection.Q<TextField>("ItemName");
+        _description = _detailSection.Q<TextField>("Description");
+        _dropdownField = _detailSection.Q<DropdownField>("ItemType");
 
         rootVisualElement.Q<Button>("Btn_AddItem").clicked += AddItem_OnClick;
 
@@ -74,7 +77,19 @@ public class ItemDatabase : EditorWindow
             _itemListView.Rebuild();
         });
 
+        _detailSection.Q<TextField>("Description").RegisterValueChangedCallback(evt =>
+        {
+            _activeItem.Description = evt.newValue; 
+            _itemListView.Rebuild();
+        });
+
         rootVisualElement.Q<Button>("Btn_DeleteItem").clicked += DeleteItem_OnClick;
+
+        List<string> items = new List<string>();
+        items.Add("Food");
+        items.Add("Weapon");
+        items.Add("Junk");
+        _dropdownField.choices = items;
     }
 
     private void LoadAllItems()
@@ -85,7 +100,6 @@ public class ItemDatabase : EditorWindow
     
         foreach (var path in allPaths)
         {
-            Debug.Log("Load!!");
             string cleanedPath = path.Replace("\\", "/");
             _itemDatabase.Add((Item)AssetDatabase.LoadAssetAtPath(cleanedPath,typeof(Item)));
         }
@@ -103,7 +117,7 @@ public class ItemDatabase : EditorWindow
             e.Q<Label>("Name").text = _itemDatabase[i].FriendlyName;
         };
     
-        _itemListView = new ListView(_itemDatabase, 35, makeItem, bindItem);
+        _itemListView = new ListView(_itemDatabase, _itemHeight, makeItem, bindItem);
         _itemListView.selectionType = SelectionType.Single;
         _itemListView.style.height = _itemDatabase.Count * _itemHeight;
         _itemsTab.Add(_itemListView);
@@ -121,6 +135,16 @@ public class ItemDatabase : EditorWindow
         if (_activeItem.Icon != null)
         {
             _largeDisplayIcon.style.backgroundImage = _activeItem.Icon.texture;
+        }
+
+        if (_activeItem.FriendlyName != null)
+        {
+            _itemName.value = _activeItem.FriendlyName;
+        }
+
+        if (_activeItem.Description != null)
+        {
+            _description.value = _activeItem.Description;
         }
 
         _detailSection.style.visibility = Visibility.Visible;
