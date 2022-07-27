@@ -15,10 +15,10 @@ public class CardManager : MonoBehaviour
     [SerializeField] private DeckData[] playerDecks;
     public MeshRenderer forbiddenAreaRenderer;
 
-    public UnityAction<CardData, Vector3, Placeable.Faction> OnCardUsed;
+    public UnityAction<CardData, Vector3> OnCardUsed;
 
     [Header("UI Elements")] public RectTransform backupCardTransform; //덱에 있는 작은 카드
-    public RectTransform cardsDashboard; //실제 재생 가능한 카드를 포함하는 UI 패널
+    
     public RectTransform cardsPanel; //모든 카드, 데크 및 대시보드를 포함하는 UI 패널(중앙 정렬)
     
     private bool cardIsActive = false; //사실일 때, 카드는 운동장 위로 끌려가고 있다.
@@ -160,7 +160,7 @@ public class CardManager : MonoBehaviour
             
             if (OnCardUsed != null)
             {
-                OnCardUsed(card.cardData, hitPos, Placeable.Faction.Player);
+                OnCardUsed(card.cardData, hitPos);
             }
         }
         else
@@ -257,7 +257,7 @@ public class CardManager : MonoBehaviour
                 //spawn all the preview Placeables and parent them to the cardPreview
                 for (int i = 0; i < dataToSpawn.Length; i++)
                 {
-                    GameObject newPlaceable = GameObject.Instantiate<GameObject>(dataToSpawn[i].associatedPrefab,
+                    GameObject newPlaceable = GameObject.Instantiate<GameObject>(dataToSpawn[i].placeablePrefab,
                         offsets[i],
                         Quaternion.identity,
                         previewHolder.transform);

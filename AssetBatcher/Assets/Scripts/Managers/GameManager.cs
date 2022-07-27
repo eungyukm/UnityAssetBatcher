@@ -43,21 +43,22 @@ public class GameManager : MonoBehaviour
     /// <param name="cardData"></param>
     /// <param name="position"></param>
     /// <param name="pFaction"></param>
-    public void UseCard(CardData cardData, Vector3 position, Placeable.Faction pFaction)
+    public void UseCard(CardData cardData, Vector3 position)
     {
         for (var pNum = 0; pNum < cardData.placeablesData.Length; pNum++)
         {
             var pDataRef = cardData.placeablesData[pNum];
-            var rot = pFaction == Placeable.Faction.Player ? Quaternion.identity : Quaternion.Euler(0f, 180f, 0f);
-            //Prefab to spawn is the associatedPrefab if it's the Player faction, otherwise it's alternatePrefab. But if alternatePrefab is null, then first one is taken
-            var prefabToSpawn = pFaction == Placeable.Faction.Player ? pDataRef.associatedPrefab :
-                pDataRef.alternatePrefab == null ? pDataRef.associatedPrefab : pDataRef.alternatePrefab;
+            var rot = Quaternion.identity;
+            
+            //프리펩 Spawn
+            var prefabToSpawn = pDataRef.placeablePrefab;
+            
             var newPlaceableGO = Instantiate(prefabToSpawn, position + cardData.relativeOffsets[pNum], rot);
 
             // 부모를 Objects로 설정합니다.
             newPlaceableGO.transform.SetParent(_worldObjectManager.transform);
             
-            SetupPlaceable(newPlaceableGO, pDataRef, pFaction);
+            SetupPlaceable(newPlaceableGO, pDataRef);
 
             ObjectSO objectSo = new ObjectSO(newPlaceableGO, 0);
             
@@ -68,29 +69,14 @@ public class GameManager : MonoBehaviour
         }
         //audioManager.PlayAppearSFX(position);
 
-        updateAllPlaceables = true; //will force all AIBrains to update next time the Update loop is run
+        updateAllPlaceables = true;
         
         
     }
 
-    //Placeable GameObject에 모든 스크립트 및 수신기 설정
-    private void SetupPlaceable(GameObject go, PlaceableData pDataRef, Placeable.Faction pFaction)
+    //Placeable GameObject 쓰폰 후 처리
+    private void SetupPlaceable(GameObject go, PlaceableData pDataRef)
     {
-        switch (pDataRef.pType)
-        {
-            case Placeable.PlaceableType.Unit:
-                var uScript = go.GetComponent<Unit>();
-                uScript.Activate(pFaction, pDataRef); //enables NavMeshAgent
-                break;
-
-            case Placeable.PlaceableType.Building:
-                break;
-
-            case Placeable.PlaceableType.Obstacle:
-                var oScript = go.GetComponent<Obstacle>();
-                break;
-        }
-
         go.layer = 10;
     }
 }
