@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f85fc1e2d10f1241ae306e1cf12a185, type: 3}
+  m_Name: Player2
+  m_EditorClassIdentifier: 
+  ID: 5CB21984-810F-4A37-B010-5B58F9E217C8
+  FriendlyName: New Item
+  Description: 
+  pType: 0
+  placeablePrefab: {fileID: 189481247781305282, guid: ac6471694f4c9024bb7878663ba2efeb, type: 3}
+  Icon: {fileID: 21300000, guid: 2b08253af4068f64bac9c14ca89a714c, type: 3}

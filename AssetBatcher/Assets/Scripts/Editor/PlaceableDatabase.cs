@@ -7,10 +7,10 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class ItemDatabase : EditorWindow
+public class PlaceableDatabase : EditorWindow
 {
     private Sprite _defaultItemIcon;
-    private static List<Item> _itemDatabase = new List<Item>();
+    private static List<PlaceableData> _placeableDatas = new List<PlaceableData>();
     
     private VisualElement _itemsTab;
     private static VisualTreeAsset _itemRowTemplate;
@@ -22,13 +22,16 @@ public class ItemDatabase : EditorWindow
     private TextField _itemName;
     private TextField _description;
     private DropdownField _dropdownField;
-    private Item _activeItem;
+    private PlaceableData _activeItem;
 
-    [MenuItem("Item/Item Database")]
+    private TextField _assetName;
+    private string _name;
+
+    [MenuItem("Item/Placeable Database")]
     public static void Init()
     {
-        ItemDatabase wnd = GetWindow<ItemDatabase>();
-        wnd.titleContent = new GUIContent("Item Database");
+        PlaceableDatabase wnd = GetWindow<PlaceableDatabase>();
+        wnd.titleContent = new GUIContent("Placeable Database");
 
         Vector2 size = new Vector2(800, 475);
         wnd.minSize = size;
@@ -37,16 +40,16 @@ public class ItemDatabase : EditorWindow
 
     public void CreateGUI()
     {
-        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Obliy/Editor/ItemDatabase.uxml");
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/ART/UI_Toolkit/UIDocument/Editor/PlaceableDatabase.uxml");
         VisualElement rootFromUXML = visualTree.Instantiate();
         rootVisualElement.Add(rootFromUXML);
 
-        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Obliy/Editor/ItemDatabase.uss");
+        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/ART/UI_Toolkit/UIDocument/Editor/PlaceableDatabase.uss");
         rootVisualElement.styleSheets.Add(styleSheet);
 
-        _itemRowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Obliy/Editor/ItemRowTemplate.uxml");
+        _itemRowTemplate = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/ART/UI_Toolkit/UIDocument/Editor/ItemRowTemplate.uxml");
         _defaultItemIcon =
-            (Sprite) AssetDatabase.LoadAssetAtPath("Assets/Obliy/Editor/Sprites/UnknownIcon.png", typeof(Sprite));
+            (Sprite) AssetDatabase.LoadAssetAtPath("Assets/ART/UI/Editor/UnknownIcon.png", typeof(Sprite));
 
         LoadAllItems();
         
@@ -59,15 +62,15 @@ public class ItemDatabase : EditorWindow
         _itemName = _detailSection.Q<TextField>("ItemName");
         _description = _detailSection.Q<TextField>("Description");
         _dropdownField = _detailSection.Q<DropdownField>("ItemType");
-
+        
         rootVisualElement.Q<Button>("Btn_AddItem").clicked += AddItem_OnClick;
-
+        
         _detailSection.Q<TextField>("ItemName").RegisterValueChangedCallback(evt =>
         {
             _activeItem.FriendlyName = evt.newValue;
             _itemListView.Rebuild();
         });
-
+        
         _detailSection.Q<ObjectField>("IconPicker").RegisterValueChangedCallback(evt =>
         {
             Sprite newSprite = evt.newValue as Sprite;
@@ -76,32 +79,34 @@ public class ItemDatabase : EditorWindow
             _largeDisplayIcon.style.backgroundImage = newSprite == null ? _defaultItemIcon.texture : newSprite.texture;
             _itemListView.Rebuild();
         });
-
+        
         _detailSection.Q<TextField>("Description").RegisterValueChangedCallback(evt =>
         {
             _activeItem.Description = evt.newValue; 
             _itemListView.Rebuild();
         });
-
+        
         rootVisualElement.Q<Button>("Btn_DeleteItem").clicked += DeleteItem_OnClick;
-
+        
         List<string> items = new List<string>();
-        items.Add("Food");
-        items.Add("Weapon");
-        items.Add("Junk");
+        items.Add("Unit");
+        items.Add("Obstacle");
+        items.Add("Building");
         _dropdownField.choices = items;
+
+        _assetName = rootVisualElement.Q<TextField>("AssetName");
     }
 
     private void LoadAllItems()
     {
-        _itemDatabase.Clear();
+        _placeableDatas.Clear();
     
-        string[] allPaths = Directory.GetFiles("Assets/Obliy/Data", "*.asset", SearchOption.AllDirectories);
+        string[] allPaths = Directory.GetFiles("Assets/ScriptableObjects/GameData/04_PlaceableData", "*.asset", SearchOption.AllDirectories);
     
         foreach (var path in allPaths)
         {
             string cleanedPath = path.Replace("\\", "/");
-            _itemDatabase.Add((Item)AssetDatabase.LoadAssetAtPath(cleanedPath,typeof(Item)));
+            _placeableDatas.Add((PlaceableData)AssetDatabase.LoadAssetAtPath(cleanedPath,typeof(PlaceableData)));
         }
     }
     
@@ -112,22 +117,22 @@ public class ItemDatabase : EditorWindow
         Action<VisualElement, int> bindItem = (e, i) =>
         {
             e.Q<VisualElement>("Icon").style.backgroundImage =
-                _itemDatabase[i] == null ? _defaultItemIcon.texture : _itemDatabase[i].Icon.texture;
-    
-            e.Q<Label>("Name").text = _itemDatabase[i].FriendlyName;
+                _placeableDatas[i] == null ? _defaultItemIcon.texture : _placeableDatas[i].Icon.texture;
+        
+            e.Q<Label>("Name").text = _placeableDatas[i].FriendlyName;
         };
     
-        _itemListView = new ListView(_itemDatabase, _itemHeight, makeItem, bindItem);
+        _itemListView = new ListView(_placeableDatas, _itemHeight, makeItem, bindItem);
         _itemListView.selectionType = SelectionType.Single;
-        _itemListView.style.height = _itemDatabase.Count * _itemHeight;
+        _itemListView.style.height = _placeableDatas.Count * _itemHeight;
         _itemsTab.Add(_itemListView);
-
+        
         _itemListView.onSelectionChange += ListView_OnSelectionChange;
     }
 
     private void ListView_OnSelectionChange(IEnumerable<object> selectedItems)
     {
-        _activeItem = (Item) selectedItems.First();
+        _activeItem = (PlaceableData) selectedItems.First();
 
         SerializedObject so = new SerializedObject(_activeItem);
         _detailSection.Bind(so);
@@ -152,17 +157,18 @@ public class ItemDatabase : EditorWindow
 
     private void AddItem_OnClick()
     {
-        Item newItem = CreateInstance<Item>();
+        PlaceableData newItem = CreateInstance<PlaceableData>();
         newItem.FriendlyName = $"New Item";
         newItem.Icon = _defaultItemIcon;
         newItem.Description = "";
+
+        _name = _assetName.value;
+        AssetDatabase.CreateAsset(newItem, $"Assets/ScriptableObjects/GameData/04_PlaceableData/{_name}.asset");
         
-        AssetDatabase.CreateAsset(newItem, $"Assets/Obliy/Data/{newItem.ID}.asset");
-        
-        _itemDatabase.Add(newItem);
+        _placeableDatas.Add(newItem);
         
         _itemListView.Rebuild();
-        _itemListView.style.height = _itemDatabase.Count * _itemHeight;
+        _itemListView.style.height = _placeableDatas.Count * _itemHeight;
     }
 
     private void DeleteItem_OnClick()
@@ -170,7 +176,7 @@ public class ItemDatabase : EditorWindow
         string path = AssetDatabase.GetAssetPath(_activeItem);
         AssetDatabase.DeleteAsset(path);
 
-        _itemDatabase.Remove(_activeItem);
+        _placeableDatas.Remove(_activeItem);
         _itemListView.Rebuild();
 
         _detailSection.style.visibility = Visibility.Hidden;
