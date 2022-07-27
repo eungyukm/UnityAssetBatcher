@@ -193,7 +193,6 @@ public class GameManager : MonoBehaviour
             case Placeable.PlaceableType.Unit:
                 var uScript = go.GetComponent<Unit>();
                 uScript.Activate(pFaction, pDataRef); //enables NavMeshAgent
-                uScript.OnDealDamage += OnPlaceableDealtDamage;
                 AddPlaceableToList(uScript); //add the Unit to the appropriate list
                 break;
 
@@ -202,8 +201,6 @@ public class GameManager : MonoBehaviour
 
             case Placeable.PlaceableType.Obstacle:
                 var oScript = go.GetComponent<Obstacle>();
-                // TODO : Die Method 수정
-                oScript.Activate(pDataRef);
                 break;
         }
         
@@ -211,17 +208,6 @@ public class GameManager : MonoBehaviour
         go.GetComponent<Placeable>().OnDie += OnPlaceableDead;
 
         go.layer = 10;
-    }
-
-    private void OnPlaceableDealtDamage(ThinkingPlaceable p)
-    {
-        if (p.target.state != ThinkingPlaceable.States.Dead)
-        {
-            var newHealth = p.target.SufferDamage(p.damage);
-
-            // TODO : 아래 수정
-            // p.target.healthBar.SetHealth(newHealth);
-        }
     }
 
     private void OnPlaceableDead(Placeable p)
@@ -233,7 +219,6 @@ public class GameManager : MonoBehaviour
             case Placeable.PlaceableType.Unit:
                 var u = (Unit) p;
                 RemovePlaceableFromList(u);
-                u.OnDealDamage -= OnPlaceableDealtDamage;
                 // TODO : 아래 수정
                 // UIManager.RemoveHealthUI(u);
                 StartCoroutine(Dispose(u));
@@ -245,7 +230,6 @@ public class GameManager : MonoBehaviour
                 RemovePlaceableFromList(b);
                 // TODO : 아래 수정
                 // UIManager.RemoveHealthUI(b);
-                b.OnDealDamage -= OnPlaceableDealtDamage;
 
                 //we don't dispose of the Castle
                 if (p.pType != Placeable.PlaceableType.Castle)
@@ -253,10 +237,6 @@ public class GameManager : MonoBehaviour
                 break;
 
             case Placeable.PlaceableType.Obstacle:
-                break;
-
-            case Placeable.PlaceableType.Spell:
-                //TODO: can spells die?
                 break;
         }
     }

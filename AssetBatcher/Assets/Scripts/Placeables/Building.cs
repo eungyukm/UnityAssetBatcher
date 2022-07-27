@@ -18,21 +18,7 @@ public class Building : ThinkingPlaceable
     {
         pType = pData.pType;
         faction = pFaction;
-        hitPoints = pData.hitPoints;
-        targetType = pData.targetType;
-        attackAudioClip = pData.attackClip;
-        dieAudioClip = pData.dieClip;
-        //TODO: add more as necessary
 
         constructionTimeline.Play();
-    }
-
-    protected override void Die()
-    {
-        base.Die();
-        //audioSource.PlayOneShot(dieAudioClip, 1f);
-
-        //Debug.Log("Building is dead", gameObject);
-        destructionTimeline.Play();
     }
 }

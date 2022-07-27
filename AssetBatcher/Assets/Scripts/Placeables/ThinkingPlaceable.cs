@@ -24,8 +24,6 @@ public class ThinkingPlaceable : Placeable
     
     [HideInInspector] public ThinkingPlaceable target;
     // [HideInInspector] public HealthBar healthBar;
-
-    [HideInInspector] public float hitPoints;
     [HideInInspector] public float attackRange;
     [HideInInspector] public float attackRatio;
     [HideInInspector] public float lastBlowTime = -1000f;
@@ -96,33 +94,5 @@ public class ThinkingPlaceable : Placeable
     public bool IsTargetInRange()
     {
         return (transform.position-target.transform.position).sqrMagnitude <= attackRange*attackRange;
-    }
-
-    public float SufferDamage(float amount)
-    {
-        hitPoints -= amount;
-        //Debug.Log("Suffering damage, new health: " + hitPoints, gameObject);
-        if(state != States.Dead
-           && hitPoints <= 0f)
-        {
-            Die();
-        }
-
-        return hitPoints;
-    }
-
-    public virtual void Stop()
-    {
-        state = States.Idle;
-    }
-
-    protected virtual void Die()
-    {
-        state = States.Dead;
-        //audioSource.pitch = Random.Range(.9f, 1.1f);
-        //audioSource.PlayOneShot(dieAudioClip, 1f);
-
-        // if(OnDie != null)
-        //     OnDie(this);
     }
 }

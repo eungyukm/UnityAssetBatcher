@@ -15,9 +15,4 @@ public class Obstacle : Placeable
         faction = Placeable.Faction.None; //faction is always none for Obstacles
         audioSource = GetComponent<AudioSource>();
     }
-
-    public void Activate(PlaceableData pData)
-    {
-        dieAudioClip = pData.dieClip;
-    }
 }
