@@ -3,20 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using RuntimeGizmos;
 
-/// <summary>
-/// 김은규 작성
-/// </summary>
 [RequireComponent(typeof(Camera))]
 public class GizmoTransform : MouseCursor
 {
-	public TransformType transformType = TransformType.Move;
-
+	// Snape 시 이동 범위
 	public float movementSnap = .25f;
 	public float scaleSnap = 0.25f;
     
-    public float handleLength = .25f;
+	// 생성되는 Handle의 길이 및 너비
+    public float handleLength = .1f;
     public float handleWidth = .003f;
-
+    private float handleScaleMultipler = 0.5f;
+    
+    
     public float minSelectedDistanceCheck = .01f;
     public float moveSpeedMultiplier = 1f;
     
@@ -27,9 +26,9 @@ public class GizmoTransform : MouseCursor
     public Axis translatingAxisPlane {get {return planeAxis;}}
     public bool hasTranslatingAxisPlane {get {return translatingAxisPlane != Axis.None && translatingAxisPlane != Axis.Any;}}
 
-    AxisInfo axisInfo;
-    Axis planeAxis = Axis.None;
-    TransformType translatingType;
+    private AxisInfo axisInfo;
+    private Axis planeAxis = Axis.None;
+    private TransformType translatingType;
 
     AxisVectors handleLines = new AxisVectors();
 
@@ -52,9 +51,7 @@ public class GizmoTransform : MouseCursor
     {
 	    base.OnEnable();
         forceUpdatePivotCoroutine = StartCoroutine(ForceUpdatePivotPointAtEndOfFrame());
-    
-
-    
+        
         _InputReader.OnCtrlDownAction += KeyboardCtrlDown;
         _InputReader.OnCtrlUPAction += KeyboardCtrlUP;
     }
@@ -141,7 +138,14 @@ public class GizmoTransform : MouseCursor
 		    length *= GetDistanceMultiplier();
 	    }
 
+	    SetCursor(length);
+	    
 	    return length;
+    }
+
+    private void SetCursor(float length)
+    {
+	    GizmoArrow.transform.localScale = new Vector3(length, length, length);
     }
 
     #region TransformSelected
@@ -169,10 +173,8 @@ public class GizmoTransform : MouseCursor
 
     private void TransformSelected()
     {
-	    Debug.Log("Transform Selected!");
 	    if (mainTargetRoot != null)
 	    {
-		    Debug.Log("nearAxis : " + nearAxis);
 		    if (nearAxis != Axis.None)
 		    {
 			    StartCoroutine(TransformSelected(translatingType));
@@ -197,7 +199,6 @@ public class GizmoTransform : MouseCursor
 		    Vector3 mousePosition =
 			    Geometry.LinePlaneIntersect(mouseRay.origin, mouseRay.direction, originalPivot, planeNormal);
 		    bool isSnapping = isKeyboardCtrlPressed;
-		    Debug.Log("isSnap : " + isSnapping);
 
 		    if (previousMousePosition != Vector3.zero && mousePosition != Vector3.zero)
 		    {
@@ -320,7 +321,6 @@ public class GizmoTransform : MouseCursor
     #region CacluateAmount
     float CalculateSnapAmount(float snapValue, float currentAmount, out float remainder)
     {
-	    Debug.Log("currentAmount : " + currentAmount);
 	    remainder = 0;
 	    if (snapValue <= 0)
 	    {
@@ -331,9 +331,7 @@ public class GizmoTransform : MouseCursor
 	    if (currentAmountAbs > snapValue)
 	    {
 		    remainder = currentAmountAbs % snapValue;
-		    Debug.Log("1 : " + snapValue);
-		    Debug.Log("2 : " + (Mathf.Sign(currentAmount)));
-		    Debug.Log("3 : " + Mathf.Floor(currentAmountAbs / snapValue));
+
 		    return snapValue * (Mathf.Sign(currentAmount) * Mathf.Floor(currentAmountAbs / snapValue));
 	    }
 
@@ -348,8 +346,7 @@ public class GizmoTransform : MouseCursor
 	    }
 
 	    float currentAmountAbs = Mathf.Abs(currentAmount);
-	    Debug.Log("localScale : " + localScale);
-	    Debug.Log("currentAmount : " + currentAmount);
+
 	    if (currentAmountAbs > localScale + snapValue)
 	    {
 		    Debug.Log("1 : " + currentAmountAbs);
@@ -450,7 +447,10 @@ public class GizmoTransform : MouseCursor
 
 	    SetTranslatingAxis(transformType, Axis.None);
 
-	    if (mainTargetRoot == null) return;
+	    if (mainTargetRoot == null)
+	    {
+		    return;
+	    }
 
 	    float distanceMultiplier = GetDistanceMultiplier();
 	    float handleMinSelectedDistanceCheck = (minSelectedDistanceCheck + handleWidth) * distanceMultiplier;
@@ -526,6 +526,8 @@ public class GizmoTransform : MouseCursor
 	    movementSnap = GridSystem.cellSize;
     }
     #endregion
+    
+    // 카메라와의 거리에 따라 길이를 반환해주는 로직
     public float GetDistanceMultiplier()
     {
 	    if (mainTargetRoot == null)
@@ -533,13 +535,8 @@ public class GizmoTransform : MouseCursor
 		    return 0f;
 	    }
 
-	    if (myCamera.orthographic)
-	    {
-		    return Mathf.Max(.01f, myCamera.orthographicSize * 2f);
-	    }
-
 	    return Mathf.Max(.01f,
-		    Mathf.Abs(ExtVector3.MagnitudeInDirection(pivotPoint - transform.position, myCamera.transform.forward)));
+		    Mathf.Abs(ExtVector3.MagnitudeInDirection(pivotPoint - transform.position, myCamera.transform.forward))) * 0.5f;
     }
 
     #region SetHandle

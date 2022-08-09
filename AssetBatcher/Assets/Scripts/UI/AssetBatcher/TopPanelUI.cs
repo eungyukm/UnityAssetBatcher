@@ -34,6 +34,8 @@ public class TopPanelUI : MonoBehaviour
 
     private LocationExit _locationExit;
 
+    public UnityEngine.UI.Button RotateButton;
+
     private void Awake()
     {
         _locationExit = GetComponent<LocationExit>();
@@ -41,72 +43,107 @@ public class TopPanelUI : MonoBehaviour
 
     private void OnEnable()
     {
+        topPanelUIRoot = topPanelDocument.GetComponent<UIDocument>().rootVisualElement;
+
+        _selectButtom = topPanelUIRoot.Q<Button>("SelectBtn");
+        _moveButton = topPanelUIRoot.Q<Button>("MoveBtn");
+        _rotationButton = topPanelUIRoot.Q<Button>("RotationBtn");
+        _scaleButton = topPanelUIRoot.Q<Button>("ScaleBtn");
+        _alignmentButton = topPanelUIRoot.Q<Button>("AlignmentBtn");
+        _playButton = topPanelUIRoot.Q<Button>("PlayBtn");
+        _saveButton = topPanelUIRoot.Q<Button>("SaveBtn");
+
+        #region Actio 처리
         InputReader.OnWKeyAction += SelectButtonPressed;
         InputReader.OnGrapPresseAction += MoveButtonPressed;
         InputReader.OnRotationAction += RotationButtonPressed;
         InputReader.OnScaleAction += ScaleButtonPressed;
         
-        
-        topPanelUIRoot = topPanelDocument.GetComponent<UIDocument>().rootVisualElement;
-
-        _selectButtom = topPanelUIRoot.Q<Button>("SelectBtn");
         _selectButtom.clicked += SelectButtonPressed;
-
-        _moveButton = topPanelUIRoot.Q<Button>("MoveBtn");
         _moveButton.clicked += MoveButtonPressed;
-
-        _rotationButton = topPanelUIRoot.Q<Button>("RotationBtn");
         _rotationButton.clicked += RotationButtonPressed;
-        
-        _scaleButton = topPanelUIRoot.Q<Button>("ScaleBtn");
         _scaleButton.clicked += ScaleButtonPressed;
-        
-        _alignmentButton = topPanelUIRoot.Q<Button>("AlignmentBtn");
         _alignmentButton.clicked += AlignmentButtonPressed;
-
-        _playButton = topPanelUIRoot.Q<Button>("PlayBtn");
         _playButton.clicked += PlayButtonPressed;
-
-        _saveButton = topPanelUIRoot.Q<Button>("SaveBtn");
         _saveButton.clicked += MapSaveButtonPressed;
+        
+        // Cursor의 모드를 전달받는 코드
+        mouseCursor.changeCursorMode += ReciveCursorMode;
+        #endregion
     }
 
     private void OnDisable()
-    { 
+    {
+        #region Action 처리
         InputReader.OnWKeyAction -= SelectButtonPressed;
         InputReader.OnGrapPresseAction -= MoveButtonPressed;
         InputReader.OnRotationAction -= RotationButtonPressed;
         InputReader.OnScaleAction -= ScaleButtonPressed;
         
-        _selectButtom.clicked += SelectButtonPressed;
-        _rotationButton.clicked += RotationButtonPressed;
-        _scaleButton.clicked += ScaleButtonPressed;
-        _alignmentButton.clicked += AlignmentButtonPressed;
-        _playButton.clicked += PlayButtonPressed;
-        _saveButton.clicked += MapSaveButtonPressed;
+        _selectButtom.clicked -= SelectButtonPressed;
+        _moveButton.clicked -= MoveButtonPressed;
+        _rotationButton.clicked -= RotationButtonPressed;
+        _scaleButton.clicked -= ScaleButtonPressed;
+        _alignmentButton.clicked -= AlignmentButtonPressed;
+        _playButton.clicked -= PlayButtonPressed;
+        _saveButton.clicked -= MapSaveButtonPressed;
+        
+        mouseCursor.changeCursorMode += ReciveCursorMode;
+        #endregion
     }
 
+    // 클래스 내부에서 Transform을 변경하는 코드
+    // Transform Mode를 변경하는 코드
+    private void SwitchTransformMode()
+    {
+        AllDeSelectedButton();
+        switch (mouseCursor.transformMode)
+        {
+            case MouseCursor.GameTransformMode.SelectMode:
+                SelectedButtonStyle("Select");
+                break;
+            case MouseCursor.GameTransformMode.MoveMode:
+                SelectedButtonStyle("Move");
+                break;
+            case MouseCursor.GameTransformMode.ScaleMode:
+                SelectedButtonStyle("Scale");
+                break;
+            case MouseCursor.GameTransformMode.RotationMode:
+                SelectedButtonStyle("Rotation");
+                break;
+        }
+    }
+    
+    // 커서 모드의 모드가 변경 시 커서의 모드를 전달받는 함수 
+    private void ReciveCursorMode(MouseCursor.GameTransformMode gameTransformMode)
+    {
+        mouseCursor.transformMode = gameTransformMode;
+        SwitchTransformMode();
+    }
+
+    #region UI Controll
+    
     private void SelectButtonPressed()
     {
-        mouseCursor.SwitchMode(MouseCursor.GameTransformMode.SelectMode);
+        mouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.SelectMode);
         SwitchTransformMode();
     }
 
     private void MoveButtonPressed()
     {
-        mouseCursor.SwitchMode(MouseCursor.GameTransformMode.MoveMode);
+        mouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.MoveMode);
         SwitchTransformMode();
     }
 
     private void RotationButtonPressed()
     {
-        mouseCursor.SwitchMode(MouseCursor.GameTransformMode.RotationMode);
+        mouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.RotationMode);
         SwitchTransformMode();
     }
 
     private void ScaleButtonPressed()
     {
-        mouseCursor.SwitchMode(MouseCursor.GameTransformMode.ScaleMode);
+        mouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.ScaleMode);
         SwitchTransformMode();
     }
 
@@ -134,27 +171,7 @@ public class TopPanelUI : MonoBehaviour
     {
         OnSaveAction?.Invoke(UIState.MapSaveUI);
     }
-
-    private void SwitchTransformMode()
-    {
-        AllDeSelectedButton();
-        switch (mouseCursor.transformMode)
-        {
-            case MouseCursor.GameTransformMode.SelectMode:
-                SelectedButtonStyle("Select");
-                break;
-            case MouseCursor.GameTransformMode.MoveMode:
-                SelectedButtonStyle("Move");
-                break;
-            case MouseCursor.GameTransformMode.ScaleMode:
-                SelectedButtonStyle("Scale");
-                break;
-            case MouseCursor.GameTransformMode.RotationMode:
-                SelectedButtonStyle("Rotation");
-                break;
-        }
-    }
-
+    
     private void AllDeSelectedButton()
     {
         var SelectIcon = topPanelUIRoot.Q<VisualElement>("SelectIcon");
@@ -198,4 +215,19 @@ public class TopPanelUI : MonoBehaviour
         icon.RemoveFromClassList(iconSelectStyle);
         label.RemoveFromClassList(labelSelectStyle);
     }
+
+    public void PressedRotationButton()
+    {
+        Debug.Log("Rotate!");
+        mouseCursor.RotateSelectedObject();
+
+        Debug.Log(mouseCursor.GetSelectedObjectPos().x);
+
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(mouseCursor.GetSelectedObjectPos());
+        Debug.Log("x : " + screenPos.x);
+        Vector2 vector2Pos = new Vector2(screenPos.x, screenPos.y);
+        RotateButton.GetComponent<RectTransform>().anchoredPosition = vector2Pos;
+    }
+    #endregion
+
 }

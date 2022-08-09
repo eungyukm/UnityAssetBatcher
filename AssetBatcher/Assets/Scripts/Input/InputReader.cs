@@ -173,7 +173,6 @@ public class InputReader : ScriptableObject, GameInput.IUnitCursorModeActions
     {
         if (context.phase == InputActionPhase.Performed)
         {
-            Debug.Log("value : " + context.ReadValue<Vector2>());
             OnMouseScrollAction?.Invoke(context.ReadValue<Vector2>());
         }
     }

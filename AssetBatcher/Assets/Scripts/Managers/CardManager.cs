@@ -190,7 +190,7 @@ public class CardManager : MonoBehaviour
     /// </summary>
     public void ActivateCard()
     {
-        MouseCursor.SwitchMode(MouseCursor.GameTransformMode.None);
+        MouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.None);
         DeployMode = DeployMode.SelectedObject;
         card.gameObject.SetActive(true);
         forbiddenAreaRenderer.enabled = true;
@@ -201,6 +201,7 @@ public class CardManager : MonoBehaviour
     /// </summary>
     public void DeActivateCard()
     {
+        MouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.SelectMode);
         DeployMode = DeployMode.DeSelectedObject;
         card.gameObject.SetActive(false);
         forbiddenAreaRenderer.enabled = false;

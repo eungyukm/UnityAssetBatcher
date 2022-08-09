@@ -16,7 +16,7 @@ public class MouseCursor : MonoBehaviour
 
     public GameTransformMode transformMode = GameTransformMode.None;
 
-    private GameObject hitObj;
+    public GameObject hitObj;
 
     public GameObject GizmoArrow;
 
@@ -30,6 +30,10 @@ public class MouseCursor : MonoBehaviour
     public LayerMask selectionMask = Physics.DefaultRaycastLayers;
     
     public Vector3 pivotPoint {get; set;}
+
+    public UnityAction<GameTransformMode> changeCursorMode;
+    
+    public TransformType transformType = TransformType.Move;
 
     protected virtual void Awake()
     {
@@ -56,6 +60,7 @@ public class MouseCursor : MonoBehaviour
         _InputReader.OnXKeyAction += OnRotationXMode;
         _InputReader.OnYKeyAction += OnRotationYMode;
         _InputReader.OnZKeyAction += OnRotationZMode;
+        
     }
     public virtual void OnDisable()
     {
@@ -79,8 +84,9 @@ public class MouseCursor : MonoBehaviour
         _InputReader.ModeSwitch(InputMode.UnitCursor);
         GizmoArrow.SetActive(false);
     }
-
-    public void SwitchMode(GameTransformMode gameTransformMode)
+    
+    // 마우스의 커서 모드를 변경하는 로직
+    public void SwitchCursorMode(GameTransformMode gameTransformMode)
     {
         ClearAndAddTarget(null);
         transformMode = gameTransformMode;
@@ -89,12 +95,23 @@ public class MouseCursor : MonoBehaviour
             case GameTransformMode.SelectMode:
                 break;
             case GameTransformMode.MoveMode:
+                transformType = TransformType.Move;
                 break;
             case GameTransformMode.ScaleMode:
+                transformType = TransformType.Scale;
                 break;
             case GameTransformMode.RotationMode:
+                transformType = TransformType.Rotate;
                 break;
         }
+
+        SendCursorModeToUI(transformMode);
+    }
+    
+    // 마우스의 커서 모드가 변경되었을 경우, UI에 변경된 커서 모드를 전달하는 로직
+    private void SendCursorModeToUI(GameTransformMode gameTransformMode)
+    {
+        changeCursorMode?.Invoke(gameTransformMode);
     }
 
     private bool EndRotationMode()
@@ -150,17 +167,17 @@ public class MouseCursor : MonoBehaviour
 
     protected virtual void OnGrapMode()
     {
-        SwitchMode(GameTransformMode.MoveMode);
+        SwitchCursorMode(GameTransformMode.MoveMode);
     }
 
     protected virtual void OnScaleMode()
     {
-        SwitchMode(GameTransformMode.ScaleMode);
+        SwitchCursorMode(GameTransformMode.ScaleMode);
     }
 
     protected virtual void OnRotationMode()
     {
-        SwitchMode(GameTransformMode.RotationMode);
+        SwitchCursorMode(GameTransformMode.RotationMode);
         rotateAxis = Axis.X;
     }
 
@@ -230,6 +247,11 @@ public class MouseCursor : MonoBehaviour
         mainTargetRoot = target;
         SetPivotPoint();
         SetOutline();
+
+        if (mainTargetRoot != null)
+        {
+            hitObj = mainTargetRoot.gameObject;
+        }
     }
     
     /// <summary>
@@ -256,7 +278,32 @@ public class MouseCursor : MonoBehaviour
             GizmoArrow.transform.position = pivotPoint;
         }
     }
-    
+
+    public Vector3 GetSelectedObjectPos()
+    {
+        if (mainTargetRoot == null)
+        {
+            return Vector3.zero;
+        }
+        else
+        {
+            return mainTargetRoot.position;
+        }
+    }
+
+    public void RotateSelectedObject()
+    {
+        if (mainTargetRoot == null)
+        {
+            Debug.Log("hit object is null");
+            
+        }
+        else
+        {
+            mainTargetRoot.transform.rotation *= Quaternion.Euler(Vector3.up * 30f);
+        }
+    }
+
     [Serializable]
     public enum GameTransformMode
     {
@@ -273,7 +320,6 @@ public class MouseCursor : MonoBehaviour
         Move,
         Rotate,
         Scale,
-        All
     }
     
     [Serializable]
