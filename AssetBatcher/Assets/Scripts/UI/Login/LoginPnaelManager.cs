@@ -21,7 +21,7 @@ public class LoginPnaelManager : MonoBehaviour
 
     private void OnEnable()
     {
-        _loginUI.onLoginButtonPressed += LoginButtonPressed;
+        _loginUI.onLoginWebRequestAction += LoginButtonPressed;
         _loginUI.onLoginFailAction += LoginFailed;
         _loginFailUI.onEnterAction += EnterButtonPressed;
         PanelSwitch(LoginState.LoginInit);
@@ -29,7 +29,7 @@ public class LoginPnaelManager : MonoBehaviour
 
     private void OnDisable()
     {
-        _loginUI.onLoginButtonPressed -= LoginButtonPressed;
+        _loginUI.onLoginWebRequestAction -= LoginButtonPressed;
         _loginUI.onLoginFailAction -= LoginFailed;
     }
 

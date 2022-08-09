@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="Item" style="flex-direction: row;">
+        <ui:Label text="0" display-tooltip-when-elided="true" name="Idx" style="font-size: 50px; width: 10%;" />
+        <ui:Label text="전시장01" display-tooltip-when-elided="true" name="Subject" style="font-size: 50px; width: 60%;" />
+        <ui:Label text="관리자" display-tooltip-when-elided="true" name="Writer" style="font-size: 50px; width: 10%;" />
+        <ui:Label text="2022-07-25" display-tooltip-when-elided="true" name="Date" style="font-size: 50px; width: 20%;" />
+    </ui:VisualElement>
+</ui:UXML>

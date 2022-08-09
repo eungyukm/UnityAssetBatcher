@@ -398,6 +398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2001761260}
   - component: {fileID: 2001761261}
+  - component: {fileID: 2001761262}
   m_Layer: 0
   m_Name: MapListPanel
   m_TagString: Untagged
@@ -436,3 +437,17 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: 58bfc9eb48db25e45ba4c3ae33a05601, type: 3}
   m_SortingOrder: 0
+--- !u!114 &2001761262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2001761259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b69fce8371a1f824285a962aa9b3b167, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _mapListPanel: {fileID: 2001761261}
+  _itemRowTemplate: {fileID: 9197481963319205126, guid: 2ee56961ca019294bb701f7af360d260, type: 3}

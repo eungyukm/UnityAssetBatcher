@@ -18,10 +18,14 @@ public class LoginUI : MonoBehaviour
     private TextField _pwTextField;
 
     private Action<int> onLoginAction;
-    public Action onLoginButtonPressed;
+    
+    // 로그인 버튼을 눌렀을 경우 WebRequest요청하는 Action
+    public Action onLoginWebRequestAction;
     public Action onLoginFailAction;
 
     private StartGame _startGame;
+
+    [SerializeField] private bool isDebugMode = true;
 
     private void Awake()
     {
@@ -39,19 +43,33 @@ public class LoginUI : MonoBehaviour
 
         _loginWebRequest = GetComponent<LoginWebRequest>();
 
-        onLoginAction += LoginResult;
+        onLoginAction += LoginResponse;
     }
 
+    private void OnDisable()
+    {
+        onLoginAction -= LoginResponse;
+    }
+
+    // DebugMode일 경우, WebRequest요청하지 않음
     private void LoginButtonPressed()
     {
-        onLoginButtonPressed?.Invoke();
-        string id = _idTextField.text;
-        string pw = _pwTextField.text;
+        if (isDebugMode)
+        {
+            _startGame.OnPlayButtonPress();
+        }
+        else
+        {
+            onLoginWebRequestAction?.Invoke();
+            string id = _idTextField.text;
+            string pw = _pwTextField.text;
         
-        _loginWebRequest.LoginAction(id, pw, onLoginAction);
+            _loginWebRequest.LoginAction(id, pw, onLoginAction);
+        }
     }
-
-    private void LoginResult(int code)
+    
+    // 로그인 후 결과 Response를 받는 함수
+    private void LoginResponse(int code)
     {
         if (code == 200)
         {

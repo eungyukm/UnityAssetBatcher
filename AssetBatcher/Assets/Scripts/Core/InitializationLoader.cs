@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -44,7 +41,7 @@ public class InitializationLoader : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// MainMenu를 로드하는 로직
     /// </summary>
     /// <param name="obj"></param>
     private void LoadMainMenu(AsyncOperationHandle<LoadEventChannelSO> obj)
