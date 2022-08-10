@@ -53,7 +53,7 @@ public class TopPanelUI : MonoBehaviour
         _playButton = topPanelUIRoot.Q<Button>("PlayBtn");
         _saveButton = topPanelUIRoot.Q<Button>("SaveBtn");
 
-        #region Actio 처리
+        #region Action 처리
         InputReader.OnWKeyAction += SelectButtonPressed;
         InputReader.OnGrapPresseAction += MoveButtonPressed;
         InputReader.OnRotationAction += RotationButtonPressed;
@@ -218,13 +218,11 @@ public class TopPanelUI : MonoBehaviour
 
     public void PressedRotationButton()
     {
-        Debug.Log("Rotate!");
         mouseCursor.RotateSelectedObject();
 
         Debug.Log(mouseCursor.GetSelectedObjectPos().x);
 
         Vector3 screenPos = Camera.main.WorldToScreenPoint(mouseCursor.GetSelectedObjectPos());
-        Debug.Log("x : " + screenPos.x);
         Vector2 vector2Pos = new Vector2(screenPos.x, screenPos.y);
         RotateButton.GetComponent<RectTransform>().anchoredPosition = vector2Pos;
     }

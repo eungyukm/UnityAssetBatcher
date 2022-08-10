@@ -196,7 +196,6 @@ public class InputReader : ScriptableObject, GameInput.IUnitCursorModeActions
         {
             Vector2 mousePoint = context.ReadValue<Vector2>();
             MousePos = mousePoint;
-            // Debug.Log("movement x : " + MousePos.x);
         }
     }
 }

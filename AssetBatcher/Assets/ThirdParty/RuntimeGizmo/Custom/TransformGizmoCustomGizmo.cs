@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace RuntimeGizmos
 {
-//Currently doesnt really handle TransformType.All
 	public class TransformGizmoCustomGizmo : MonoBehaviour
 	{
 		public bool autoFindTransformGizmo = true;

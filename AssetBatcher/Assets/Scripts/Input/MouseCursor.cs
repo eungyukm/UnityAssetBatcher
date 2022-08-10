@@ -16,9 +16,8 @@ public class MouseCursor : MonoBehaviour
 
     public GameTransformMode transformMode = GameTransformMode.None;
 
-    public GameObject hitObj;
-
     public GameObject GizmoArrow;
+    public GameObject GizmoRotation;
 
     protected Axis rotateAxis;
     protected Axis nearAxis = Axis.None;
@@ -40,6 +39,7 @@ public class MouseCursor : MonoBehaviour
         myCamera = Camera.main;
     }
 
+    #region Action 연결
     public virtual void OnEnable()
     {
         if (_InputReader == null)
@@ -78,11 +78,21 @@ public class MouseCursor : MonoBehaviour
         _InputReader.OnYKeyAction -= OnRotationYMode;
         _InputReader.OnZKeyAction -= OnRotationZMode;
     }
+    #endregion
+
     
     void Start()
     {
         _InputReader.ModeSwitch(InputMode.UnitCursor);
+
+        InitGizmo();
+    }
+    
+    // Gizm를 초기화 합니다.
+    private void InitGizmo()
+    {
         GizmoArrow.SetActive(false);
+        GizmoRotation.SetActive(false);
     }
     
     // 마우스의 커서 모드를 변경하는 로직
@@ -113,7 +123,8 @@ public class MouseCursor : MonoBehaviour
     {
         changeCursorMode?.Invoke(gameTransformMode);
     }
-
+    
+    // TODO : EGK 아래 함수는 블렌더와 같은 회전을 고려하고 만든 함수 입니다.
     private bool EndRotationMode()
     {
         if (transformMode == GameTransformMode.RotationMode)
@@ -220,11 +231,6 @@ public class MouseCursor : MonoBehaviour
 
     protected virtual void GetTarget(Vector2 pos)
     {
-        if (EndRotationMode())
-        {
-            return;
-        }
-        
         if (nearAxis == Axis.None)
         {
             RaycastHit hitInfo;
@@ -247,11 +253,6 @@ public class MouseCursor : MonoBehaviour
         mainTargetRoot = target;
         SetPivotPoint();
         SetOutline();
-
-        if (mainTargetRoot != null)
-        {
-            hitObj = mainTargetRoot.gameObject;
-        }
     }
     
     /// <summary>
@@ -267,6 +268,7 @@ public class MouseCursor : MonoBehaviour
         else
         {
             GizmoArrow.SetActive(false);
+            GizmoRotation.SetActive(false);
         }
     }
     
@@ -276,6 +278,11 @@ public class MouseCursor : MonoBehaviour
         {
             GizmoArrow.SetActive(true);
             GizmoArrow.transform.position = pivotPoint;
+        }
+
+        if (transformMode == GameTransformMode.RotationMode)
+        {
+            GizmoRotation.SetActive(true);
         }
     }
 
@@ -290,13 +297,13 @@ public class MouseCursor : MonoBehaviour
             return mainTargetRoot.position;
         }
     }
-
+    
+    // 
     public void RotateSelectedObject()
     {
         if (mainTargetRoot == null)
         {
             Debug.Log("hit object is null");
-            
         }
         else
         {
