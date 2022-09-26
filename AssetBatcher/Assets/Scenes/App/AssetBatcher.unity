@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.5784543, g: 0.6157293, b: 0.6087265, a: 1}
+  m_IndirectSpecularColor: {r: 0.57845443, g: 0.61572886, b: 0.6087267, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -610,6 +610,63 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79333229c58372b4bb80009f1cb7c300, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &968088736
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_RootOrder
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.88
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.22
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.7
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
+      propertyPath: m_Name
+      value: Witch_Out_Wall
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6bc792100dd16424992b4ebd777ae3b0, type: 3}
 --- !u!1 &1033770500
 GameObject:
   m_ObjectHideFlags: 0
@@ -2104,6 +2161,10 @@ PrefabInstance:
     - target: {fileID: 8075446875398636984, guid: 7c0db9c0963ab5541a41e6ed556d89bf, type: 3}
       propertyPath: m_Name
       value: Demo_Wall
+      objectReference: {fileID: 0}
+    - target: {fileID: 8075446875398636984, guid: 7c0db9c0963ab5541a41e6ed556d89bf, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8888434996509728514, guid: 7c0db9c0963ab5541a41e6ed556d89bf, type: 3}
       propertyPath: m_RootOrder
