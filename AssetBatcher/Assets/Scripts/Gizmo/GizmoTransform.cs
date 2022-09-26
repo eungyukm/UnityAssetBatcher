@@ -13,7 +13,7 @@ public class GizmoTransform : MouseCursor
 	// 생성되는 Handle의 길이 및 너비
     public float handleLength = .1f;
     public float handleWidth = .003f;
-    private float handleScaleMultipler = 0.5f;
+    private float _handleScaleMultipler = 0.5f;
     
     
     public float minSelectedDistanceCheck = .01f;

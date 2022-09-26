@@ -675,7 +675,7 @@ MonoBehaviour:
   topPanelDocument: {fileID: 1033770502}
   gridSystem: {fileID: 1995943742}
   mouseCursor: {fileID: 1687258587}
-  InputReader: {fileID: 11400000, guid: 63e4aa8ccfe23854bbc7e6bdd907b2ee, type: 2}
+  inputReader: {fileID: 11400000, guid: 63e4aa8ccfe23854bbc7e6bdd907b2ee, type: 2}
   RotateButton: {fileID: 1684590178}
 --- !u!114 &1033770504
 MonoBehaviour:
@@ -1235,7 +1235,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1033770503}
         m_TargetAssemblyTypeName: TopPanelUI, Assembly-CSharp
-        m_MethodName: PressedRotationButton
+        m_MethodName: SetPositionRotationButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1559,7 +1559,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _InputReader: {fileID: 11400000, guid: 63e4aa8ccfe23854bbc7e6bdd907b2ee, type: 2}
   transformMode: 0
-  hitObj: {fileID: 0}
   GizmoArrow: {fileID: 919132147640386273}
   GizmoRotation: {fileID: 1684590176}
   selectionMask:

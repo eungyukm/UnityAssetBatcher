@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.Serialization;
 
 /// <summary>
 /// Unit이 선택되었음을 표시하는 Cursor
@@ -33,6 +30,8 @@ public class MouseCursor : MonoBehaviour
     public UnityAction<GameTransformMode> changeCursorMode;
     
     public TransformType transformType = TransformType.Move;
+
+    public UnityAction OnChangeTarget;
 
     protected virtual void Awake()
     {
@@ -253,6 +252,8 @@ public class MouseCursor : MonoBehaviour
         mainTargetRoot = target;
         SetPivotPoint();
         SetOutline();
+        
+        OnChangeTarget?.Invoke();
     }
     
     /// <summary>
