@@ -66,7 +66,9 @@ public class GizmoTransform : MouseCursor
     void Update()
     {
         SetNearAxis();
-        SetRotate();
+        
+        // TODO : EGK 회전
+        //SetRotate();
     }
 
     #region Object Rotation
