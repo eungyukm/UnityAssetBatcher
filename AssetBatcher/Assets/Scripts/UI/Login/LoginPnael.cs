@@ -1,10 +1,7 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class LoginPnaelManager : MonoBehaviour
+// 전체 로그인의 패널을 관리
+public class LoginPnael : MonoBehaviour
 {
     public GameObject LoginUIGO;
     public GameObject LoginBarGO;

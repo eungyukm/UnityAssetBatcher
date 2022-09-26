@@ -10,5 +10,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2dc3667282f5340479e166b7a51f1c8c, type: 3}
-  m_Name: InputReader
+  m_Name: AssetBathcerInputReader
   m_EditorClassIdentifier: 
