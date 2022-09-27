@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 
-public class TopPanelUI : MonoBehaviour
+public class ManipulateUI : MonoBehaviour
 {
     [SerializeField]private UIDocument topPanelDocument;
 
