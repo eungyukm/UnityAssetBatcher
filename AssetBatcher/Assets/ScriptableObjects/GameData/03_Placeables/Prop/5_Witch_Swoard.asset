@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f85fc1e2d10f1241ae306e1cf12a185, type: 3}
+  m_Name: 5_Witch_Swoard
+  m_EditorClassIdentifier: 
+  ID: DEAF19AE-38CD-49CC-BE3F-337423BF456F
+  FriendlyName: 
+  Description: "\uAC80"
+  pType: 1
+  placeablePrefab: {fileID: 7583451931210217295, guid: 254082fcd0a5e734285d98cb67c5540d, type: 3}
+  Icon: {fileID: 21300000, guid: ef64ed44db0faec4ebda15f344817f4c, type: 3}

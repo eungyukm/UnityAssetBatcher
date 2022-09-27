@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f85fc1e2d10f1241ae306e1cf12a185, type: 3}
+  m_Name: 1_Witch_Wood_Plan
+  m_EditorClassIdentifier: 
+  ID: A3D55B01-72A5-4B3A-BB73-D9CC7972F955
+  FriendlyName: 
+  Description: "\uB9C8\uB140\uC758 \uBAA9\uC7AC \uBC14\uB2E5"
+  pType: 1
+  placeablePrefab: {fileID: 6112575621438706641, guid: 5110fcad022c6a44081a7b9800690cd4, type: 3}
+  Icon: {fileID: 21300000, guid: 9f2ef8b58c0e5794db74bb8e6979b275, type: 3}

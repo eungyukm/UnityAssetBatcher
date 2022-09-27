@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f85fc1e2d10f1241ae306e1cf12a185, type: 3}
+  m_Name: 4_Witch_Skull_head
+  m_EditorClassIdentifier: 
+  ID: DEAF19AE-38CD-49CC-BE3F-337423BF456F
+  FriendlyName: 
+  Description: "\uD574\uACE8"
+  pType: 1
+  placeablePrefab: {fileID: 871875251230880906, guid: c78b7ab3e67bb6c4abd4542d5f2ef406, type: 3}
+  Icon: {fileID: 21300000, guid: 99e83fd994e6ce54d92c2a8d04a603a7, type: 3}
