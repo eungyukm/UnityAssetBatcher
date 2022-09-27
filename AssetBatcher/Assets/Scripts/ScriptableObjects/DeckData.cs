@@ -41,4 +41,9 @@ public class DeckData : ScriptableObject
     {
         return cards[0];
     }
+
+    public CardData GetCardFromDeck(int index)
+    {
+        return cards[index];
+    }
 }

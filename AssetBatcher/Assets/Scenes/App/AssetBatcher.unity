@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.57845443, g: 0.61572886, b: 0.6087267, a: 1}
+  m_IndirectSpecularColor: {r: 0.5784543, g: 0.6157293, b: 0.6087265, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   RightUIDocument: {fileID: 630380219}
-  mouseCursor: {fileID: 0}
+  mouseCursor: {fileID: 1687258587}
 --- !u!1 &653260035
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,7 +390,7 @@ GameObject:
   - component: {fileID: 780536570}
   - component: {fileID: 780536571}
   m_Layer: 0
-  m_Name: PanelManager
+  m_Name: AssetBatcherUIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -435,13 +435,13 @@ MonoBehaviour:
   wallUIGO: {fileID: 1755429703}
   propUIGO: {fileID: 1151881900}
   mapSaveUIGO: {fileID: 422180505}
-  TileUI: {fileID: 1754312577}
-  MainUI: {fileID: 1445834913}
-  WallUI: {fileID: 1755429705}
-  PropUI: {fileID: 1151881904}
-  MapSaveUI: {fileID: 422180508}
-  TopPanelUI: {fileID: 1033770503}
-  UIState: 0
+  assetCategoryUI: {fileID: 1445834913}
+  tileUI: {fileID: 1754312577}
+  wallUI: {fileID: 1755429705}
+  propUI: {fileID: 1151881904}
+  mapSaveUI: {fileID: 422180508}
+  manipulateUI: {fileID: 1033770503}
+  uiState: 0
   cardManager: {fileID: 887340800}
   gridSystem: {fileID: 1995943742}
 --- !u!1 &855708040
@@ -531,7 +531,6 @@ GameObject:
   - component: {fileID: 887340801}
   - component: {fileID: 887340802}
   - component: {fileID: 887340800}
-  - component: {fileID: 887340803}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -563,12 +562,12 @@ MonoBehaviour:
   forbiddenAreaRenderer: {fileID: 1082293900}
   backupCardTransform: {fileID: 0}
   cardsPanel: {fileID: 415231181}
-  _playersDeck: {fileID: 0}
+  playersDeck: {fileID: 0}
   card: {fileID: 0}
-  DeployMode: 0
-  GridSystem: {fileID: 1995943742}
+  deployMode: 0
+  gridSystem: {fileID: 1995943742}
   planeHeight: 0.3
-  MouseCursor: {fileID: 1687258587}
+  mouseCursor: {fileID: 1687258587}
 --- !u!4 &887340801
 Transform:
   m_ObjectHideFlags: 0
@@ -598,18 +597,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _addObjectEventChannelSo: {fileID: 11400000, guid: 30ee4e573096c5e4fb2e9f1e84a16d31, type: 2}
   _removeObjectEventChannelSo: {fileID: 11400000, guid: 90dfb7df04142ca418ed3c8223543a5b, type: 2}
---- !u!114 &887340803
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887340799}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79333229c58372b4bb80009f1cb7c300, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &968088736
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -680,7 +667,7 @@ GameObject:
   - component: {fileID: 1033770503}
   - component: {fileID: 1033770504}
   m_Layer: 0
-  m_Name: TopPanel
+  m_Name: ManipulateUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -951,7 +938,7 @@ GameObject:
   - component: {fileID: 1151881903}
   - component: {fileID: 1151881904}
   m_Layer: 0
-  m_Name: ProplUI
+  m_Name: PropUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1157,7 +1144,7 @@ GameObject:
   - component: {fileID: 1445834912}
   - component: {fileID: 1445834913}
   m_Layer: 0
-  m_Name: MainUI
+  m_Name: AssetCategoryUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1206,7 +1193,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d7badb00c0610e48a15df17b6f81982, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MainUIDocument: {fileID: 1445834912}
+  mainUIDocument: {fileID: 1445834912}
 --- !u!1 &1684590176
 GameObject:
   m_ObjectHideFlags: 0

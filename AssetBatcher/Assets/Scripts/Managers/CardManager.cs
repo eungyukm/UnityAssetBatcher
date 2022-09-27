@@ -19,30 +19,30 @@ public class CardManager : MonoBehaviour
     
     public RectTransform cardsPanel; //모든 카드, 데크 및 대시보드를 포함하는 UI 패널(중앙 정렬)
     
-    private bool cardIsActive = false; //사실일 때, 카드는 운동장 위로 끌려가고 있다.
-    private GameObject previewHolder;
+    private bool _cardIsActive = false; //사실일 때, 카드는 운동장 위로 끌려가고 있다.
+    private GameObject _previewHolder;
 
-    public DeckData _playersDeck;
+    public DeckData playersDeck;
     public Card card;
 
-    public DeployMode DeployMode;
+    public DeployMode deployMode;
 
-    public GridSystem GridSystem;
+    public GridSystem gridSystem;
     
     // TODO : plane y height 변경
     public float planeHeight = 0.0f;
 
-    public MouseCursor MouseCursor;
+    public MouseCursor mouseCursor;
 
     private void Awake()
     {
-        previewHolder = new GameObject("PreviewHolder");
-        DeployMode = DeployMode.DeSelectedObject;
+        _previewHolder = new GameObject("PreviewHolder");
+        deployMode = DeployMode.DeSelectedObject;
     }
 
     private void Update()
     {
-        if (DeployMode == DeployMode.SelectedObject)
+        if (deployMode == DeployMode.SelectedObject)
         {
             MovementCard();            
         }
@@ -57,6 +57,13 @@ public class CardManager : MonoBehaviour
     public void LoadCard()
     {
         StartCoroutine(AddCardToCardPanel(.1f));
+        StartCoroutine(RegisterAction(.2f));
+    }
+    
+    // 카드의 종류를 변경합니다.
+    public void ChangeCard(int index)
+    {
+        StartCoroutine(AddCardToCardPanel(.1f, index));
         StartCoroutine(RegisterAction(.2f));
     }
     
@@ -83,7 +90,7 @@ public class CardManager : MonoBehaviour
         DeckData deck = SwitchDeck(deckType.ToString());
         if (deck != null)
         {
-            _playersDeck = deck;
+            playersDeck = deck;
             newDeckLoaderComp.LoadDeck(deck);
         }
         else
@@ -127,7 +134,23 @@ public class CardManager : MonoBehaviour
         card = backupCardTransform.GetComponent<Card>();
         
         //카드 스크립트에 카드 데이터 입력
-        card.InitialiseWithData(_playersDeck.GetCardFromDeck());
+        card.InitialiseWithData(playersDeck.GetCardFromDeck());
+
+        // 카드 SetActive false
+        DeActivateCard();
+    }
+
+    private IEnumerator AddCardToCardPanel(float delay, int index)
+    {
+        yield return new WaitForSeconds(delay);
+        backupCardTransform = Instantiate<GameObject>(cardPrefab, cardsPanel).GetComponent<RectTransform>();
+        backupCardTransform.localScale = Vector3.one * 0.7f;
+
+        // 카드를 저장
+        card = backupCardTransform.GetComponent<Card>();
+        
+        //카드 스크립트에 카드 데이터 입력
+        card.InitialiseWithData(playersDeck.GetCardFromDeck(index));
 
         // 카드 SetActive false
         DeActivateCard();
@@ -146,9 +169,9 @@ public class CardManager : MonoBehaviour
         {
             Vector3 hitPos;
             // Grid System을 사용했을 경우,
-            if (GridSystem.GridActive)
+            if (gridSystem.GridActive)
             {
-                Vector3 gridPos = GridSystem.SnapCoordinateToGrid(hit.point);
+                Vector3 gridPos = gridSystem.SnapCoordinateToGrid(hit.point);
                 hitPos = gridPos;
             }
             else
@@ -177,9 +200,9 @@ public class CardManager : MonoBehaviour
     private void ClearPreviewObjects()
     {
         // Debug.Log("[CM] ClearPreviewObjects");
-        for (int i = 0; i < previewHolder.transform.childCount; i++)
+        for (int i = 0; i < _previewHolder.transform.childCount; i++)
         {
-            Destroy(previewHolder.transform.GetChild(i).gameObject);
+            Destroy(_previewHolder.transform.GetChild(i).gameObject);
         }
     }
     
@@ -188,8 +211,8 @@ public class CardManager : MonoBehaviour
     /// </summary>
     public void ActivateCard()
     {
-        MouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.None);
-        DeployMode = DeployMode.SelectedObject;
+        mouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.None);
+        deployMode = DeployMode.SelectedObject;
         card.gameObject.SetActive(true);
         forbiddenAreaRenderer.enabled = true;
     }
@@ -199,8 +222,8 @@ public class CardManager : MonoBehaviour
     /// </summary>
     public void DeActivateCard()
     {
-        MouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.SelectMode);
-        DeployMode = DeployMode.DeSelectedObject;
+        mouseCursor.SwitchCursorMode(MouseCursor.GameTransformMode.SelectMode);
+        deployMode = DeployMode.DeSelectedObject;
         card.gameObject.SetActive(false);
         forbiddenAreaRenderer.enabled = false;
     }
@@ -231,22 +254,22 @@ public class CardManager : MonoBehaviour
         if (planeHit)
         {
             // Debug.Log("hit point : " + hit.point);
-            if (!cardIsActive)
+            if (!_cardIsActive)
             {
-                cardIsActive = true;
+                _cardIsActive = true;
                 card.ChangeActiveState(true);
                 
                 // Grid System을 사용했을 경우,
-                if (GridSystem.GridActive)
+                if (gridSystem.GridActive)
                 {
-                    Vector3 gridPos = GridSystem.SnapCoordinateToGrid(hit.point);
+                    Vector3 gridPos = gridSystem.SnapCoordinateToGrid(hit.point);
                     Debug.Log("gridPos : " + gridPos.x);
-                    previewHolder.transform.position = gridPos;
+                    _previewHolder.transform.position = gridPos;
                 }
                 else
                 {
-                    previewHolder.transform.position = hit.point;
-                    Debug.Log("previewHolder : " + previewHolder.transform.position);
+                    _previewHolder.transform.position = hit.point;
+                    Debug.Log("previewHolder : " + _previewHolder.transform.position);
                 }
                 
                 PlaceableData[] dataToSpawn = card.cardData.placeablesData;
@@ -259,7 +282,7 @@ public class CardManager : MonoBehaviour
                     GameObject newPlaceable = GameObject.Instantiate<GameObject>(dataToSpawn[i].placeablePrefab,
                         offsets[i],
                         Quaternion.identity,
-                        previewHolder.transform);
+                        _previewHolder.transform);
                     newPlaceable.transform.localPosition = new Vector3(0, 0, 0);
                     newPlaceable.layer = LayerMask.NameToLayer("Default");
                 }
@@ -267,23 +290,23 @@ public class CardManager : MonoBehaviour
             else
             {
                 // Grid System을 사용했을 경우,
-                if (GridSystem.GridActive)
+                if (gridSystem.GridActive)
                 {
-                    Vector3 gridPos = GridSystem.SnapCoordinateToGrid(hit.point);
+                    Vector3 gridPos = gridSystem.SnapCoordinateToGrid(hit.point);
                     Debug.Log("gridPos : " + gridPos.x);
-                    previewHolder.transform.position = gridPos;
+                    _previewHolder.transform.position = gridPos;
                 }
                 else
                 {
-                    previewHolder.transform.position = hit.point;
+                    _previewHolder.transform.position = hit.point;
                 }
             }
         }
         else
         {
-            if (cardIsActive)
+            if (_cardIsActive)
             {
-                cardIsActive = false;
+                _cardIsActive = false;
                 card.ChangeActiveState(false);
                 ClearPreviewObjects();
             }

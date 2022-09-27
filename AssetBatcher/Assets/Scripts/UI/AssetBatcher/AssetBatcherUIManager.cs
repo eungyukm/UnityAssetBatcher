@@ -1,12 +1,8 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Serialization;
 
-
-public class PanelManager : MonoBehaviour
+// Asset Batcher의 전체 UI를 가지고 있는 Manager
+public class AssetBatcherUIManager : MonoBehaviour
 {
     public GameObject mainUIGO;
     public GameObject floorUIGO;
@@ -14,39 +10,41 @@ public class PanelManager : MonoBehaviour
     public GameObject propUIGO;
     public GameObject mapSaveUIGO;
     
-    public TileUI TileUI;
-    public MainUI MainUI;
-    public WallUI WallUI;
-    public PropUI PropUI;
-    public MapSaveUI MapSaveUI;
-    public TopPanelUI TopPanelUI;
+    public AssetCategoryUI assetCategoryUI;
+    public TileUI tileUI;
+    public WallUI wallUI;
+    public PropUI propUI;
+    
+    public MapSaveUI mapSaveUI;
+    [FormerlySerializedAs("topPanelUI")] public ManipulateUI manipulateUI;
 
-    public UIState UIState = UIState.None;
+    public UIState uiState = UIState.None;
 
     [SerializeField] private CardManager cardManager;
     [SerializeField] private GridSystem gridSystem;
 
     private void OnEnable()
     {
-        MainUI.OnUISateChanged += PanelSwitch;
-        TileUI.OnClosePanel += PanelSwitch;
-        WallUI.OnClosePanel += PanelSwitch;
-        PropUI.OnClosePanel += PanelSwitch;
-        MapSaveUI.onClosePanel += PanelSwitch;
-        TopPanelUI.OnSaveAction += PanelSwitch;
+        assetCategoryUI.OnUISateChanged += PanelSwitch;
+        tileUI.OnClosePanel += PanelSwitch;
+        wallUI.OnClosePanel += PanelSwitch;
+        propUI.OnClosePanel += PanelSwitch;
+        mapSaveUI.onClosePanel += PanelSwitch;
+        manipulateUI.OnSaveAction += PanelSwitch;
 
-        MapSaveUI.onSaveComplate += MapSave;
+        mapSaveUI.onSaveComplate += MapSave;
     }
 
     private void OnDisable()
     {
-        TileUI.OnClosePanel -= PanelSwitch;
-        WallUI.OnClosePanel -= PanelSwitch;
-        PropUI.OnClosePanel -= PanelSwitch;
-        MapSaveUI.onClosePanel -= PanelSwitch;
-        TopPanelUI.OnSaveAction -= PanelSwitch;
+        assetCategoryUI.OnUISateChanged -= PanelSwitch;
+        tileUI.OnClosePanel -= PanelSwitch;
+        wallUI.OnClosePanel -= PanelSwitch;
+        propUI.OnClosePanel -= PanelSwitch;
+        mapSaveUI.onClosePanel -= PanelSwitch;
+        manipulateUI.OnSaveAction -= PanelSwitch;
         
-        MapSaveUI.onSaveComplate -= MapSave;
+        mapSaveUI.onSaveComplate -= MapSave;
     }
     
     void Start()
@@ -58,7 +56,7 @@ public class PanelManager : MonoBehaviour
     {
         mainUIGO.SetActive(true);
         floorUIGO.SetActive(false);
-        UIState = UIState.MainUI;
+        uiState = UIState.MainUI;
     }
 
     private void MapSave()
@@ -68,8 +66,8 @@ public class PanelManager : MonoBehaviour
 
     private void PanelSwitch(UIState uiState)
     {
-        UIState = uiState;
-        switch (UIState)
+        this.uiState = uiState;
+        switch (this.uiState)
         {
             case UIState.None:
                 gridSystem.SwitchGridType(GridSystemType.None);
