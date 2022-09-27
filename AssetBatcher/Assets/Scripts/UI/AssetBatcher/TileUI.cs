@@ -20,11 +20,6 @@ public class TileUI : MonoBehaviour
 
     private VisualElement _tileUIRoot;
 
-    private void Awake()
-    {
-
-    }
-
     private void OnEnable()
     {
         _tileUIRoot = floorUIDocument.rootVisualElement;
