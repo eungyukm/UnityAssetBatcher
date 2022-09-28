@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f85fc1e2d10f1241ae306e1cf12a185, type: 3}
-  m_Name: 1_Witch_Rock
+  m_Name: 1_Witch_Wall
   m_EditorClassIdentifier: 
   ID: DEAF19AE-38CD-49CC-BE3F-337423BF456F
   FriendlyName: 
-  Description: "\uBCBD\uB3CC"
+  Description: "\uBCBD"
   pType: 1
-  placeablePrefab: {fileID: 8279451212931031030, guid: dab58427b0be52049985a5f748763abc, type: 3}
-  Icon: {fileID: 21300000, guid: a9d6706d0e3c27c45bfebf4e06611dc3, type: 3}
+  placeablePrefab: {fileID: 5551192421976105012, guid: 5fab09c569eef66478d45917304c51dd, type: 3}
+  Icon: {fileID: 21300000, guid: 55857fc6d76068f46bc533ae1ba61690, type: 3}

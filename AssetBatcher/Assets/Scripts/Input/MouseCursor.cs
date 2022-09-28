@@ -111,10 +111,23 @@ public class MouseCursor : MonoBehaviour
                 break;
             case GameTransformMode.RotationMode:
                 transformType = TransformType.Rotate;
+                SetRotationUI();
                 break;
         }
 
         SendCursorModeToUI(transformMode);
+    }
+
+    private void SetRotationUI()
+    {
+        if (mainTargetRoot != null)
+        {
+            if(transformMode == GameTransformMode.RotationMode)
+            GizmoRotation.SetActive(true);
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(GetSelectedObjectPos());
+            Vector2 vector2Pos = new Vector2(screenPos.x, screenPos.y);
+            GizmoRotation.GetComponent<RectTransform>().anchoredPosition = vector2Pos;
+        }
     }
     
     // 마우스의 커서 모드가 변경되었을 경우, UI에 변경된 커서 모드를 전달하는 로직
@@ -237,6 +250,15 @@ public class MouseCursor : MonoBehaviour
             {
                 Debug.LogError("myCamera is null!");
             }
+            
+            Ray ray = new Ray(transform.position, transform.forward);
+            int layerNum = LayerMask.NameToLayer("UI");
+
+            if (Physics.Raycast(ray, 10, 1<<layerNum))
+            {
+                return;
+            }
+
             if (Physics.Raycast(myCamera.ScreenPointToRay(_InputReader.MousePos), out hitInfo, Mathf.Infinity,
                     selectionMask))
             {
@@ -265,6 +287,7 @@ public class MouseCursor : MonoBehaviour
         {
             pivotPoint = mainTargetRoot.position;
             SetArrowGizmo();
+            SetRotationUI();
         }
         else
         {

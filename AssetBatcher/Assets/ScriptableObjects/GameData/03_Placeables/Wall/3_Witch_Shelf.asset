@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3f85fc1e2d10f1241ae306e1cf12a185, type: 3}
-  m_Name: 2_Witch_Shelf
+  m_Name: 3_Witch_Shelf
   m_EditorClassIdentifier: 
   ID: DEAF19AE-38CD-49CC-BE3F-337423BF456F
   FriendlyName: 

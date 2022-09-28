@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f8fd000d44995bf41bbce90d78c9fffa, type: 3}
-  m_Name: 3_Witch_branch
+  m_Name: 3_Witch_Branch
   m_EditorClassIdentifier: 
   cardImage: {fileID: 21300000, guid: 1a29f3bbe88a7bf4dbfaac0bb3202fc2, type: 3}
   placeablesData:
