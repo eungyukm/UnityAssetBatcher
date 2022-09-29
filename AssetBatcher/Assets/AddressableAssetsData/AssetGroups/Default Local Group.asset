@@ -29,6 +29,10 @@ MonoBehaviour:
     m_Address: Assets/ScriptableObjects/GameData/03_Placeables/Wall
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 0bd3c4cc7194bc54a95c812a07f0c814
+    m_Address: Assets/ScriptableObjects/GameData/03_Placeables/Furniture
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ee89eeeda0e7d8341a44692920723863, type: 2}
   m_SchemaSet:

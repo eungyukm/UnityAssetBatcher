@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 4890085278179872738, guid: 477cc4148fad3449482a3bc3178594e2, type: 2}
+  m_LightingDataAsset: {fileID: 112000000, guid: 9c7c9b29c4912894bbe5614ae86fe4d8, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 81b5e5c699962c84cb4eec15b6192df3, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -222,7 +222,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 780536570}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &422180507
 MonoBehaviour:
@@ -298,7 +298,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 780536570}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &630380219
 MonoBehaviour:
@@ -412,6 +412,7 @@ Transform:
   - {fileID: 1754312575}
   - {fileID: 1755429704}
   - {fileID: 1151881901}
+  - {fileID: 1976607673}
   - {fileID: 1033770501}
   - {fileID: 630380218}
   - {fileID: 422180506}
@@ -435,6 +436,7 @@ MonoBehaviour:
   wallUIGO: {fileID: 1755429703}
   propUIGO: {fileID: 1151881900}
   mapSaveUIGO: {fileID: 422180505}
+  furnitureUIGO: {fileID: 1976607672}
   assetCategoryUI: {fileID: 1445834913}
   tileUI: {fileID: 1754312577}
   wallUI: {fileID: 1755429705}
@@ -629,7 +631,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 780536570}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1033770502
 MonoBehaviour:
@@ -1175,7 +1177,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1684590178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1686,6 +1688,69 @@ MonoBehaviour:
   m_ParentUI: {fileID: 0}
   sourceAsset: {fileID: 9197481963319205126, guid: c38781fbabaf0f24cbab5e0c36276871, type: 3}
   m_SortingOrder: 2
+--- !u!1 &1976607672
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1976607673}
+  - component: {fileID: 1976607675}
+  - component: {fileID: 1976607676}
+  m_Layer: 0
+  m_Name: FurnitureUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1976607673
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976607672}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 780536570}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1976607675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976607672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 6b68d57f21f1b8c46a94227d1a848340, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: a4bd5097fcf915447a94fb97a0f7a297, type: 3}
+  m_SortingOrder: 2
+--- !u!114 &1976607676
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1976607672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c35ca5bb52164842b2585b58ca9aba3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  furnitureUIDocument: {fileID: 1976607675}
+  cardManager: {fileID: 887340800}
 --- !u!1 &1995943739
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Unit이 선택되었음을 표시하는 Cursor
@@ -243,6 +244,7 @@ public class MouseCursor : MonoBehaviour
 
     protected virtual void GetTarget(Vector2 pos)
     {
+        Debug.Log("GetTarget");
         if (nearAxis == Axis.None)
         {
             RaycastHit hitInfo;
@@ -251,11 +253,9 @@ public class MouseCursor : MonoBehaviour
                 Debug.LogError("myCamera is null!");
             }
             
-            Ray ray = new Ray(transform.position, transform.forward);
-            int layerNum = LayerMask.NameToLayer("UI");
-
-            if (Physics.Raycast(ray, 10, 1<<layerNum))
+            if (!IsPointerOverUIObject())
             {
+                Debug.Log("Ignore UI");
                 return;
             }
 
@@ -333,6 +333,15 @@ public class MouseCursor : MonoBehaviour
         {
             mainTargetRoot.transform.rotation *= Quaternion.Euler(Vector3.up * 30f);
         }
+    }
+    
+    private bool IsPointerOverUIObject()
+    {
+        PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
+        eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
+        List<RaycastResult> results = new List<RaycastResult>();
+        EventSystem.current.RaycastAll(eventDataCurrentPosition, results);
+        return results.Count > 0;
     }
 
     [Serializable]

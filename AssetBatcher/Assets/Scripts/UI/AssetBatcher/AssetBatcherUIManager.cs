@@ -9,6 +9,7 @@ public class AssetBatcherUIManager : MonoBehaviour
     public GameObject wallUIGO;
     public GameObject propUIGO;
     public GameObject mapSaveUIGO;
+    public GameObject furnitureUIGO;
     
     public AssetCategoryUI assetCategoryUI;
     public TileUI tileUI;

@@ -32,6 +32,10 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prop
+  - m_GUID: 413db5ca155d6354298902b1876339d9
+    m_Address: Assets/ScriptableObjects/GameData/02_Cards/Furniture
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: ee89eeeda0e7d8341a44692920723863, type: 2}
   m_SchemaSet:
