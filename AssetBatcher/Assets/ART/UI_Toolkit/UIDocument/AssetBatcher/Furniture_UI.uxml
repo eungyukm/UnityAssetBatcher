@@ -6,17 +6,17 @@
                 <ui:Button display-tooltip-when-elided="true" name="PreviousBtn" style="width: 20%; height: 100%; background-image: url(&apos;project://database/Assets/ART/Textures/Icon/TopPanel/left_arrow_icon.png?fileID=2800000&amp;guid=c5e05c31cd331a244a469efcd8773e56&amp;type=3#left_arrow_icon&apos;); -unity-background-scale-mode: scale-to-fit; background-color: rgb(255, 255, 255); -unity-background-image-tint-color: rgb(94, 94, 94); padding-left: 0; padding-right: 0; padding-top: 0; padding-bottom: 0; border-left-width: 0; border-right-width: 0; border-top-width: 0; border-bottom-width: 0;" />
                 <ui:Label text="Furniture" display-tooltip-when-elided="true" enable-rich-text="true" style="height: 100%; width: 80%; font-size: 18px; -unity-text-align: middle-center; align-items: center; justify-content: flex-end; -unity-font-style: bold;" />
             </ui:VisualElement>
-            <ui:Button display-tooltip-when-elided="true" name="Wall01" class="Button_Style" style="background-image: none; align-items: center; justify-content: flex-start; left: 0; top: 0; right: 0; bottom: 0;">
-                <ui:VisualElement name="Furniture01" class="Image_Style" style="background-image: url(&apos;project://database/Assets/ART/UI/CardArt/Prop/Witch_Treasure_Box.png?fileID=2800000&amp;guid=6262f17881cfa65449b191a3d2ce2723&amp;type=3#Witch_Treasure_Box&apos;); -unity-background-scale-mode: scale-to-fit;" />
+            <ui:Button display-tooltip-when-elided="true" name="Furniture01" class="Button_Style" style="background-image: none; align-items: center; justify-content: flex-start; left: 0; top: 0; right: 0; bottom: 0;">
+                <ui:VisualElement class="Image_Style" style="background-image: url(&apos;project://database/Assets/ART/UI/CardArt/Prop/Witch_Treasure_Box.png?fileID=2800000&amp;guid=6262f17881cfa65449b191a3d2ce2723&amp;type=3#Witch_Treasure_Box&apos;); -unity-background-scale-mode: scale-to-fit;" />
             </ui:Button>
-            <ui:Button display-tooltip-when-elided="true" name="Wall02" class="Button_Style" style="justify-content: flex-start; align-items: center;">
-                <ui:VisualElement name="Furniture02" class="Image_Style" style="background-image: none; -unity-background-scale-mode: scale-to-fit;" />
+            <ui:Button display-tooltip-when-elided="true" name="Furniture02" class="Button_Style" style="justify-content: flex-start; align-items: center;">
+                <ui:VisualElement class="Image_Style" style="background-image: none; -unity-background-scale-mode: scale-to-fit;" />
             </ui:Button>
-            <ui:Button display-tooltip-when-elided="true" name="Wall03" class="Button_Style" style="align-items: center;">
-                <ui:VisualElement name="Furniture03" class="Image_Style" style="background-image: none; -unity-background-scale-mode: scale-to-fit;" />
+            <ui:Button display-tooltip-when-elided="true" name="Furniture03" class="Button_Style" style="align-items: center;">
+                <ui:VisualElement class="Image_Style" style="background-image: none; -unity-background-scale-mode: scale-to-fit;" />
             </ui:Button>
-            <ui:Button display-tooltip-when-elided="true" name="Wall04" class="Button_Style" style="align-items: center;">
-                <ui:VisualElement name="Furniture04" class="Image_Style" style="background-image: none; -unity-background-scale-mode: scale-to-fit;" />
+            <ui:Button display-tooltip-when-elided="true" name="Furniture04" class="Button_Style" style="align-items: center;">
+                <ui:VisualElement class="Image_Style" style="background-image: none; -unity-background-scale-mode: scale-to-fit;" />
             </ui:Button>
             <ui:Button display-tooltip-when-elided="true" name="Wall05" class="Button_Style" style="align-items: center;">
                 <ui:VisualElement name="Furniture05" class="Image_Style" style="background-image: none; -unity-background-scale-mode: scale-to-fit;" />
