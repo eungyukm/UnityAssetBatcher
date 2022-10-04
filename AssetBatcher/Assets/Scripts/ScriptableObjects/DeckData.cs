@@ -26,7 +26,7 @@ public class DeckData : ScriptableObject
         //TODO: shuffle cards
     }
 
-    //덱에 있는 다음 카드를 반환합니다. 당신은 아마도 카드를 먼저 섞고 싶을 것이다.
+    //덱에 있는 다음 카드를 반환합니다.
     public CardData GetNextCardFromDeck()
     {
         //advance the index
