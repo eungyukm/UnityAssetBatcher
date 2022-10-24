@@ -10,9 +10,6 @@ using UnityEngine.UI;
 /// </summary>
 public class Card : MonoBehaviour
 {
-    public UnityAction<int, Vector2> OnDragAction;
-    public UnityAction<int> OnTapDownAction, OnTapReleaseAction;
-
     [HideInInspector] public int cardId;
     [HideInInspector] public CardData cardData;
 
